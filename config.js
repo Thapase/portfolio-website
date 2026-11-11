@@ -1,25 +1,33 @@
 /**
- * Portfolio Data Configuration for T.H.H. Thapase
- * Supply Chain & Strategy Consultant | Endurance Athlete | ESG Advocate
- * Centralized data object for easy updates without touching HTML markup.
+ * F1 Singapore Marina Bay Grand Prix — Portfolio Telemetry Configuration
+ * Driver: T.H.H. Thapase (THH) — Supply Chain & Strategy Consultant | Endurance Athlete
+ * 10 Starting Grid Positions with Bespoke F1 Constructor Liveries & Telemetry Dossiers
  */
 
-const portfolioData = {
-  personal: {
+const f1PortfolioData = {
+  driver: {
     fullName: "Thummaginjala Hima Harsha Thapase",
     displayName: "T.H.H. Thapase",
-    shortName: "Thapase",
-    initials: "THH",
-    title: "Supply Chain & Operations Strategist",
-    currentRole: "Assistant Manager (Supply Chain Consultant)",
-    company: "Genpact",
+    racingName: "THAPASE [THH]",
+    number: "76", // GMAT 760 tribute
+    team: "THH Strategy Racing",
+    role: "Supply Chain & Operations Strategist",
+    currentPost: "Assistant Manager (Supply Chain Consultant) • Genpact",
     location: "Bangalore, India",
+    superlicence: "FIA Tier-1 Certified (IIM Sirmaur MBA • GMAT 760 • Six Sigma Green Belt)",
     email: "thapase@gmail.com",
     phone: "+91 9566009174",
-    bioMantra: "Bridging mathematical supply chain optimization, data-driven resilience, and the relentless endurance of a long-distance runner.",
-    summary: "Senior supply chain and operations consultant with proven expertise orchestrating multi-million-dollar transformations for Fortune 500 energy technology, oil & gas, and aerospace leaders. Delivered upwards of ~$30M in annual savings, optimized order cycle times from 12 to 3 weeks across a $600M portfolio, and built predictive AI/ML models. Beyond enterprise operations, I am an endurance runner, explorer across 15+ Indian states, GMAT 760 achiever, and passionate advocate for girl-child education.",
-    gmat: "760 (Top 1% Globally)",
-    educationSummary: "IIM Sirmaur (MBA) | SRM University (B.Tech EEE - 88% Distinction)"
+    bio: "Optimizing enterprise supply chains at 300+ km/h. Blending cycle time compression, predictive ML telemetry, circular sustainability, and the relentless endurance of a long-distance runner."
+  },
+
+  circuit: {
+    name: "Marina Bay Street Circuit",
+    location: "Singapore",
+    session: "NIGHT RACE • LIVE TELEMETRY",
+    length: "4.940 km",
+    turns: "19 Turns",
+    drsZones: "3 DRS Zones",
+    lapRecord: "1:35.867"
   },
 
   socials: {
@@ -31,264 +39,310 @@ const portfolioData = {
     topmate: "https://topmate.io/thapase_thh"
   },
 
-  heroMetrics: [
-    { value: "$30M+", label: "Annual Client Savings Delivered", icon: "fa-solid fa-chart-line" },
-    { value: "75%", label: "Cycle Time Cut (12 to 3 Wks)", icon: "fa-solid fa-bolt" },
-    { value: "760", label: "GMAT Score (99th Percentile)", icon: "fa-solid fa-award" },
-    { value: "15+", label: "Indian States & UTs Explored", icon: "fa-solid fa-compass" }
-  ],
-
-  caseStudies: [
+  // 10 Staggered Starting Grid Cars (P1 to P10)
+  gridCars: [
     {
-      id: "cycle-time",
-      title: "Cycle Time Optimization across $600M Portfolio",
-      division: "Energy Tech • Chemical Solutions ($400M)",
-      badge: "Best Project Award Q1-2024",
-      highlight: "Cycle time reduced from 12 to 3 weeks",
-      metrics: [
-        { label: "Cycle Time", val: "12 → 3 Wks" },
-        { label: "OTIF Improvement", val: "+20-30%" },
-        { label: "Portfolio Handled", val: "$600M" },
-        { label: "Revenue Multiple", val: "3X Genpact Extension" }
+      pos: "P1",
+      number: "01",
+      category: "Professional Experience",
+      title: "Supply Chain Consulting & Operations Leadership",
+      teamName: "Scuderia Genpact Strategy",
+      liveryColor: "#E10600", // Scuderia Crimson Red
+      secondaryColor: "#111111",
+      glowColor: "rgba(225, 6, 0, 0.45)",
+      compound: "Soft (Red C5)",
+      telemetryStats: [
+        { label: "Annual Client Savings", val: "$30M+", icon: "fa-solid fa-chart-line" },
+        { label: "Cycle Time Cut", val: "12 → 3 Wks", icon: "fa-solid fa-gauge-high" },
+        { label: "OTIF Improvement", val: "+20-30%", icon: "fa-solid fa-boxes-packing" },
+        { label: "Honors", val: "Bronze Medal", icon: "fa-solid fa-medal" }
       ],
-      description: "Conceptualized and spearheaded a groundbreaking cycle time optimization initiative for a $37B energy technology client in the North America region. Streamlined cross-functional parts planning, eliminated operational bottlenecks, and harmonized order fulfillment.",
-      deliverables: [
-        "Won Best Team Project (Q1-2024) for novel design and execution.",
-        "Awarded prestigious Bronze Medal for outstanding client deliverables as a trusted thought partner.",
-        "Delivered recurring ~$10M/annum savings by curbing revenue leakages and synchronizing end-to-end parts planning."
-      ],
-      tags: ["Cycle Time", "S&OP", "Parts Planning", "OTIF Optimization", "North America"]
+      badge: "POLE POSITION • Q1-2024 BEST PROJECT",
+      subtitle: "Fortune 500 Energy Tech & Oil & Gas Engagements ($37B Enterprise)",
+      dossier: `
+        <p class="mb-3">Spearheaded 5+ high-stakes operational engagements across 3+ divisions for a <strong>$37B energy technology giant</strong>. Optimized end-to-end supply chain design, harmonizing parts planning with execution to save upwards of <strong>~$30M/annum</strong> and securing >$10M revenue extension for Genpact.</p>
+        <div class="p-3.5 rounded-xl bg-red-500/10 border border-red-500/20 text-xs mb-3">
+          <strong>Key Circuit Victory (Q1-2024):</strong> Led a landmark cycle time optimization project across North America for a $600M portfolio, cutting lead times from 12 weeks to just 3 weeks. Awarded the <strong>Genpact Bronze Medal</strong> for outstanding client deliverables.
+        </div>
+        <ul class="space-y-1.5 text-xs text-slate-300">
+          <li><i class="fa-solid fa-check text-red-500 mr-2"></i>Curtailed parts revenue leakages by ~$10M/year through cross-functional CXO alignment.</li>
+          <li><i class="fa-solid fa-check text-red-500 mr-2"></i>Engineered lean S&OP governance mechanisms deployed across global multi-division manufacturing sites.</li>
+        </ul>
+      `,
+      tags: ["Cycle Time Optimization", "S&OP", "Parts Planning", "Bronze Medal", "CXO Advisory"]
     },
     {
-      id: "pcp-procurement",
-      title: "Predictive Product Cost Pacing (PCP) Model",
-      division: "Wirelines Technology Division ($250M)",
-      badge: "Global Deployment",
-      highlight: "$10M/annum saved in procurement costs",
-      metrics: [
-        { label: "Annual Savings", val: "~$10M/yr" },
-        { label: "Deployment Speed", val: "3 Months" },
-        { label: "Team Led", val: "3-5 Members" },
-        { label: "New Wins", val: "3 High-Profile Clients" }
+      pos: "P2",
+      number: "76",
+      category: "Academic Excellence",
+      title: "IIM Sirmaur MBA & GMAT 760 (Top 1% Globally)",
+      teamName: "IIM Sirmaur High-Performance Racing",
+      liveryColor: "#F59E0B", // High-Velocity Amber Gold
+      secondaryColor: "#0B1325",
+      glowColor: "rgba(245, 158, 11, 0.45)",
+      compound: "Medium (Yellow C3)",
+      telemetryStats: [
+        { label: "GMAT Worldwide Score", val: "760", icon: "fa-solid fa-trophy" },
+        { label: "Global Percentile", val: "99th %ile", icon: "fa-solid fa-brain" },
+        { label: "Degree", val: "MBA", icon: "fa-solid fa-graduation-cap" },
+        { label: "Specialization", val: "Operations & Strategy", icon: "fa-solid fa-compass" }
       ],
-      description: "Engineered a predictive Product Cost Pacing (PCP) procurement algorithm enabling the enterprise to strategically procure raw materials at market inflection points, counteracting price volatility and lead-time spikes.",
-      deliverables: [
-        "Spearheaded a 3–5 member cross-functional team to develop and deploy the model within 90 days.",
-        "Achieved exceptional forecast accuracy, directly generating ~$10M/annum in procurement cost reductions.",
-        "Solution recognized as proprietary enterprise IP, adopted globally and winning 3 new clients generating ~$3M/annum."
-      ],
-      tags: ["Machine Learning", "Predictive Analytics", "Cost Pacing", "Strategic Sourcing", "Python"]
+      badge: "FRONT ROW • TOP 1% WORLDWIDE",
+      subtitle: "Indian Institute of Management (IIM) Sirmaur • 2019–2021",
+      dossier: `
+        <p class="mb-3">Earned Master of Business Administration (MBA) from the prestigious <strong>Indian Institute of Management (IIM) Sirmaur</strong>. Achieved a world-class <strong>GMAT score of 760</strong>, demonstrating exceptional quantitative, critical analytical, and mathematical reasoning faculties.</p>
+        <div class="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-xs mb-3">
+          <strong>Academic & Strategic Impact:</strong> Formulated the go-to-market architecture for Etherisc decentralized crop insurance and organized institute-wide managerial symposiums.
+        </div>
+        <ul class="space-y-1.5 text-xs text-slate-300">
+          <li><i class="fa-solid fa-check text-amber-500 mr-2"></i>Advanced operations research, statistical modeling, and international corporate strategy.</li>
+          <li><i class="fa-solid fa-check text-amber-500 mr-2"></i>Active institute thought partner in business analytics and supply network design.</li>
+        </ul>
+      `,
+      tags: ["IIM Sirmaur", "GMAT 760", "Top 1% Globally", "Operations Management", "Decision Science"]
     },
     {
-      id: "circular-economy",
-      title: "Circular Sourcing & ESG Sustainability Strategy",
-      division: "Pump Systems Division ($1.2B)",
-      badge: "ESG Leadership",
-      highlight: "$2M/yr saved + Landfill waste reduction by 2030",
-      metrics: [
-        { label: "Direct Savings", val: "~$2M/yr" },
-        { label: "Emissions Target", val: "Zero Waste by 2030" },
-        { label: "Sourcing Cost", val: "-$500K Sourcing" },
-        { label: "Scope", val: "North America & Global" }
+      pos: "P3",
+      number: "24",
+      category: "Predictive Analytics",
+      title: "Predictive AI & Product Cost Pacing (PCP)",
+      teamName: "Petronas Digital Intelligence",
+      liveryColor: "#00D2BE", // Mercedes/Petronas Electric Cyan
+      secondaryColor: "#000000",
+      glowColor: "rgba(0, 210, 190, 0.45)",
+      compound: "Soft (Red C5)",
+      telemetryStats: [
+        { label: "Procurement Savings", val: "$10M/yr", icon: "fa-solid fa-bolt" },
+        { label: "Deployment Speed", val: "3 Months", icon: "fa-solid fa-stopwatch" },
+        { label: "New Pipeline Won", val: "$3M/yr", icon: "fa-solid fa-handshake" },
+        { label: "Core Stack", val: "Python • Power BI", icon: "fa-brands fa-python" }
       ],
-      description: "Pioneered a circular economy framework accelerating the utilization of certified reclaimed parts versus virgin materials in high-stress oilfield pumping equipment, harmonizing operational cost reduction with corporate ESG imperatives.",
-      deliverables: [
-        "Cut annual operating expenditure by ~$2M in North America while significantly lowering carbon intensity and energy burn.",
-        "Engineered global strategic sourcing frameworks saving an additional ~$500K in raw material vendor contracts.",
-        "Authored executive thought leadership on sustainable manufacturing, helping clients align with Paris Climate accords."
-      ],
-      tags: ["ESG", "Circular Economy", "Sustainability", "Carbon Reduction", "Reclaimed Parts"]
+      badge: "ROW 2 • PROPRIETARY IP DEPLOYMENT",
+      subtitle: "Wirelines Technology Division ($250M Business Unit)",
+      dossier: `
+        <p class="mb-3">Conceived and architected a proprietary <strong>Product Cost Pacing (PCP)</strong> predictive model for a $250M wirelines division. Enabled procurement leaders to time raw material acquisitions ahead of global commodity market volatility.</p>
+        <div class="p-3.5 rounded-xl bg-teal-500/10 border border-teal-500/20 text-xs mb-3">
+          <strong>Global Scalability:</strong> Led a 3–5 member cross-functional taskforce to deploy the algorithm in 90 days. The model saved <strong>$10M/annum</strong>, was adopted globally, and became Genpact IP that won 3 enterprise clients.
+        </div>
+        <ul class="space-y-1.5 text-xs text-slate-300">
+          <li><i class="fa-solid fa-check text-teal-400 mr-2"></i>Engineered real-time supplier cost index trackers with Python & Power BI DAX.</li>
+          <li><i class="fa-solid fa-check text-teal-400 mr-2"></i>Eliminated procurement lead-time friction and inventory deadweight.</li>
+        </ul>
+      `,
+      tags: ["Predictive Analytics", "Product Cost Pacing", "Machine Learning", "Strategic Sourcing", "Python"]
     },
     {
-      id: "powerbi-digitalization",
-      title: "Enterprise Inventory Digitalization & Governance",
-      division: "Global Operations ($1.2B Division)",
-      badge: "Digital Transformation",
-      highlight: "Real-time visibility over $100M+ quarterly inventory",
-      metrics: [
-        { label: "Quarterly Inventory", val: "$100M+" },
-        { label: "Hours Saved", val: "5,000 Man-Hours" },
-        { label: "Implementation", val: "Record 4 Months" },
-        { label: "Expansion Pipeline", val: "$2M Revenue Pipeline" }
+      pos: "P4",
+      number: "30",
+      category: "ESG & Sustainability",
+      title: "Circular Sourcing & ESG Decarbonization",
+      teamName: "Aston British Racing Green ESG",
+      liveryColor: "#00594F", // Aston Martin Emerald Green
+      secondaryColor: "#CEDC00",
+      glowColor: "rgba(0, 89, 79, 0.45)",
+      compound: "Hard (White C1)",
+      telemetryStats: [
+        { label: "Sustainability Savings", val: "$2M/yr", icon: "fa-solid fa-leaf" },
+        { label: "Landfill Mission", val: "Zero by 2030", icon: "fa-solid fa-recycle" },
+        { label: "Vendor Sourcing Saved", val: "$500K", icon: "fa-solid fa-sack-dollar" },
+        { label: "Scope", val: "North America & Global", icon: "fa-solid fa-globe" }
       ],
-      description: "Overhauled the legacy inventory tracking architecture by constructing a robust Power BI enterprise analytics suite that unifies disparate global ERP silos into a single source of operational truth.",
-      deliverables: [
-        "Consolidated fragmented databases into a synchronized governance engine in just 4 months.",
-        "Automated reporting workflows, unlocking 5,000 man-hours and capturing ~$50K/year in direct automation savings.",
-        "Architecture designated for global multi-division replication, creating a ~$2M pipeline for Genpact."
-      ],
-      tags: ["Power BI", "Data Governance", "Inventory Optimization", "Process Automation", "ERP Integration"]
+      badge: "ROW 2 • SUSTAINABLE OPERATIONS CHAMPION",
+      subtitle: "Artificial Lift / Pump Systems Division ($1.2B Enterprise)",
+      dossier: `
+        <p class="mb-3">Championed industrial sustainability by architecting a circular economy framework for high-stress oilfield equipment. Accelerated the adoption of certified reclaimed components versus new virgin materials, cutting costs by <strong>$2M/annum</strong> across North America.</p>
+        <div class="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-xs mb-3">
+          <strong>Environmental Stewardship:</strong> Directly propelled the enterprise mission to reduce manufacturing waste to landfill by 2030, cutting carbon intensity and energy burn across manufacturing hubs.
+        </div>
+        <ul class="space-y-1.5 text-xs text-slate-300">
+          <li><i class="fa-solid fa-check text-emerald-400 mr-2"></i>Authored executive thought leadership on ESG-aligned supply chain management.</li>
+          <li><i class="fa-solid fa-check text-emerald-400 mr-2"></i>Sourced raw materials from verified vendors globally, saving an extra $500K.</li>
+        </ul>
+      `,
+      tags: ["Circular Economy", "ESG", "Carbon Reduction", "Reclaimed Parts", "Sustainable SCM"]
     },
     {
-      id: "supplier-predictability",
-      title: "ML Supplier Predictability & Risk Modeling",
-      division: "Aerospace Parts Manufacturing ($10B)",
-      badge: "Machine Learning",
-      highlight: "$5M annual client savings + Risk mitigation",
-      metrics: [
-        { label: "Client Savings", val: "$5M p.a." },
-        { label: "Extension Value", val: "$500K" },
-        { label: "Core Team", val: "Selected in Core 10" },
-        { label: "Target Scope", val: "Aerospace S&I" }
+      pos: "P5",
+      number: "88",
+      category: "Engineering Foundation",
+      title: "SRM University B.Tech Electrical & Electronics",
+      teamName: "Williams Royal Heritage Engineering",
+      liveryColor: "#00A0DE", // Williams Electric Blue
+      secondaryColor: "#041E42",
+      glowColor: "rgba(0, 160, 222, 0.45)",
+      compound: "Medium (Yellow C3)",
+      telemetryStats: [
+        { label: "Graduation Aggregate", val: "88%", icon: "fa-solid fa-percentage" },
+        { label: "Distinction", val: "First Class Distinction", icon: "fa-solid fa-award" },
+        { label: "Discipline", val: "EEE", icon: "fa-solid fa-microchip" },
+        { label: "Campus Leadership", val: "Techno Fest Lead", icon: "fa-solid fa-flag-checkered" }
       ],
-      description: "Handpicked for an elite 10-consultant taskforce to design an AI-powered Supplier Predictability Model for a $10B aerospace manufacturer, scoring vendor delivery variance, yield risk, and inventory buffering requirements.",
-      deliverables: [
-        "Constructed predictive algorithms to identify optimal supplier allocation, directly preventing assembly-line stockouts.",
-        "Generated $5M/year in bottom-line savings and earned a $500K project extension from CxO stakeholders.",
-        "Formulated resilient Sourcing & Inventory (S&I) risk mitigation playbooks."
+      badge: "ROW 3 • 88% FIRST CLASS WITH DISTINCTION",
+      subtitle: "SRM Institute of Science and Technology (SRMIST) • 2015–2019",
+      dossier: `
+        <p class="mb-3">Completed Bachelor of Technology in <strong>Electrical & Electronics Engineering (EEE)</strong> with an outstanding <strong>88% aggregate</strong>, graduating with First Class with Distinction.</p>
+        <div class="p-3.5 rounded-xl bg-blue-500/10 border border-blue-500/20 text-xs mb-3">
+          <strong>Analytical Foundation:</strong> Built deep competencies in circuit dynamics, systems engineering, differential equations, and control systems that now power industrial supply chain optimization algorithms.
+        </div>
+        <ul class="space-y-1.5 text-xs text-slate-300">
+          <li><i class="fa-solid fa-check text-blue-400 mr-2"></i>Key organizer for university-wide techno-management fests and technical symposiums.</li>
+          <li><i class="fa-solid fa-check text-blue-400 mr-2"></i>Organized robotics and energy management student forums.</li>
+        </ul>
+      `,
+      tags: ["SRMIST", "Electrical & Electronics", "88% Distinction", "Systems Engineering", "Operations Rigor"]
+    },
+    {
+      pos: "P6",
+      number: "42",
+      category: "Endurance & Athletics",
+      title: "Strava Long-Distance Running & High Cadence",
+      teamName: "McLaren Papaya Velocity Athletics",
+      liveryColor: "#FF8000", // McLaren Papaya Orange
+      secondaryColor: "#111111",
+      glowColor: "rgba(255, 128, 0, 0.5)",
+      compound: "Soft (Red C5)",
+      telemetryStats: [
+        { label: "Discipline", val: "Long-Distance", icon: "fa-solid fa-person-running" },
+        { label: "Pacing Cadence", val: "High & Steady", icon: "fa-solid fa-heart-pulse" },
+        { label: "Profile", val: "Strava Verified", icon: "fa-brands fa-strava" },
+        { label: "Mindset", val: "Relentless Grit", icon: "fa-solid fa-fire" }
       ],
-      tags: ["Aerospace", "Supplier Risk", "Predictive Scoring", "Machine Learning", "Inventory Strategy"]
-    }
-  ],
-
-  competencies: {
-    supplyChain: [
-      { name: "End-to-End SCM Planning", level: "Expert", desc: "Demand planning, supply balancing, order orchestration, and capacity alignment." },
-      { name: "Cycle Time Optimization", level: "Expert", desc: "Bottleneck diagnosis, lean operations, and OTIF fulfillment enhancement." },
-      { name: "Inventory Management & S&OP", level: "Expert", desc: "Safety stock sizing, multi-echelon buffering, and obsolescence control." },
-      { name: "Strategic Sourcing & Vendor Risk", level: "Advanced", desc: "Total cost of ownership (TCO), supplier scoring, and contract negotiations." },
-      { name: "Sustainable & Circular SCM", level: "Advanced", desc: "Reclaimed materials, carbon emission reduction, and ESG compliance." }
-    ],
-    technicalTools: [
-      { name: "Power BI & DAX", level: "Advanced", icon: "fa-solid fa-chart-pie", desc: "Executive KPI dashboards, real-time inventory modeling." },
-      { name: "Machine Learning & Python", level: "Proficient", icon: "fa-brands fa-python", desc: "Predictive pacing, regression, time-series forecasting." },
-      { name: "SAP (ERP / SCM)", level: "Advanced", icon: "fa-solid fa-database", desc: "Materials management (MM), sales & distribution (SD), parts planning." },
-      { name: "Advanced Excel & VBA", level: "Expert", icon: "fa-solid fa-file-excel", desc: "Financial modeling, scenario simulation, workflow automation." },
-      { name: "SQL & Data Engineering", level: "Proficient", icon: "fa-solid fa-server", desc: "ETL pipelines, relational data harmonization." }
-    ],
-    certifications: [
-      { name: "Six Sigma Green Belt", issuer: "KPMG", year: "Certified", icon: "fa-solid fa-medal", desc: "DMAIC framework, root-cause statistical analysis, process variance reduction." },
-      { name: "Certified Business Analysis (CBAP)", issuer: "Henry Harvin", year: "Certified", icon: "fa-solid fa-certificate", desc: "Enterprise requirements engineering, stakeholder alignment, solution validation." },
-      { name: "GMAT 760", issuer: "GMAC", year: "Top 1% Globally", icon: "fa-solid fa-trophy", desc: "Demonstrated analytical, critical reasoning, and quantitative problem-solving excellence." }
-    ]
-  },
-
-  lifeJourney: [
-    {
-      period: "Aug 2021 – Present",
-      role: "Assistant Manager (Supply Chain Consultant)",
-      institution: "Genpact",
-      location: "Bangalore, India",
-      type: "professional",
-      icon: "fa-solid fa-briefcase",
-      summary: "Leading high-stakes supply chain consulting engagements across Energy Tech, Oil & Gas, and Aerospace sectors. Transformed operational cadence for Fortune 500 clients, generating >$30M in annual bottom-line impact.",
-      achievements: [
-        "Awarded Bronze Medal for outstanding client deliverables & recognized as trusted client thought partner.",
-        "Won Best Team Project (Q1-2024) for cycle time reduction from 12 to 3 weeks.",
-        "Drove firm-wide CSR drives in collaboration with Goonj and organized Fun Friday engagements."
-      ]
+      badge: "ROW 3 • STRAVA ENDURANCE ATHLETE",
+      subtitle: "Endurance Road Racing • Mental Tenacity • Cadence Management",
+      dossier: `
+        <p class="mb-3">Long-distance road runner on <strong>Strava</strong>. The grueling discipline of the road mirrors the high-stakes world of enterprise supply chain consulting: understanding pacing, managing lactic threshold, respecting the course, and digging deep when the final kilometer approaches.</p>
+        <div class="p-3.5 rounded-xl bg-orange-500/10 border border-orange-500/20 text-xs mb-3">
+          <strong>The Endurance Philosophy:</strong> "Patience on the ascent, velocity on the straightaway, and zero excuses when the rain hits the pavement."
+        </div>
+        <div class="mt-3">
+          <a href="https://strava.app.link/czwhREDvY7b" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold bg-[#fc4c02] text-white hover:bg-orange-600 transition-colors">
+            <i class="fa-brands fa-strava"></i> Check Out Thapase THH on Strava &rarr;
+          </a>
+        </div>
+      `,
+      tags: ["Strava Athlete", "Long-Distance Running", "Cadence Control", "Mental Tenacity", "Endurance Mindset"]
     },
     {
-      period: "2019 – 2021",
-      role: "Master of Business Administration (MBA)",
-      institution: "Indian Institute of Management (IIM) Sirmaur",
-      location: "Sirmaur, Himachal Pradesh, India",
-      type: "education",
-      icon: "fa-solid fa-graduation-cap",
-      summary: "Completed MBA with deep focus on Operations, Strategy, and Analytics. Scored a world-class 760 on the GMAT (Top 1% worldwide). Active in institute leadership and academic excellence.",
-      achievements: [
-        "GMAT 760 (99th percentile) reflecting top-tier quantitative and analytical faculties.",
-        "Built the GTM strategy for Etherisc to insure smallholder crops and double farmer income via carbon credits.",
-        "Led public relations and social media outreach for Athulya Vikas Foundation."
-      ]
-    },
-    {
-      period: "2015 – 2019",
-      role: "B.Tech in Electrical & Electronics Engineering (EEE)",
-      institution: "SRM University (SRMIST)",
-      location: "Chennai, Tamil Nadu, India",
-      type: "education",
-      icon: "fa-solid fa-microchip",
-      summary: "Graduated with 88% Aggregate (First Class with Distinction). Built rigorous foundational engineering skills, mathematical systems modeling, and organized department techno-management fests.",
-      achievements: [
-        "First Class with Distinction (88% aggregate).",
-        "Key organizer for university techno-management events and cultural forums.",
-        "Transitioned engineering problem-solving into large-scale industrial supply chain optimization."
-      ]
-    }
-  ],
-
-  athleticsAndHobbies: {
-    strava: {
-      title: "Endurance & Long-Distance Running",
-      philosophy: "The discipline of the road mirrors the rigor of supply chain consulting: pacing, cadence, energy distribution, and pushing past fatigue when the final milestone approaches.",
-      stats: [
-        { label: "Mindset", value: "Relentless Cadence" },
-        { label: "Focus", value: "Endurance & Grit" },
-        { label: "Sport Link", value: "Strava Profile", link: "https://strava.app.link/czwhREDvY7b" }
-      ]
-    },
-    travel: {
+      pos: "P7",
+      number: "15",
+      category: "Wanderlust & Culture",
       title: "Explorer Across 15+ Indian States & UTs",
-      philosophy: "Traversing diverse landscapes from Himalayan passes to coastal belts shapes adaptability, cultural empathy, and wide-angle perspective.",
-      statesCount: "15+",
-      statesList: [
-        "Himachal Pradesh", "Jammu & Kashmir", "Uttarakhand", "Karnataka", "Tamil Nadu",
-        "Kerala", "Maharashtra", "Goa", "Andhra Pradesh", "Telangana",
-        "Rajasthan", "Delhi NCR", "Punjab", "Haryana", "Puducherry"
-      ]
-    },
-    sports: [
-      {
-        name: "Cricket",
-        icon: "fa-solid fa-baseball-bat-ball",
-        desc: "Tactical positioning, team coordination, and performing under scoreboard pressure."
-      },
-      {
-        name: "Badminton",
-        icon: "fa-solid fa-feather-pointed",
-        desc: "Lightning-fast reflexes, court coverage, anticipation, and dynamic agility."
-      }
-    ]
-  },
-
-  socialImpact: [
-    {
-      title: "Empowering 320+ Girls Through Education",
-      cause: "Rural Government School Infrastructure",
-      impactMetric: "Attendance rose to 85%",
-      icon: "fa-solid fa-school",
-      desc: "Spearheaded an annual fundraising campaign generating $6,000/year to overhaul sanitary facilities and classroom infrastructure in an all-girls government school. Dramatically curbed female student dropouts and unlocked educational dignity for 320 young women."
+      teamName: "Sahara Desert & Alpine Expedition",
+      liveryColor: "#D97706", // Desert Saffron / Amber
+      secondaryColor: "#451A03",
+      glowColor: "rgba(217, 119, 6, 0.45)",
+      compound: "Medium (Yellow C3)",
+      telemetryStats: [
+        { label: "States & UTs Traversed", val: "15+", icon: "fa-solid fa-map-location-dot" },
+        { label: "Terrain", val: "Himalayas to Coast", icon: "fa-solid fa-mountain" },
+        { label: "Cultural Agility", val: "High Immersion", icon: "fa-solid fa-compass" },
+        { label: "Perspectives", val: "Pan-India", icon: "fa-solid fa-route" }
+      ],
+      badge: "ROW 4 • 15+ STATES & TERRITORIES TRAVERSED",
+      subtitle: "Himalayan Passes • Coastal Ghats • Desert Frontiers • Cultural Agility",
+      dossier: `
+        <p class="mb-3">Avid explorer having backpacked and road-tripped across <strong>15+ States and Union Territories in India</strong>. Navigating diverse terrains from the high altitudes of Himachal and Kashmir to the coastal backwaters of Kerala and the salt plains of the West builds profound adaptability and wide-angle perspective.</p>
+        <div class="p-3.5 rounded-xl bg-amber-600/10 border border-amber-600/20 text-xs mb-3">
+          <strong>Territories Explored:</strong> Himachal Pradesh, Jammu & Kashmir, Uttarakhand, Karnataka, Tamil Nadu, Kerala, Maharashtra, Goa, Andhra Pradesh, Telangana, Rajasthan, Delhi NCR, Punjab, Haryana, and Puducherry.
+        </div>
+        <p class="text-xs text-slate-300">Every journey deepens situational awareness and adaptability—vital superpowers when managing volatile global supply routes.</p>
+      `,
+      tags: ["Travel Explorer", "15+ States", "Cultural Agility", "Adaptability", "Pan-India Perspective"]
     },
     {
-      title: "Disaster Relief with Goonj",
-      cause: "Flood Victim Rehabilitation & Winter Warmth",
-      impactMetric: "Thousands of Families Aided",
-      icon: "fa-solid fa-hand-holding-heart",
-      desc: "Partnered with national humanitarian NGO Goonj during corporate CSR drives at Genpact. Mobilized widespread employee clothing donation campaigns and logistics routing to deliver critical aid to disaster-affected communities."
+      pos: "P8",
+      number: "320",
+      category: "Social Impact",
+      title: "Girl-Child Education & Disaster Humanitarian Relief",
+      teamName: "Alpine BWT Humanitarian Pink",
+      liveryColor: "#EC4899", // Alpine Vibrant Rose Pink
+      secondaryColor: "#1E293B",
+      glowColor: "rgba(236, 72, 153, 0.45)",
+      compound: "Hard (White C1)",
+      telemetryStats: [
+        { label: "Attendance Jump", val: "85%", icon: "fa-solid fa-chart-line" },
+        { label: "Young Girls Impacted", val: "320", icon: "fa-solid fa-child-dress" },
+        { label: "Govt School Raised", val: "$6K/yr", icon: "fa-solid fa-hand-holding-dollar" },
+        { label: "Disaster Relief", val: "Goonj Partner", icon: "fa-solid fa-heart" }
+      ],
+      badge: "ROW 4 • EDUCATION & FLOOD REHABILITATION",
+      subtitle: "Rural School Sanitation • Goonj CSR Drives • Athulya Vikas Foundation",
+      dossier: `
+        <p class="mb-3">Spearheaded an ongoing fundraising campaign generating <strong>$6,000/year</strong> to construct bathrooms and upgrade infrastructure for an all-girls rural government school. Prevented high dropout rates, boosted attendance to <strong>85%</strong>, and transformed prospects for <strong>320 young women</strong>.</p>
+        <div class="p-3.5 rounded-xl bg-pink-500/10 border border-pink-500/20 text-xs mb-3">
+          <strong>Humanitarian Response:</strong> Collaborated with <strong>Goonj</strong> during corporate CSR initiatives at Genpact, mobilizing critical winter warmth and flood victim relief for thousands of displaced families.
+        </div>
+        <ul class="space-y-1.5 text-xs text-slate-300">
+          <li><i class="fa-solid fa-check text-pink-400 mr-2"></i>Formulated digital media donor campaigns for Athulya Vikas Foundation.</li>
+          <li><i class="fa-solid fa-check text-pink-400 mr-2"></i>Built Etherisc GTM strategy to double farmer income via carbon credits and parametric insurance.</li>
+        </ul>
+      `,
+      tags: ["Girl-Child Education", "Social Impact", "Goonj CSR", "Rural Sanitation", "Farmer Crop Insurance"]
     },
     {
-      title: "Crop Insurance & Carbon Credits for Farmers",
-      cause: "Parametric Climate Protection (Etherisc)",
-      impactMetric: "2X Farmer Income Potential",
-      icon: "fa-solid fa-seedling",
-      desc: "Formulated the Go-To-Market strategy for Etherisc, bringing decentralized crop insurance to smallholder agriculturalists across developing regions. Integrated carbon credit monetization to create recurring secondary revenue for rural farmers."
+      pos: "P9",
+      number: "10",
+      category: "Mentorship",
+      title: "1:1 Strategy, Consulting & GMAT Mentorship",
+      teamName: "Kick Sauber Neon Velocity",
+      liveryColor: "#22C55E", // Sauber Neon Green
+      secondaryColor: "#000000",
+      glowColor: "rgba(34, 197, 94, 0.45)",
+      compound: "Soft (Red C5)",
+      telemetryStats: [
+        { label: "Platform", val: "Topmate.io", icon: "fa-solid fa-laptop" },
+        { label: "Handle", val: "@thapase_thh", icon: "fa-solid fa-at" },
+        { label: "Sessions", val: "1:1 Mentoring", icon: "fa-solid fa-comments" },
+        { label: "Focus", val: "Consulting & GMAT", icon: "fa-solid fa-bullseye" }
+      ],
+      badge: "ROW 5 • VERIFIED TOPMATE MENTOR",
+      subtitle: "Helping Next-Gen Leaders Break into Tier-1 Consulting & B-Schools",
+      dossier: `
+        <p class="mb-3">Active 1:1 mentor on <strong>Topmate</strong> (`@thapase_thh`). Guiding engineering students, prospective MBA applicants, and career switchers into management consulting, supply chain analytics, and top-tier B-school admissions.</p>
+        <div class="p-3.5 rounded-xl bg-green-500/10 border border-green-500/20 text-xs mb-3">
+          <strong>Mentorship Focus:</strong> Consulting case frameworks, market sizing, GMAT 760 quantitative/verbal pacing strategy, and resume impact quantification.
+        </div>
+        <div class="mt-3">
+          <a href="https://topmate.io/thapase_thh" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-4 py-2 rounded-lg text-xs font-bold bg-green-500 text-black hover:bg-green-400 transition-colors">
+            <i class="fa-solid fa-arrow-up-right-from-square"></i> Book 1:1 Session on Topmate &rarr;
+          </a>
+        </div>
+      `,
+      tags: ["Topmate Mentor", "Consulting Case Prep", "GMAT 760 Strategy", "Resume Drafting", "1:1 Guidance"]
     },
     {
-      title: "Women & Child Empowerment Outreach",
-      cause: "Athulya Vikas Foundation",
-      impactMetric: "Expanded Digital Reach & Volunteer Drive",
-      icon: "fa-solid fa-people-roof",
-      desc: "Crafted and executed digital communication strategies for Athulya Vikas Foundation, accelerating volunteer recruitment and donor backing for child literacy programs and rural women's self-help collectives."
+      pos: "P10",
+      number: "07",
+      category: "Agility & Reflexes",
+      title: "Tactical Sports: Cricket & Badminton Agility",
+      teamName: "Red Bull Racing Dynamics",
+      liveryColor: "#1E40AF", // Red Bull Deep Racing Navy
+      secondaryColor: "#E10600",
+      glowColor: "rgba(30, 64, 175, 0.45)",
+      compound: "Soft (Red C5)",
+      telemetryStats: [
+        { label: "Primary Sports", val: "Cricket & Badminton", icon: "fa-solid fa-baseball-bat-ball" },
+        { label: "Core Attribute", val: "Sub-Second Reflexes", icon: "fa-solid fa-bolt" },
+        { label: "Strategy Synergy", val: "Court Awareness", icon: "fa-solid fa-eye" },
+        { label: "Teamwork", val: "High Coordination", icon: "fa-solid fa-users" }
+      ],
+      badge: "ROW 5 • TACTICAL AGILITY & TEAM PLAY",
+      subtitle: "Court Coverage • Anticipation • Competitive Sportsmanship",
+      dossier: `
+        <p class="mb-3">Passionate cricket and badminton player. Fast court sports cultivate split-second tactical reflexes, peripheral vision, anticipation, and seamless team communication under scoreboard pressure.</p>
+        <div class="p-3.5 rounded-xl bg-blue-600/10 border border-blue-600/20 text-xs mb-3">
+          <strong>Tactical Synergies:</strong> In badminton, reading your opponent's body angle before the smash mirrors anticipating supplier bottlenecks; in cricket, managing run-chase run rates is the exact discipline of supply chain cadence.
+        </div>
+        <ul class="space-y-1.5 text-xs text-slate-300">
+          <li><i class="fa-solid fa-check text-blue-400 mr-2"></i>Lightning-fast reaction times and spatial awareness.</li>
+          <li><i class="fa-solid fa-check text-blue-400 mr-2"></i>Competitive sportsmanship and team pressure management.</li>
+        </ul>
+      `,
+      tags: ["Cricket", "Badminton", "Split-Second Reflexes", "Team Tactics", "Court Coverage"]
     }
-  ],
-
-  mentorship: {
-    title: "1:1 Strategy, Consulting & GMAT Mentorship",
-    platform: "Topmate.io",
-    handle: "@thapase_thh",
-    link: "https://topmate.io/thapase_thh",
-    desc: "Helping aspiring strategists, engineers, and MBA applicants master consulting case interviews, supply chain career transitions, and GMAT preparation (scoring 760).",
-    services: [
-      "Consulting Case Interview Prep & Frameworks",
-      "GMAT 760 Quantitative & Verbal Mastery Strategy",
-      "Supply Chain & Operations Career Navigation",
-      "Resume Architecture & Impact Storytelling"
-    ]
-  }
+  ]
 };
 
-// Export to window
 if (typeof window !== "undefined") {
-  window.portfolioData = portfolioData;
+  window.f1PortfolioData = f1PortfolioData;
 }

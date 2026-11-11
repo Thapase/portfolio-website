@@ -1,432 +1,203 @@
 /**
- * Main Application Logic for T.H.H. Thapase Portfolio
- * Theme Engine, Canvas Network, Dynamic Data Binding, Modals & Micro-interactions
+ * F1 Singapore Marina Bay Grand Prix — Main Application Logic
+ * Telemetry HUD, Staggered Grid Engine, Dynamic F1 Car SVG Renderer & Car Launch Telemetry
  */
 
 document.addEventListener("DOMContentLoaded", () => {
   initThemeEngine();
-  initLogisticsCanvas();
-  renderPortfolioContent();
-  initNavigation();
-  initContactForm();
-  initResumeModal();
-  initScrollEffects();
+  renderTimingTowerLegend();
+  renderStartingGrid();
+  initTelemetryModal();
+  initSuperlicenceModal();
+  initPitRadioForm();
+  initTrackAudio();
 });
 
 /* ==========================================================================
-   1. Day / Dark Mode Theme Engine
+   1. Day / Night Race Theme Switcher
    ========================================================================== */
 function initThemeEngine() {
-  const toggleBtns = document.querySelectorAll(".theme-toggle-btn");
-  const storedTheme = localStorage.getItem("thp_theme");
-  const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+  const themeToggle = document.getElementById("f1-theme-toggle");
+  const storedTheme = localStorage.getItem("f1_race_theme") || "night";
   
-  // Set initial theme
-  const initialTheme = storedTheme ? storedTheme : (prefersDark ? "dark" : "dark"); // default to sleek dark
-  applyTheme(initialTheme);
+  applyRaceTheme(storedTheme);
 
-  toggleBtns.forEach(btn => {
-    btn.addEventListener("click", () => {
-      const isDark = document.documentElement.classList.contains("dark");
-      const nextTheme = isDark ? "light" : "dark";
-      applyTheme(nextTheme);
+  if (themeToggle) {
+    themeToggle.addEventListener("click", () => {
+      const isNight = document.documentElement.classList.contains("dark") || !document.documentElement.classList.contains("light");
+      const nextTheme = isNight ? "light" : "night";
+      applyRaceTheme(nextTheme);
     });
-  });
-
-  // Listen to OS system preference changes if user hasn't explicitly set preference
-  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (e) => {
-    if (!localStorage.getItem("thp_theme")) {
-      applyTheme(e.matches ? "dark" : "light");
-    }
-  });
+  }
 }
 
-function applyTheme(theme) {
-  if (theme === "dark") {
-    document.documentElement.classList.add("dark");
-    document.body.classList.add("dark");
-    localStorage.setItem("thp_theme", "dark");
-  } else {
+function applyRaceTheme(theme) {
+  const label = document.getElementById("f1-theme-label");
+  const icon = document.getElementById("f1-theme-icon");
+
+  if (theme === "light") {
     document.documentElement.classList.remove("dark");
-    document.body.classList.remove("dark");
-    localStorage.setItem("thp_theme", "light");
+    document.documentElement.classList.add("light");
+    localStorage.setItem("f1_race_theme", "light");
+    if (label) label.textContent = "DAY QUALI";
+    if (icon) icon.className = "fa-solid fa-sun text-amber-500";
+  } else {
+    document.documentElement.classList.remove("light");
+    document.documentElement.classList.add("dark");
+    localStorage.setItem("f1_race_theme", "night");
+    if (label) label.textContent = "NIGHT RACE";
+    if (icon) icon.className = "fa-solid fa-moon text-teal-400";
   }
-
-  // Update toggle ball icons if any
-  document.querySelectorAll(".theme-toggle-ball i").forEach(icon => {
-    icon.className = theme === "dark" ? "fa-solid fa-moon" : "fa-solid fa-sun";
-  });
 }
 
 /* ==========================================================================
-   2. Interactive Supply Chain Network Canvas Animation
+   2. F1 Car SVG Generator
+   Produces an aerodynamic top-down single-seater F1 car with authentic livery
    ========================================================================== */
-function initLogisticsCanvas() {
-  const canvas = document.getElementById("network-canvas");
-  if (!canvas) return;
-  const ctx = canvas.getContext("2d");
+function generateF1CarSVG(car) {
+  const primary = car.liveryColor;
+  const secondary = car.secondaryColor || "#111111";
+  const num = car.number;
+  
+  // Tire compound accent ring (Soft: Red, Medium: Yellow, Hard: White)
+  let tireRing = "#E10600";
+  if (car.compound.includes("Medium")) tireRing = "#F59E0B";
+  if (car.compound.includes("Hard")) tireRing = "#FFFFFF";
 
-  let width = (canvas.width = canvas.parentElement.offsetWidth);
-  let height = (canvas.height = canvas.parentElement.offsetHeight);
+  return `
+    <svg class="f1-car-svg w-36 h-72 md:w-44 md:h-88 mx-auto" viewBox="0 0 160 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <radialGradient id="glow-${car.pos}" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="${primary}" stop-opacity="0.4"/>
+          <stop offset="100%" stop-color="${primary}" stop-opacity="0"/>
+        </radialGradient>
+        <linearGradient id="bodyGrad-${car.pos}" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="${secondary}"/>
+          <stop offset="35%" stop-color="${primary}"/>
+          <stop offset="65%" stop-color="${primary}"/>
+          <stop offset="100%" stop-color="${secondary}"/>
+        </linearGradient>
+      </defs>
 
-  window.addEventListener("resize", () => {
-    if (!canvas.parentElement) return;
-    width = canvas.width = canvas.parentElement.offsetWidth;
-    height = canvas.height = canvas.parentElement.offsetHeight;
-    initNodes();
-  });
+      <!-- Ground Effect Undertray Glow -->
+      <ellipse cx="80" cy="180" rx="65" ry="110" fill="url(#glow-${car.pos})" />
 
-  const nodeCount = Math.min(Math.floor((width * height) / 22000), 45);
-  let nodes = [];
-  const mouse = { x: -1000, y: -1000, radius: 140 };
+      <!-- Rear Wing (DRS Assembly) -->
+      <g id="rear-wing">
+        <!-- Main Plane -->
+        <rect x="25" y="275" width="110" height="18" rx="3" fill="#18181b" stroke="#3f3f46" stroke-width="1.5"/>
+        <rect x="30" y="278" width="100" height="7" rx="1.5" fill="${primary}"/>
+        <!-- Endplates -->
+        <rect x="20" y="260" width="8" height="42" rx="2" fill="#27272a"/>
+        <rect x="132" y="260" width="8" height="42" rx="2" fill="#27272a"/>
+        <!-- Rear Rain Light LED -->
+        <rect x="75" y="295" width="10" height="5" rx="1" fill="#ef4444" class="f1-pulse"/>
+      </g>
 
-  canvas.parentElement.addEventListener("mousemove", (e) => {
-    const rect = canvas.getBoundingClientRect();
-    mouse.x = e.clientX - rect.left;
-    mouse.y = e.clientY - rect.top;
-  });
+      <!-- Rear Wheels & Suspension -->
+      <g id="rear-wheels">
+        <!-- Left Wheel -->
+        <rect x="2" y="222" width="26" height="50" rx="6" fill="#18181b" stroke="#27272a" stroke-width="2"/>
+        <circle cx="15" cy="247" r="14" fill="none" stroke="${tireRing}" stroke-width="2.5"/>
+        <circle cx="15" cy="247" r="6" fill="#27272a"/>
+        <!-- Right Wheel -->
+        <rect x="132" y="222" width="26" height="50" rx="6" fill="#18181b" stroke="#27272a" stroke-width="2"/>
+        <circle cx="145" cy="247" r="14" fill="none" stroke="${tireRing}" stroke-width="2.5"/>
+        <circle cx="145" cy="247" r="6" fill="#27272a"/>
+        <!-- Suspension Wishbones -->
+        <line x1="28" y1="238" x2="60" y2="242" stroke="#52525b" stroke-width="3"/>
+        <line x1="28" y1="256" x2="60" y2="250" stroke="#52525b" stroke-width="3"/>
+        <line x1="132" y1="238" x2="100" y2="242" stroke="#52525b" stroke-width="3"/>
+        <line x1="132" y1="256" x2="100" y2="250" stroke="#52525b" stroke-width="3"/>
+      </g>
 
-  canvas.parentElement.addEventListener("mouseleave", () => {
-    mouse.x = -1000;
-    mouse.y = -1000;
-  });
+      <!-- Main Chassis & Sidepods -->
+      <g id="chassis">
+        <!-- Underbody Floor Edge -->
+        <path d="M 40 140 L 32 235 L 128 235 L 120 140 Z" fill="#09090b" stroke="#27272a" stroke-width="1.5"/>
+        <!-- Sidepods (Sculpted Air Inlets) -->
+        <path d="M 45 130 Q 32 155 35 220 L 60 225 L 60 130 Z" fill="url(#bodyGrad-${car.pos})"/>
+        <path d="M 115 130 Q 128 155 125 220 L 100 225 L 100 130 Z" fill="url(#bodyGrad-${car.pos})"/>
+        <!-- Engine Cover & Central Spine -->
+        <path d="M 60 110 L 100 110 L 96 245 L 64 245 Z" fill="url(#bodyGrad-${car.pos})"/>
+        <!-- Shark Fin Aerodynamic Fin -->
+        <polygon points="78,160 82,160 81,250 79,250" fill="#27272a"/>
+        <rect x="79" y="165" width="2" height="75" fill="${primary}"/>
+      </g>
 
-  function initNodes() {
-    nodes = [];
-    const types = ["plant", "hub", "port", "retail"];
-    for (let i = 0; i < nodeCount; i++) {
-      nodes.push({
-        x: Math.random() * width,
-        y: Math.random() * height,
-        vx: (Math.random() - 0.5) * 0.6,
-        vy: (Math.random() - 0.5) * 0.6,
-        radius: Math.random() * 2.5 + 2,
-        type: types[Math.floor(Math.random() * types.length)],
-        pulse: Math.random() * Math.PI
-      });
-    }
-  }
+      <!-- Cockpit & Halo Safety Ring -->
+      <g id="cockpit">
+        <!-- Cockpit Opening -->
+        <ellipse cx="80" cy="142" rx="14" ry="24" fill="#09090b" stroke="#27272a" stroke-width="2"/>
+        <!-- Driver Helmet -->
+        <circle cx="80" cy="144" r="8.5" fill="#f8fafc"/>
+        <path d="M 75 140 Q 80 136 85 140 L 84 144 Q 80 142 76 144 Z" fill="#0284c7"/>
+        <!-- Halo Titanium Structure -->
+        <path d="M 70 156 Q 80 120 90 156 Q 80 125 70 156 Z" fill="#27272a" stroke="#52525b" stroke-width="1.5"/>
+        <rect x="78.5" y="126" width="3" height="26" fill="#3f3f46"/>
+      </g>
 
-  initNodes();
+      <!-- Front Nosecone & Race Number -->
+      <g id="nosecone">
+        <path d="M 64 110 L 96 110 L 86 35 L 74 35 Z" fill="url(#bodyGrad-${car.pos})" stroke="#27272a" stroke-width="1"/>
+        <!-- Front Nose Tip -->
+        <rect x="73" y="28" width="14" height="10" rx="3" fill="#18181b"/>
+        <!-- Driver Race Number Badge -->
+        <circle cx="80" cy="72" r="11" fill="#09090b" stroke="${primary}" stroke-width="1.5"/>
+        <text x="80" y="76" font-family="Chakra Petch, sans-serif" font-weight="800" font-size="11" fill="#ffffff" text-anchor="middle" dominant-baseline="middle">${num}</text>
+      </g>
 
-  let packets = [];
-  function spawnPacket() {
-    if (nodes.length < 2 || packets.length > 8) return;
-    const a = nodes[Math.floor(Math.random() * nodes.length)];
-    let b = nodes[Math.floor(Math.random() * nodes.length)];
-    if (a !== b) {
-      const dist = Math.hypot(a.x - b.x, a.y - b.y);
-      if (dist < 180) {
-        packets.push({ from: a, to: b, progress: 0, speed: 0.015 });
-      }
-    }
-  }
+      <!-- Front Wheels & Suspension -->
+      <g id="front-wheels">
+        <!-- Left Front Wheel -->
+        <rect x="8" y="45" width="24" height="46" rx="5" fill="#18181b" stroke="#27272a" stroke-width="2"/>
+        <circle cx="20" cy="68" r="12" fill="none" stroke="${tireRing}" stroke-width="2.5"/>
+        <circle cx="20" cy="68" r="5" fill="#27272a"/>
+        <!-- Right Front Wheel -->
+        <rect x="128" y="45" width="24" height="46" rx="5" fill="#18181b" stroke="#27272a" stroke-width="2"/>
+        <circle cx="140" cy="68" r="12" fill="none" stroke="${tireRing}" stroke-width="2.5"/>
+        <circle cx="140" cy="68" r="5" fill="#27272a"/>
+        <!-- Front Suspension Wishbones -->
+        <line x1="32" y1="60" x2="70" y2="70" stroke="#52525b" stroke-width="2.5"/>
+        <line x1="32" y1="76" x2="68" y2="85" stroke="#52525b" stroke-width="2.5"/>
+        <line x1="128" y1="60" x2="90" y2="70" stroke="#52525b" stroke-width="2.5"/>
+        <line x1="128" y1="76" x2="92" y2="85" stroke="#52525b" stroke-width="2.5"/>
+      </g>
 
-  setInterval(spawnPacket, 600);
-
-  function animate() {
-    ctx.clearRect(0, 0, width, height);
-
-    const isDark = document.documentElement.classList.contains("dark");
-    const nodeColor = isDark ? "rgba(16, 185, 129, 0.75)" : "rgba(5, 150, 105, 0.65)";
-    const hubColor = isDark ? "rgba(249, 115, 22, 0.85)" : "rgba(234, 88, 12, 0.75)";
-    const lineColor = isDark ? "rgba(255, 255, 255, 0.05)" : "rgba(15, 23, 42, 0.05)";
-    const activeLineColor = isDark ? "rgba(16, 185, 129, 0.25)" : "rgba(5, 150, 105, 0.2)";
-
-    // Update and draw nodes
-    for (let i = 0; i < nodes.length; i++) {
-      const n = nodes[i];
-      n.x += n.vx;
-      n.y += n.vy;
-
-      if (n.x < 0 || n.x > width) n.vx *= -1;
-      if (n.y < 0 || n.y > height) n.vy *= -1;
-
-      // Mouse influence
-      const mDist = Math.hypot(n.x - mouse.x, n.y - mouse.y);
-      if (mDist < mouse.radius) {
-        const angle = Math.atan2(n.y - mouse.y, n.x - mouse.x);
-        const force = (mouse.radius - mDist) / mouse.radius;
-        n.x += Math.cos(angle) * force * 1.5;
-        n.y += Math.sin(angle) * force * 1.5;
-      }
-
-      n.pulse += 0.03;
-      const currentRadius = n.radius + Math.sin(n.pulse) * 0.8;
-
-      ctx.beginPath();
-      ctx.arc(n.x, n.y, currentRadius, 0, Math.PI * 2);
-      ctx.fillStyle = n.type === "hub" ? hubColor : nodeColor;
-      ctx.fill();
-
-      // Connect nearby nodes (logistics corridors)
-      for (let j = i + 1; j < nodes.length; j++) {
-        const n2 = nodes[j];
-        const dist = Math.hypot(n.x - n2.x, n.y - n2.y);
-        if (dist < 140) {
-          ctx.beginPath();
-          ctx.moveTo(n.x, n.y);
-          ctx.lineTo(n2.x, n2.y);
-          ctx.strokeStyle = dist < 70 ? activeLineColor : lineColor;
-          ctx.lineWidth = dist < 70 ? 1.2 : 0.75;
-          ctx.stroke();
-        }
-      }
-    }
-
-    // Update and draw moving transit packets
-    for (let k = packets.length - 1; k >= 0; k--) {
-      const p = packets[k];
-      p.progress += p.speed;
-      if (p.progress >= 1) {
-        packets.splice(k, 1);
-        continue;
-      }
-      const curX = p.from.x + (p.to.x - p.from.x) * p.progress;
-      const curY = p.from.y + (p.to.y - p.from.y) * p.progress;
-
-      ctx.beginPath();
-      ctx.arc(curX, curY, 2.8, 0, Math.PI * 2);
-      ctx.fillStyle = isDark ? "#f97316" : "#ea580c";
-      ctx.shadowColor = isDark ? "#f97316" : "#ea580c";
-      ctx.shadowBlur = 6;
-      ctx.fill();
-      ctx.shadowBlur = 0; // reset
-    }
-
-    requestAnimationFrame(animate);
-  }
-
-  animate();
+      <!-- Front Aerodynamic Wing -->
+      <g id="front-wing">
+        <path d="M 12 18 L 148 18 Q 80 34 12 18 Z" fill="#18181b" stroke="#3f3f46" stroke-width="1.5"/>
+        <path d="M 18 20 L 142 20 Q 80 30 18 20 Z" fill="${primary}"/>
+        <!-- Endplates -->
+        <rect x="8" y="10" width="6" height="24" rx="1.5" fill="#27272a"/>
+        <rect x="146" y="10" width="6" height="24" rx="1.5" fill="#27272a"/>
+      </g>
+    </svg>
+  `;
 }
 
 /* ==========================================================================
-   3. Render Dynamic Portfolio Content from config.js
+   3. Render F1 Timing Tower Legend (Top Bar / Broadcast Graphic)
    ========================================================================== */
-function renderPortfolioContent() {
-  if (typeof portfolioData === "undefined") {
-    console.error("portfolioData not loaded!");
-    return;
-  }
-  const data = portfolioData;
+function renderTimingTowerLegend() {
+  const container = document.getElementById("f1-timing-tower-items");
+  if (!container || !window.f1PortfolioData) return;
 
-  // Render Hero Metrics
-  const heroMetricsContainer = document.getElementById("hero-metrics-container");
-  if (heroMetricsContainer) {
-    heroMetricsContainer.innerHTML = data.heroMetrics
-      .map(
-        m => `
-      <div class="glass-panel p-5 rounded-2xl flex flex-col justify-center items-center text-center">
-        <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center mb-3 text-lg">
-          <i class="${m.icon}"></i>
-        </div>
-        <div class="text-3xl md:text-4xl font-extrabold font-heading text-gradient-emerald">${m.value}</div>
-        <div class="text-xs md:text-sm font-medium text-slate-500 dark:text-slate-400 mt-1">${m.label}</div>
-      </div>
-    `
-      )
-      .join("");
-  }
-
-  // Render Case Studies
-  renderCaseStudies(data.caseStudies);
-
-  // Setup Case Study Filter Buttons
-  const filterBtns = document.querySelectorAll(".case-filter-btn");
-  filterBtns.forEach(btn => {
-    btn.addEventListener("click", () => {
-      filterBtns.forEach(b => b.classList.remove("active"));
-      btn.classList.add("active");
-      const category = btn.getAttribute("data-category");
-      if (category === "all") {
-        renderCaseStudies(data.caseStudies);
-      } else {
-        const filtered = data.caseStudies.filter(cs =>
-          cs.tags.some(t => t.toLowerCase().includes(category.toLowerCase())) ||
-          cs.badge.toLowerCase().includes(category.toLowerCase()) ||
-          cs.division.toLowerCase().includes(category.toLowerCase())
-        );
-        renderCaseStudies(filtered);
-      }
-    });
-  });
-
-  // Render Competencies
-  renderCompetencies(data.competencies);
-
-  // Render Life Journey Timeline
-  const timelineContainer = document.getElementById("timeline-items-container");
-  if (timelineContainer) {
-    timelineContainer.innerHTML = data.lifeJourney
-      .map((item, idx) => {
-        const isEven = idx % 2 === 0;
-        return `
-        <div class="timeline-item relative mb-12 md:mb-16 flex flex-col md:flex-row items-center w-full">
-          <!-- Timeline Node Marker -->
-          <div class="timeline-dot top-1 left-2 md:left-1/2 md:-translate-x-1/2 z-10"></div>
-          
-          <!-- Content Box -->
-          <div class="w-full pl-10 md:pl-0 md:w-1/2 ${isEven ? 'md:pr-12 md:text-right' : 'md:pl-12 md:ml-auto md:text-left'}">
-            <div class="glass-panel p-6 rounded-2xl relative">
-              <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 mb-2">
-                <i class="${item.icon}"></i> ${item.period}
-              </span>
-              <h3 class="text-xl font-bold text-slate-900 dark:text-white mt-1">${item.role}</h3>
-              <div class="text-sm font-semibold text-amber-500 dark:text-amber-400">${item.institution} • ${item.location}</div>
-              <p class="text-sm text-slate-600 dark:text-slate-300 mt-2">${item.summary}</p>
-              
-              <ul class="mt-4 space-y-1.5 text-xs text-slate-600 dark:text-slate-400 ${isEven ? 'md:text-right' : 'md:text-left'}">
-                ${item.achievements.map(ach => `
-                  <li class="flex items-start gap-2 ${isEven ? 'md:flex-row-reverse' : ''}">
-                    <i class="fa-solid fa-circle-check text-emerald-500 mt-0.5 text-[11px] shrink-0"></i>
-                    <span>${ach}</span>
-                  </li>
-                `).join("")}
-              </ul>
-            </div>
-          </div>
-        </div>
-      `;
-      })
-      .join("");
-  }
-
-  // Render Athletics, Strava & Travel
-  renderAthleticsAndTravel(data.athleticsAndHobbies);
-
-  // Render Social Impact
-  const impactContainer = document.getElementById("social-impact-container");
-  if (impactContainer) {
-    impactContainer.innerHTML = data.socialImpact
-      .map(
-        imp => `
-      <div class="glass-panel p-6 rounded-2xl flex flex-col justify-between">
-        <div>
-          <div class="w-12 h-12 rounded-xl bg-gradient-to-br from-emerald-500/20 to-teal-500/20 text-emerald-500 flex items-center justify-center text-xl mb-4">
-            <i class="${imp.icon}"></i>
-          </div>
-          <span class="text-xs font-bold uppercase tracking-wider text-amber-500">${imp.cause}</span>
-          <h3 class="text-lg font-bold text-slate-900 dark:text-white mt-1 mb-2">${imp.title}</h3>
-          <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">${imp.desc}</p>
-        </div>
-        <div class="mt-5 pt-4 border-t border-slate-200 dark:border-slate-800 flex items-center justify-between">
-          <span class="text-xs text-slate-500 dark:text-slate-400">Outcome Impact:</span>
-          <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-xs font-bold bg-emerald-500/10 text-emerald-500">
-            <i class="fa-solid fa-check"></i> ${imp.impactMetric}
-          </span>
-        </div>
-      </div>
-    `
-      )
-      .join("");
-  }
-
-  // Render Topmate Mentorship Card
-  const mentorshipContainer = document.getElementById("mentorship-card-container");
-  if (mentorshipContainer && data.mentorship) {
-    mentorshipContainer.innerHTML = `
-      <div class="glass-panel p-8 rounded-3xl relative overflow-hidden border-emerald-500/30">
-        <div class="absolute -right-10 -bottom-10 w-48 h-48 bg-gradient-to-br from-emerald-500/10 to-amber-500/10 rounded-full blur-2xl pointer-events-none"></div>
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 items-center">
-          <div class="lg:col-span-2">
-            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-500 mb-3">
-              <i class="fa-solid fa-comments"></i> 1:1 Mentorship & Knowledge Sharing
-            </div>
-            <h3 class="text-2xl font-bold text-slate-900 dark:text-white font-heading">${data.mentorship.title}</h3>
-            <p class="text-slate-600 dark:text-slate-300 mt-2 text-sm leading-relaxed">${data.mentorship.desc}</p>
-            
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mt-5">
-              ${data.mentorship.services.map(s => `
-                <div class="flex items-center gap-2 text-xs font-medium text-slate-700 dark:text-slate-300">
-                  <i class="fa-solid fa-arrow-right text-emerald-500 text-[10px]"></i>
-                  <span>${s}</span>
-                </div>
-              `).join("")}
-            </div>
-          </div>
-          <div class="flex flex-col items-start lg:items-end justify-center">
-            <a href="${data.mentorship.link}" target="_blank" rel="noopener noreferrer" 
-               class="px-6 py-3.5 rounded-xl font-bold text-sm bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white shadow-lg shadow-emerald-600/25 transition-all transform hover:-translate-y-0.5 flex items-center gap-2.5">
-              <span>Book Session on Topmate</span>
-              <i class="fa-solid fa-arrow-up-right-from-square text-xs"></i>
-            </a>
-            <span class="text-xs text-slate-500 dark:text-slate-400 mt-2">Verified Topmate Profile: ${data.mentorship.handle}</span>
-          </div>
-        </div>
-      </div>
-    `;
-  }
-
-  // Populate dynamic social links
-  updateSocialLinks(data.socials);
-}
-
-function renderCaseStudies(caseStudies) {
-  const container = document.getElementById("case-studies-container");
-  if (!container) return;
-
-  container.innerHTML = caseStudies
+  const cars = window.f1PortfolioData.gridCars;
+  container.innerHTML = cars
     .map(
-      cs => `
-    <div class="glass-panel p-6 md:p-8 rounded-2xl flex flex-col justify-between">
-      <div>
-        <div class="flex items-start justify-between gap-3 mb-3">
-          <span class="px-2.5 py-1 rounded-md text-xs font-bold uppercase tracking-wider bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300">
-            ${cs.division}
-          </span>
-          <span class="px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-500/10 text-amber-600 dark:text-amber-400 flex items-center gap-1.5 shrink-0">
-            <i class="fa-solid fa-star text-[10px]"></i> ${cs.badge}
-          </span>
+      (car, idx) => `
+    <div class="timing-item flex items-center gap-2.5 px-3 py-2 rounded-lg bg-black/40 border border-white/5 hover:border-white/20 transition-all shrink-0" 
+         data-pos="${car.pos}" data-index="${idx}" onclick="handleLegendClick('${car.pos}')" title="Click to view ${car.title}">
+      <span class="font-f1 font-extrabold text-xs text-white px-1.5 py-0.5 rounded" style="background-color: ${car.liveryColor}">
+        ${car.pos}
+      </span>
+      <div class="flex flex-col text-left">
+        <div class="flex items-center gap-1.5">
+          <span class="font-f1 font-bold text-xs text-slate-100 uppercase tracking-wider">${car.category}</span>
+          <span class="text-[10px] text-slate-400 font-mono">#${car.number}</span>
         </div>
-
-        <h3 class="text-xl font-bold font-heading text-slate-900 dark:text-white mt-1">${cs.title}</h3>
-        <p class="text-sm font-semibold text-emerald-600 dark:text-emerald-400 mt-1 mb-3">
-          <i class="fa-solid fa-arrow-trend-up mr-1"></i> ${cs.highlight}
-        </p>
-        <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed mb-5">
-          ${cs.description}
-        </p>
-
-        <!-- Metric Grid -->
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 py-3 px-4 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200/50 dark:border-slate-800 mb-5">
-          ${cs.metrics
-            .map(
-              m => `
-            <div class="text-center">
-              <div class="text-base font-extrabold font-heading text-slate-900 dark:text-white">${m.val}</div>
-              <div class="text-[11px] text-slate-500 dark:text-slate-400 font-medium">${m.label}</div>
-            </div>
-          `
-            )
-            .join("")}
-        </div>
-
-        <!-- Key Outcomes -->
-        <div class="space-y-2 mb-5">
-          ${cs.deliverables
-            .map(
-              d => `
-            <div class="flex items-start gap-2 text-xs text-slate-600 dark:text-slate-300">
-              <i class="fa-solid fa-check text-emerald-500 mt-0.5 shrink-0"></i>
-              <span>${d}</span>
-            </div>
-          `
-            )
-            .join("")}
-        </div>
-      </div>
-
-      <!-- Tags -->
-      <div class="pt-4 border-t border-slate-200 dark:border-slate-800/80 flex flex-wrap gap-1.5">
-        ${cs.tags
-          .map(
-            t => `
-          <span class="px-2 py-0.5 rounded text-[11px] font-medium bg-emerald-500/5 text-emerald-600 dark:text-emerald-400 border border-emerald-500/10">
-            #${t}
-          </span>
-        `
-          )
-          .join("")}
+        <span class="text-[11px] text-slate-400 truncate max-w-[130px] md:max-w-[160px]">${car.title}</span>
       </div>
     </div>
   `
@@ -434,289 +205,281 @@ function renderCaseStudies(caseStudies) {
     .join("");
 }
 
-function renderCompetencies(comp) {
-  // Supply Chain Competencies
-  const scmContainer = document.getElementById("scm-competencies-container");
-  if (scmContainer) {
-    scmContainer.innerHTML = comp.supplyChain
-      .map(
-        c => `
-      <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200/60 dark:border-slate-800 hover:border-emerald-500/40 transition-colors">
-        <div class="flex items-center justify-between mb-1">
-          <span class="font-bold text-sm text-slate-900 dark:text-white">${c.name}</span>
-          <span class="text-xs px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-500 font-semibold">${c.level}</span>
-        </div>
-        <p class="text-xs text-slate-500 dark:text-slate-400">${c.desc}</p>
-      </div>
-    `
-      )
-      .join("");
-  }
+/* ==========================================================================
+   4. Render Singapore Marina Bay Starting Grid (10 Staggered Cars)
+   ========================================================================== */
+function renderStartingGrid() {
+  const gridContainer = document.getElementById("f1-starting-grid-container");
+  if (!gridContainer || !window.f1PortfolioData) return;
 
-  // Technical & Data Tools
-  const toolsContainer = document.getElementById("tools-competencies-container");
-  if (toolsContainer) {
-    toolsContainer.innerHTML = comp.technicalTools
-      .map(
-        t => `
-      <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-900/50 border border-slate-200/60 dark:border-slate-800 hover:border-emerald-500/40 transition-colors flex items-start gap-3">
-        <div class="w-9 h-9 rounded-lg bg-emerald-500/10 text-emerald-500 flex items-center justify-center shrink-0 text-base">
-          <i class="${t.icon}"></i>
-        </div>
-        <div>
-          <div class="flex items-center gap-2">
-            <span class="font-bold text-sm text-slate-900 dark:text-white">${t.name}</span>
-            <span class="text-[10px] px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-400 font-semibold">${t.level}</span>
-          </div>
-          <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">${t.desc}</p>
-        </div>
-      </div>
-    `
-      )
-      .join("");
-  }
+  const cars = window.f1PortfolioData.gridCars;
 
-  // Certifications
-  const certContainer = document.getElementById("certifications-container");
-  if (certContainer) {
-    certContainer.innerHTML = comp.certifications
-      .map(
-        cert => `
-      <div class="glass-panel p-5 rounded-2xl flex items-start gap-4">
-        <div class="w-11 h-11 rounded-xl bg-amber-500/10 text-amber-500 flex items-center justify-center shrink-0 text-lg">
-          <i class="${cert.icon}"></i>
-        </div>
-        <div>
-          <span class="text-[11px] font-bold text-amber-500 uppercase tracking-wider">${cert.issuer} • ${cert.year}</span>
-          <h4 class="font-bold text-base text-slate-900 dark:text-white mt-0.5">${cert.name}</h4>
-          <p class="text-xs text-slate-600 dark:text-slate-400 mt-1">${cert.desc}</p>
-        </div>
-      </div>
-    `
-      )
-      .join("");
-  }
-}
+  // Staggered formation:
+  // Odd positions on Left (P1, P3, P5, P7, P9)
+  // Even positions on Right (P2, P4, P6, P8, P10), staggered slightly downward
+  let html = "";
 
-function renderAthleticsAndTravel(hobbies) {
-  // Strava & Athletics
-  const stravaContainer = document.getElementById("strava-section-container");
-  if (stravaContainer && hobbies.strava) {
-    stravaContainer.innerHTML = `
-      <div class="glass-panel p-8 rounded-3xl relative overflow-hidden">
-        <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-6 mb-6">
-          <div class="flex items-center gap-4">
-            <div class="w-14 h-14 rounded-2xl bg-orange-500/15 text-orange-500 flex items-center justify-center text-2xl">
-              <i class="fa-brands fa-strava"></i>
-            </div>
-            <div>
-              <span class="text-xs font-bold uppercase tracking-wider text-orange-500">Endurance & Athletics</span>
-              <h3 class="text-2xl font-bold font-heading text-slate-900 dark:text-white">${hobbies.strava.title}</h3>
-            </div>
-          </div>
-          <a href="${hobbies.strava.stats[2].link}" target="_blank" rel="noopener noreferrer" 
-             class="px-5 py-2.5 rounded-xl font-bold text-xs bg-orange-500 hover:bg-orange-600 text-white shadow-md shadow-orange-500/25 flex items-center gap-2 transition-all">
-            <span>View on Strava</span>
-            <i class="fa-solid fa-arrow-up-right-from-square text-[10px]"></i>
-          </a>
-        </div>
+  for (let row = 0; row < 5; row++) {
+    const leftCar = cars[row * 2]; // P1, P3, P5, P7, P9
+    const rightCar = cars[row * 2 + 1]; // P2, P4, P6, P8, P10
+
+    html += `
+      <!-- Grid Row ${row + 1} -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-14 mb-16 relative">
         
-        <p class="text-slate-600 dark:text-slate-300 text-sm md:text-base leading-relaxed italic border-l-2 border-orange-500 pl-4 py-1 mb-6">
-          "${hobbies.strava.philosophy}"
-        </p>
-
-        <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
-          <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200/50 dark:border-slate-800">
-            <div class="text-xs text-slate-500 dark:text-slate-400">Core Attribute</div>
-            <div class="text-lg font-bold text-slate-900 dark:text-white mt-0.5">High Pacing Cadence</div>
-          </div>
-          <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200/50 dark:border-slate-800">
-            <div class="text-xs text-slate-500 dark:text-slate-400">Strategy Synergy</div>
-            <div class="text-lg font-bold text-slate-900 dark:text-white mt-0.5">Long-Run Stamina</div>
-          </div>
-          <div class="p-4 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200/50 dark:border-slate-800 col-span-2 md:col-span-1">
-            <div class="text-xs text-slate-500 dark:text-slate-400">Mindset</div>
-            <div class="text-lg font-bold text-slate-900 dark:text-white mt-0.5">Resilience & Focus</div>
-          </div>
-        </div>
-      </div>
-    `;
-  }
-
-  // Sports & Travel Explorer
-  const travelContainer = document.getElementById("travel-section-container");
-  if (travelContainer && hobbies.travel) {
-    travelContainer.innerHTML = `
-      <div class="glass-panel p-8 rounded-3xl">
-        <div class="flex items-center gap-4 mb-4">
-          <div class="w-12 h-12 rounded-2xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center text-xl">
-            <i class="fa-solid fa-map-location-dot"></i>
-          </div>
-          <div>
-            <span class="text-xs font-bold uppercase tracking-wider text-emerald-500">Exploration & Perspective</span>
-            <h3 class="text-xl font-bold font-heading text-slate-900 dark:text-white">${hobbies.travel.title}</h3>
-          </div>
-        </div>
-
-        <p class="text-slate-600 dark:text-slate-300 text-sm leading-relaxed mb-6">
-          ${hobbies.travel.philosophy}
-        </p>
-
-        <div class="mb-6">
-          <div class="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-2.5">States & Union Territories Traversed:</div>
-          <div class="flex flex-wrap gap-2">
-            ${hobbies.travel.statesList
-              .map(
-                s => `
-              <span class="state-pill px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-100 dark:bg-slate-800/80 text-slate-700 dark:text-slate-300 border border-slate-200/60 dark:border-slate-700/60 cursor-default">
-                <i class="fa-solid fa-location-dot text-emerald-500 text-[10px] mr-1"></i>${s}
+        <!-- Left Lane: ${leftCar.pos} -->
+        <div class="grid-slot p-6 md:p-8 rounded-3xl relative overflow-hidden" 
+             id="slot-${leftCar.pos}" 
+             style="--car-glow: ${leftCar.glowColor}" 
+             onclick="launchCarAndOpenTelemetry('${leftCar.pos}')">
+          
+          <!-- Track Grid Markings -->
+          <div class="flex items-center justify-between border-b border-dashed border-white/20 pb-3 mb-6">
+            <div class="flex items-center gap-3">
+              <span class="font-f1 font-black text-3xl md:text-4xl text-white f1-slant px-3 py-1 rounded-md" style="background-color: ${leftCar.liveryColor}">
+                ${leftCar.pos}
               </span>
-            `
-              )
-              .join("")}
-          </div>
-        </div>
-
-        <!-- Sports: Cricket & Badminton -->
-        <div class="pt-5 border-t border-slate-200 dark:border-slate-800 grid grid-cols-1 sm:grid-cols-2 gap-4">
-          ${hobbies.sports
-            .map(
-              sp => `
-            <div class="flex items-start gap-3 p-3.5 rounded-xl bg-slate-50 dark:bg-slate-900/40 border border-slate-200/60 dark:border-slate-800">
-              <div class="w-9 h-9 rounded-lg bg-amber-500/10 text-amber-500 flex items-center justify-center shrink-0 text-base">
-                <i class="${sp.icon}"></i>
-              </div>
               <div>
-                <div class="font-bold text-sm text-slate-900 dark:text-white">${sp.name}</div>
-                <div class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">${sp.desc}</div>
+                <span class="text-xs font-mono font-bold uppercase tracking-widest text-slate-400">${leftCar.category}</span>
+                <h3 class="font-f1 font-bold text-lg md:text-xl text-white leading-tight">${leftCar.title}</h3>
               </div>
             </div>
-          `
-            )
-            .join("")}
+            <div class="text-right hidden sm:block">
+              <span class="text-[10px] font-mono text-slate-400 block">${leftCar.teamName}</span>
+              <span class="inline-block px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-white/10 text-white mt-0.5">
+                ${leftCar.compound}
+              </span>
+            </div>
+          </div>
+
+          <!-- The F1 Car Entity -->
+          <div class="f1-car-wrapper py-2" id="car-wrapper-${leftCar.pos}">
+            ${generateF1CarSVG(leftCar)}
+            <div class="launch-smoke"></div>
+          </div>
+
+          <!-- Bottom Telemetry Teaser & Launch Prompt -->
+          <div class="mt-4 pt-3 border-t border-white/10 flex items-center justify-between text-xs">
+            <span class="text-slate-400 font-mono text-[11px] truncate max-w-[200px]">
+              <i class="fa-solid fa-gauge-high mr-1 text-teal-400"></i> ${leftCar.telemetryStats[0].label}: <strong class="text-white">${leftCar.telemetryStats[0].val}</strong>
+            </span>
+            <span class="px-3 py-1 rounded-full text-[11px] font-f1 font-bold bg-white/10 hover:bg-white/20 text-white flex items-center gap-1.5 transition-all">
+              <span>LAUNCH CAR</span>
+              <i class="fa-solid fa-arrow-up text-[10px]"></i>
+            </span>
+          </div>
         </div>
+
+        <!-- Right Lane: ${rightCar.pos} (Staggered) -->
+        <div class="grid-slot p-6 md:p-8 rounded-3xl relative overflow-hidden md:translate-y-8" 
+             id="slot-${rightCar.pos}" 
+             style="--car-glow: ${rightCar.glowColor}" 
+             onclick="launchCarAndOpenTelemetry('${rightCar.pos}')">
+          
+          <!-- Track Grid Markings -->
+          <div class="flex items-center justify-between border-b border-dashed border-white/20 pb-3 mb-6">
+            <div class="flex items-center gap-3">
+              <span class="font-f1 font-black text-3xl md:text-4xl text-white f1-slant px-3 py-1 rounded-md" style="background-color: ${rightCar.liveryColor}">
+                ${rightCar.pos}
+              </span>
+              <div>
+                <span class="text-xs font-mono font-bold uppercase tracking-widest text-slate-400">${rightCar.category}</span>
+                <h3 class="font-f1 font-bold text-lg md:text-xl text-white leading-tight">${rightCar.title}</h3>
+              </div>
+            </div>
+            <div class="text-right hidden sm:block">
+              <span class="text-[10px] font-mono text-slate-400 block">${rightCar.teamName}</span>
+              <span class="inline-block px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-white/10 text-white mt-0.5">
+                ${rightCar.compound}
+              </span>
+            </div>
+          </div>
+
+          <!-- The F1 Car Entity -->
+          <div class="f1-car-wrapper py-2" id="car-wrapper-${rightCar.pos}">
+            ${generateF1CarSVG(rightCar)}
+            <div class="launch-smoke"></div>
+          </div>
+
+          <!-- Bottom Telemetry Teaser & Launch Prompt -->
+          <div class="mt-4 pt-3 border-t border-white/10 flex items-center justify-between text-xs">
+            <span class="text-slate-400 font-mono text-[11px] truncate max-w-[200px]">
+              <i class="fa-solid fa-gauge-high mr-1 text-teal-400"></i> ${rightCar.telemetryStats[0].label}: <strong class="text-white">${rightCar.telemetryStats[0].val}</strong>
+            </span>
+            <span class="px-3 py-1 rounded-full text-[11px] font-f1 font-bold bg-white/10 hover:bg-white/20 text-white flex items-center gap-1.5 transition-all">
+              <span>LAUNCH CAR</span>
+              <i class="fa-solid fa-arrow-up text-[10px]"></i>
+            </span>
+          </div>
+        </div>
+
       </div>
     `;
   }
-}
 
-function updateSocialLinks(socials) {
-  // LinkedIn
-  document.querySelectorAll(".link-linkedin").forEach(el => (el.href = socials.linkedin));
-  // Twitter / X
-  document.querySelectorAll(".link-twitter").forEach(el => (el.href = socials.twitter));
-  // Instagram
-  document.querySelectorAll(".link-instagram").forEach(el => (el.href = socials.instagram));
-  // Strava
-  document.querySelectorAll(".link-strava").forEach(el => (el.href = socials.strava));
-  // GitHub
-  document.querySelectorAll(".link-github").forEach(el => (el.href = socials.github));
-  // Topmate
-  document.querySelectorAll(".link-topmate").forEach(el => (el.href = socials.topmate));
+  gridContainer.innerHTML = html;
 }
 
 /* ==========================================================================
-   4. Navigation & Mobile Drawer
+   5. Interactive Car Launch & Pit-Wall Telemetry Modal
    ========================================================================== */
-function initNavigation() {
-  const menuBtn = document.getElementById("mobile-menu-btn");
-  const mobileDrawer = document.getElementById("mobile-drawer");
-  const mobileLinks = document.querySelectorAll(".mobile-nav-link");
+let currentActivePos = null;
 
-  if (menuBtn && mobileDrawer) {
-    menuBtn.addEventListener("click", () => {
-      const isOpen = mobileDrawer.classList.contains("translate-x-0");
-      if (isOpen) {
-        closeDrawer();
-      } else {
-        openDrawer();
+function launchCarAndOpenTelemetry(pos) {
+  currentActivePos = pos;
+  const car = window.f1PortfolioData.gridCars.find(c => c.pos === pos);
+  if (!car) return;
+
+  // Reset all other slots
+  document.querySelectorAll(".grid-slot").forEach(slot => slot.classList.remove("launched"));
+  document.querySelectorAll(".timing-item").forEach(item => item.classList.remove("active"));
+
+  // Launch the clicked car forward!
+  const slot = document.getElementById(`slot-${pos}`);
+  if (slot) {
+    slot.classList.add("launched");
+  }
+
+  // Highlight in timing tower
+  const timingItem = document.querySelector(`.timing-item[data-pos="${pos}"]`);
+  if (timingItem) {
+    timingItem.classList.add("active");
+  }
+
+  // Populate & open telemetry modal after slight launch lead time
+  setTimeout(() => {
+    populateAndShowTelemetryModal(car);
+  }, 220);
+}
+
+function handleLegendClick(pos) {
+  // Scroll to car on grid
+  const slot = document.getElementById(`slot-${pos}`);
+  if (slot) {
+    slot.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+  launchCarAndOpenTelemetry(pos);
+}
+
+function populateAndShowTelemetryModal(car) {
+  const modal = document.getElementById("telemetry-modal");
+  const card = document.getElementById("telemetry-modal-card");
+  if (!modal || !card) return;
+
+  // Set custom accent glow
+  card.style.setProperty("--modal-accent-glow", car.glowColor);
+
+  // Position & Header
+  document.getElementById("modal-pos-badge").textContent = car.pos;
+  document.getElementById("modal-pos-badge").style.backgroundColor = car.liveryColor;
+  document.getElementById("modal-race-number").textContent = `#${car.number}`;
+  document.getElementById("modal-category-badge").textContent = car.category;
+  document.getElementById("modal-title").textContent = car.title;
+  document.getElementById("modal-team-name").textContent = `${car.teamName} • ${car.compound}`;
+  document.getElementById("modal-badge").textContent = car.badge;
+
+  // Telemetry Gauges / Metrics
+  const statsContainer = document.getElementById("modal-telemetry-stats");
+  statsContainer.innerHTML = car.telemetryStats
+    .map(
+      s => `
+    <div class="p-3.5 rounded-xl bg-black/40 border border-white/10 flex flex-col justify-between">
+      <div class="flex items-center justify-between text-slate-400 text-xs mb-1">
+        <span>${s.label}</span>
+        <i class="${s.icon} text-teal-400"></i>
+      </div>
+      <div class="font-f1 font-black text-xl md:text-2xl text-white">${s.val}</div>
+    </div>
+  `
+    )
+    .join("");
+
+  // Detailed Dossier Narrative
+  document.getElementById("modal-dossier-content").innerHTML = car.dossier;
+
+  // Tags
+  const tagsContainer = document.getElementById("modal-tags-container");
+  tagsContainer.innerHTML = car.tags
+    .map(
+      t => `
+    <span class="px-2.5 py-1 rounded text-[11px] font-mono font-medium bg-white/5 border border-white/10 text-slate-300">
+      #${t}
+    </span>
+  `
+    )
+    .join("");
+
+  // Update Next / Prev buttons
+  const cars = window.f1PortfolioData.gridCars;
+  const currentIndex = cars.findIndex(c => c.pos === car.pos);
+  const prevCar = cars[(currentIndex - 1 + cars.length) % cars.length];
+  const nextCar = cars[(currentIndex + 1) % cars.length];
+
+  const prevBtn = document.getElementById("modal-prev-btn");
+  const nextBtn = document.getElementById("modal-next-btn");
+
+  if (prevBtn) {
+    prevBtn.onclick = () => launchCarAndOpenTelemetry(prevCar.pos);
+    prevBtn.innerHTML = `<i class="fa-solid fa-chevron-left mr-1"></i> ${prevCar.pos} (${prevCar.number})`;
+  }
+  if (nextBtn) {
+    nextBtn.onclick = () => launchCarAndOpenTelemetry(nextCar.pos);
+    nextBtn.innerHTML = `${nextCar.pos} (${nextCar.number}) <i class="fa-solid fa-chevron-right ml-1"></i>`;
+  }
+
+  // Open modal
+  modal.classList.add("active");
+  document.body.style.overflow = "hidden";
+}
+
+function closeTelemetryModal() {
+  const modal = document.getElementById("telemetry-modal");
+  if (modal) {
+    modal.classList.remove("active");
+    document.body.style.overflow = "";
+  }
+
+  // Smoothly return launched car
+  if (currentActivePos) {
+    const slot = document.getElementById(`slot-${currentActivePos}`);
+    if (slot) slot.classList.remove("launched");
+  }
+}
+
+function initTelemetryModal() {
+  const modal = document.getElementById("telemetry-modal");
+  const closeBtn = document.getElementById("telemetry-close-btn");
+
+  if (closeBtn) {
+    closeBtn.addEventListener("click", closeTelemetryModal);
+  }
+
+  if (modal) {
+    modal.addEventListener("click", e => {
+      if (e.target === modal) {
+        closeTelemetryModal();
       }
     });
-
-    mobileLinks.forEach(l => {
-      l.addEventListener("click", () => {
-        closeDrawer();
-      });
-    });
   }
 
-  function openDrawer() {
-    mobileDrawer.classList.remove("translate-x-full");
-    mobileDrawer.classList.add("translate-x-0");
-    menuBtn.innerHTML = '<i class="fa-solid fa-xmark text-lg"></i>';
-  }
-
-  function closeDrawer() {
-    mobileDrawer.classList.remove("translate-x-0");
-    mobileDrawer.classList.add("translate-x-full");
-    menuBtn.innerHTML = '<i class="fa-solid fa-bars text-lg"></i>';
-  }
-}
-
-/* ==========================================================================
-   5. Interactive Contact Form & Toast
-   ========================================================================== */
-function initContactForm() {
-  const form = document.getElementById("portfolio-contact-form");
-  if (!form) return;
-
-  form.addEventListener("submit", e => {
-    e.preventDefault();
-
-    const name = form.querySelector("#contact-name").value.trim();
-    const email = form.querySelector("#contact-email").value.trim();
-    const subject = form.querySelector("#contact-subject").value.trim();
-    const message = form.querySelector("#contact-message").value.trim();
-
-    if (!name || !email || !message) {
-      showToast("Please fill in all required fields.", "error");
-      return;
-    }
-
-    // Email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-      showToast("Please provide a valid email address.", "error");
-      return;
-    }
-
-    // Success response
-    showToast(`Thank you, ${name}! Your message has been received. I will be in touch shortly.`, "success");
-    form.reset();
-
-    // Prepare mailto link option
-    const mailtoLink = `mailto:thapase@gmail.com?subject=${encodeURIComponent(subject || 'Portfolio Inquiry from ' + name)}&body=${encodeURIComponent(message + '\n\nFrom: ' + name + ' (' + email + ')')}`;
-    const directEmailBtn = document.getElementById("direct-email-link");
-    if (directEmailBtn) {
-      directEmailBtn.href = mailtoLink;
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape") {
+      closeTelemetryModal();
+      closeSuperlicenceModal();
     }
   });
 }
 
-function showToast(message, type = "success") {
-  const toast = document.getElementById("toast");
-  const toastMsg = document.getElementById("toast-message");
-  const toastIcon = document.getElementById("toast-icon");
-  if (!toast || !toastMsg) return;
-
-  toastMsg.textContent = message;
-  if (type === "success") {
-    toastIcon.className = "fa-solid fa-circle-check text-emerald-500 text-lg";
-  } else {
-    toastIcon.className = "fa-solid fa-circle-exclamation text-rose-500 text-lg";
-  }
-
-  toast.classList.add("show");
-  setTimeout(() => {
-    toast.classList.remove("show");
-  }, 4500);
-}
+// Expose globally
+window.launchCarAndOpenTelemetry = launchCarAndOpenTelemetry;
+window.handleLegendClick = handleLegendClick;
+window.closeTelemetryModal = closeTelemetryModal;
 
 /* ==========================================================================
-   6. Resume Modal & Print
+   6. FIA Superlicence & Driver CV Modal
    ========================================================================== */
-function openResumeModal() {
-  const modal = document.getElementById("resume-modal");
+function openSuperlicenceModal() {
+  const modal = document.getElementById("superlicence-modal");
   if (modal) {
     modal.classList.remove("hidden");
     modal.classList.add("flex");
@@ -724,8 +487,8 @@ function openResumeModal() {
   }
 }
 
-function closeResumeModal() {
-  const modal = document.getElementById("resume-modal");
+function closeSuperlicenceModal() {
+  const modal = document.getElementById("superlicence-modal");
   if (modal) {
     modal.classList.remove("flex");
     modal.classList.add("hidden");
@@ -733,43 +496,28 @@ function closeResumeModal() {
   }
 }
 
-// Expose globally to window as well
-window.openResumeModal = openResumeModal;
-window.closeResumeModal = closeResumeModal;
-
-function initResumeModal() {
-  const openBtns = document.querySelectorAll(".open-resume-btn");
-  const closeBtns = document.querySelectorAll(".close-resume-btn");
-  const modal = document.getElementById("resume-modal");
-  const printBtn = document.getElementById("print-resume-btn");
+function initSuperlicenceModal() {
+  const openBtns = document.querySelectorAll(".open-superlicence-btn");
+  const closeBtns = document.querySelectorAll(".close-superlicence-btn");
+  const modal = document.getElementById("superlicence-modal");
+  const printBtn = document.getElementById("print-superlicence-btn");
 
   openBtns.forEach(btn => {
     btn.addEventListener("click", e => {
       e.preventDefault();
-      openResumeModal();
+      openSuperlicenceModal();
     });
   });
 
   closeBtns.forEach(btn => {
-    btn.addEventListener("click", e => {
-      e.preventDefault();
-      closeResumeModal();
-    });
+    btn.addEventListener("click", closeSuperlicenceModal);
   });
 
   if (modal) {
     modal.addEventListener("click", e => {
-      if (e.target === modal) {
-        closeResumeModal();
-      }
+      if (e.target === modal) closeSuperlicenceModal();
     });
   }
-
-  document.addEventListener("keydown", e => {
-    if (e.key === "Escape") {
-      closeResumeModal();
-    }
-  });
 
   if (printBtn) {
     printBtn.addEventListener("click", () => {
@@ -778,40 +526,64 @@ function initResumeModal() {
   }
 }
 
+window.openSuperlicenceModal = openSuperlicenceModal;
+window.closeSuperlicenceModal = closeSuperlicenceModal;
+
 /* ==========================================================================
-   7. Scroll Effects & Back to Top
+   7. Pit-to-Car Radio Communications (Contact Form)
    ========================================================================== */
-function initScrollEffects() {
-  const backToTopBtn = document.getElementById("back-to-top");
-  const nav = document.getElementById("main-nav");
+function initPitRadioForm() {
+  const form = document.getElementById("pit-radio-form");
+  if (!form) return;
 
-  window.addEventListener("scroll", () => {
-    const scrollY = window.scrollY;
+  form.addEventListener("submit", e => {
+    e.preventDefault();
 
-    // Show / Hide Back to top button
-    if (backToTopBtn) {
-      if (scrollY > 400) {
-        backToTopBtn.classList.remove("opacity-0", "pointer-events-none");
-        backToTopBtn.classList.add("opacity-100", "pointer-events-auto");
-      } else {
-        backToTopBtn.classList.add("opacity-0", "pointer-events-none");
-        backToTopBtn.classList.remove("opacity-100", "pointer-events-auto");
-      }
+    const callsign = form.querySelector("#radio-callsign").value.trim();
+    const freq = form.querySelector("#radio-frequency").value.trim();
+    const msg = form.querySelector("#radio-transmission").value.trim();
+
+    if (!callsign || !freq || !msg) {
+      showRadioNotification("RADIO SILENCE: Please fill all radio telemetry fields.", "error");
+      return;
     }
 
-    // Sticky nav shadow refinement
-    if (nav) {
-      if (scrollY > 30) {
-        nav.classList.add("shadow-md");
-      } else {
-        nav.classList.remove("shadow-md");
-      }
+    showRadioNotification(`RADIO CHECK OK: Message transmitted from ${callsign}. Driver THH acknowledged on telemetry.`, "success");
+    form.reset();
+  });
+}
+
+function showRadioNotification(message, type = "success") {
+  const toast = document.getElementById("f1-toast");
+  const msgEl = document.getElementById("f1-toast-message");
+  const icon = document.getElementById("f1-toast-icon");
+  if (!toast || !msgEl) return;
+
+  msgEl.textContent = message;
+  icon.className = type === "success" ? "fa-solid fa-tower-broadcast text-teal-400" : "fa-solid fa-triangle-exclamation text-rose-500";
+  toast.classList.add("show");
+
+  setTimeout(() => {
+    toast.classList.remove("show");
+  }, 4500);
+}
+
+/* ==========================================================================
+   8. Track Ambient & SFX
+   ========================================================================== */
+function initTrackAudio() {
+  const audioBtn = document.getElementById("f1-radio-audio-toggle");
+  if (!audioBtn) return;
+
+  let isPlaying = false;
+  audioBtn.addEventListener("click", () => {
+    isPlaying = !isPlaying;
+    if (isPlaying) {
+      audioBtn.classList.add("text-teal-400");
+      showRadioNotification("PIT WALL AUDIO: Telemetry Radio Frequencies Active (433.92 MHz)", "success");
+    } else {
+      audioBtn.classList.remove("text-teal-400");
+      showRadioNotification("PIT WALL AUDIO: Radio Muted", "success");
     }
   });
-
-  if (backToTopBtn) {
-    backToTopBtn.addEventListener("click", () => {
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    });
-  }
 }

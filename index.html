@@ -11,22 +11,125 @@
 
   <!-- FontAwesome & Google Fonts -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:ital,wght@0,400;0,600;0,700;1,700;1,800&family=JetBrains+Mono:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" />
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Three.js (r128) & OrbitControls (Global CDN with local fallback) -->
+  <!-- Three.js (r128) & OrbitControls CDNs -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
-  <script>
-    if (typeof THREE === 'undefined') {
-      document.write('<script src="js/three.min.js"><\/script>');
-      document.write('<script src="js/OrbitControls.js"><\/script>');
-    }
-  </script>
 
-  <!-- Custom F1 Design System CSS -->
-  <link rel="stylesheet" href="css/style.css" />
+  <!-- Self-Contained F1 Design System Styles -->
+  <style>
+    :root {
+      --font-f1: 'Chakra Petch', system-ui, -apple-system, sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+      --font-sans: 'Plus Jakarta Sans', system-ui, sans-serif;
+      --bg-hud: rgba(10, 14, 22, 0.94);
+      --border-hud: rgba(255, 255, 255, 0.15);
+      --f1-red: #E10600;
+      --f1-cyan: #00D2BE;
+      --f1-gold: #F59E0B;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: var(--font-sans);
+      background-color: #05070B;
+      color: #F8FAFC;
+    }
+
+    .font-f1 { font-family: var(--font-f1); letter-spacing: -0.01em; }
+    .font-mono { font-family: var(--font-mono); }
+    .f1-slant { transform: skewX(-10deg); }
+
+    /* Fullscreen WebGL Canvas Container */
+    #webgl-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    /* F1 Timing Tower Items */
+    .timing-item {
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      cursor: pointer;
+    }
+    .timing-item:hover {
+      background-color: rgba(255, 255, 255, 0.16);
+      transform: translateY(-2px);
+    }
+    .timing-item.active {
+      background-color: rgba(0, 210, 190, 0.25);
+      border-bottom: 2px solid var(--f1-cyan);
+    }
+
+    /* Side Telemetry Pit-Wall HUD */
+    #telemetry-side-hud {
+      position: fixed;
+      top: 120px;
+      right: 20px;
+      width: 440px;
+      max-width: calc(100vw - 40px);
+      max-height: calc(100vh - 140px);
+      z-index: 40;
+      background: var(--bg-hud);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      border: 1px solid var(--border-hud);
+      border-radius: 24px;
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.8), 0 0 35px var(--hud-accent-glow, rgba(0, 210, 190, 0.25));
+      transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    #telemetry-side-hud.hidden {
+      display: none !important;
+    }
+
+    #telemetry-side-hud.slide-in {
+      animation: slideInHud 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes slideInHud {
+      0% { transform: translateX(110%); opacity: 0; }
+      100% { transform: translateX(0); opacity: 1; }
+    }
+
+    /* 5 Red Start Lights */
+    .gantry-light {
+      width: 13px;
+      height: 13px;
+      border-radius: 50%;
+      background-color: #27272a;
+      border: 2px solid #3f3f46;
+      transition: background-color 0.15s ease, box-shadow 0.15s ease;
+    }
+    .gantry-light.lit-red {
+      background-color: #ef4444;
+      box-shadow: 0 0 12px #ef4444, 0 0 20px #ef4444;
+    }
+    .gantry-light.lit-green {
+      background-color: #22c55e;
+      box-shadow: 0 0 12px #22c55e, 0 0 20px #22c55e;
+    }
+
+    /* Custom Scrollbar for HUD */
+    .hud-scroll::-webkit-scrollbar { width: 5px; }
+    .hud-scroll::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); }
+    .hud-scroll::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); border-radius: 3px; }
+    .hud-scroll::-webkit-scrollbar-thumb:hover { background: var(--f1-cyan); }
+  </style>
 </head>
 <body class="bg-[#05070B] text-slate-100 overflow-hidden select-none">
 
@@ -38,7 +141,7 @@
   <!-- ========================================================================
        Top Pit Wall HUD (Fixed Broadcast Header)
        ======================================================================== -->
-  <header id="f1-header" class="fixed top-0 left-0 right-0 z-40 bg-[#0A0E16]/85 backdrop-blur-xl border-b border-white/10">
+  <header id="f1-header" class="fixed top-0 left-0 right-0 z-40 bg-[#0A0E16]/90 backdrop-blur-xl border-b border-white/10">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 h-18 py-2.5 flex items-center justify-between">
       
       <!-- F1 Constructor Logo -->
@@ -69,7 +172,7 @@
 
       <!-- Right Actions: Superlicence CV -->
       <div class="flex items-center gap-3">
-        <button class="open-superlicence-btn px-4 py-2 rounded-xl text-xs font-f1 font-black bg-red-600 hover:bg-red-500 text-white f1-slant shadow-lg shadow-red-600/30 transition-all flex items-center gap-1.5">
+        <button id="open-cv-btn" class="px-4 py-2 rounded-xl text-xs font-f1 font-black bg-red-600 hover:bg-red-500 text-white f1-slant shadow-lg shadow-red-600/30 transition-all flex items-center gap-1.5 cursor-pointer">
           <i class="fa-solid fa-id-card"></i>
           <span>DRIVER CV</span>
         </button>
@@ -78,14 +181,14 @@
     </div>
 
     <!-- Top F1 Timing Tower Legend (P1 to P10 Horizontal Strip) -->
-    <div class="border-t border-white/5 bg-black/70 px-4 py-1.5 overflow-x-auto">
+    <div class="border-t border-white/5 bg-black/75 px-4 py-1.5 overflow-x-auto">
       <div class="max-w-7xl mx-auto flex items-center gap-2.5">
         <span class="text-xs font-f1 font-bold text-slate-400 uppercase tracking-widest shrink-0 pr-2 border-r border-white/10 flex items-center gap-1">
           <i class="fa-solid fa-flag-checkered text-red-500"></i>
           <span>GRID (P1-P10):</span>
         </span>
         <div id="f1-timing-tower-items" class="flex items-center gap-2 overflow-x-auto pb-0.5">
-          <!-- Populated dynamically by main.js -->
+          <!-- Populated dynamically by JS -->
         </div>
       </div>
     </div>
@@ -111,7 +214,7 @@
 
   <div class="fixed bottom-6 right-6 z-30 hidden sm:flex items-center gap-2 px-4 py-2 rounded-xl bg-black/60 backdrop-blur-md border border-white/10 text-xs font-mono text-slate-300 pointer-events-none">
     <i class="fa-solid fa-computer-mouse text-teal-400"></i>
-    <span>CLICK ANY 3D CAR OR TIMING ITEM TO LAUNCH • DRAG TO ROTATE 360°</span>
+    <span>CLICK ANY 3D CAR TO LAUNCH • DRAG TO ROTATE 360°</span>
   </div>
 
   <!-- ========================================================================
@@ -134,7 +237,7 @@
         </div>
       </div>
 
-      <button onclick="closeSideTelemetryHUD()" class="w-8 h-8 rounded-lg bg-white/10 hover:bg-red-600 text-white flex items-center justify-center text-sm transition-colors cursor-pointer" title="Close Telemetry">
+      <button id="hud-close-btn" class="w-8 h-8 rounded-lg bg-white/10 hover:bg-red-600 text-white flex items-center justify-center text-sm transition-colors cursor-pointer" title="Close Telemetry">
         <i class="fa-solid fa-xmark"></i>
       </button>
     </div>
@@ -204,10 +307,10 @@
           </div>
         </div>
         <div class="flex items-center gap-2">
-          <button id="print-superlicence-btn" class="px-3.5 py-1.5 rounded-lg text-xs font-mono font-bold bg-white/10 hover:bg-white/20 text-white transition-colors flex items-center gap-1.5">
+          <button id="print-superlicence-btn" class="px-3.5 py-1.5 rounded-lg text-xs font-mono font-bold bg-white/10 hover:bg-white/20 text-white transition-colors flex items-center gap-1.5 cursor-pointer">
             <i class="fa-solid fa-print"></i> PRINT / PDF
           </button>
-          <button class="close-superlicence-btn w-9 h-9 rounded-xl bg-white/10 hover:bg-red-600 text-white flex items-center justify-center text-sm transition-colors cursor-pointer">
+          <button id="close-cv-btn" class="w-9 h-9 rounded-xl bg-white/10 hover:bg-red-600 text-white flex items-center justify-center text-sm transition-colors cursor-pointer">
             <i class="fa-solid fa-xmark"></i>
           </button>
         </div>
@@ -294,7 +397,7 @@
 
       <!-- Superlicence Footer -->
       <div class="px-6 py-4 bg-black/80 border-t border-white/10 flex justify-end">
-        <button class="close-superlicence-btn px-6 py-2 rounded-xl text-xs font-f1 font-bold bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer">
+        <button id="dismiss-cv-btn" class="px-6 py-2 rounded-xl text-xs font-f1 font-bold bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer">
           DISMISS TELEMETRY
         </button>
       </div>
@@ -302,8 +405,612 @@
     </div>
   </div>
 
-  <!-- Application Scripts -->
-  <script src="js/config.js"></script>
-  <script src="js/main.js"></script>
+  <!-- ========================================================================
+       Self-Contained F1 Data & 3D WebGL Script Engine
+       ======================================================================== -->
+  <script>
+    // 1. Telemetry Data Store
+    const f1PortfolioData = {
+      driver: {
+        fullName: "Thummaginjala Hima Harsha Thapase",
+        displayName: "T.H.H. Thapase",
+        racingName: "THAPASE [THH]",
+        number: "76",
+        team: "THH Strategy Racing",
+        role: "Supply Chain & Operations Strategist",
+        currentPost: "Assistant Manager (Supply Chain Consultant) • Genpact",
+        location: "Bangalore, India",
+        superlicence: "FIA Tier-1 Certified (IIM Sirmaur MBA • GMAT 760 • Six Sigma Green Belt)",
+        email: "thapase@gmail.com",
+        phone: "+91 9566009174"
+      },
+      gridCars: [
+        {
+          pos: "P1", number: "01", gridSide: "left", gridZ: -12,
+          category: "Professional Experience", title: "Supply Chain Consulting & Leadership", teamName: "Scuderia Genpact Strategy",
+          liveryColor: 0xE10600, liveryHex: "#E10600", compound: "Soft (Red C5)",
+          telemetryStats: [
+            { label: "Annual Client Savings", val: "$30M+", icon: "fa-solid fa-chart-line" },
+            { label: "Cycle Time Cut", val: "12 → 3 Wks", icon: "fa-solid fa-gauge-high" },
+            { label: "OTIF Improvement", val: "+20-30%", icon: "fa-solid fa-boxes-packing" },
+            { label: "Honors", val: "Bronze Medal", icon: "fa-solid fa-medal" }
+          ],
+          badge: "POLE POSITION • Q1-2024 BEST PROJECT",
+          dossier: "<p class='mb-2'>Spearheaded 5+ engagements across 3+ divisions for a <strong>$37B energy tech giant</strong>. Saved upwards of <strong>~$30M/annum</strong> and generated >$10M revenue for Genpact.</p><p class='text-red-300'>• Cut cycle time from 12 to 3 weeks across $600M portfolio.<br>• Awarded Bronze Medal for outstanding client deliverables.</p>",
+          tags: ["Cycle Time", "S&OP", "Parts Planning", "Bronze Medal", "CXO Advisory"]
+        },
+        {
+          pos: "P2", number: "76", gridSide: "right", gridZ: -6,
+          category: "Academic Excellence", title: "IIM Sirmaur MBA & GMAT 760", teamName: "IIM Sirmaur High-Performance Racing",
+          liveryColor: 0xF59E0B, liveryHex: "#F59E0B", compound: "Medium (Yellow C3)",
+          telemetryStats: [
+            { label: "GMAT Worldwide", val: "760", icon: "fa-solid fa-trophy" },
+            { label: "Global Percentile", val: "99th %ile", icon: "fa-solid fa-brain" },
+            { label: "Degree", val: "MBA", icon: "fa-solid fa-graduation-cap" },
+            { label: "Specialization", val: "Operations", icon: "fa-solid fa-compass" }
+          ],
+          badge: "FRONT ROW • TOP 1% WORLDWIDE",
+          dossier: "<p class='mb-2'>MBA from <strong>Indian Institute of Management (IIM) Sirmaur</strong> with a world-class <strong>GMAT score of 760</strong> (top 1% globally).</p><p class='text-amber-300'>• Advanced operations research, statistical modeling, and international corporate strategy.</p>",
+          tags: ["IIM Sirmaur", "GMAT 760", "Top 1% Worldwide", "Operations Management"]
+        },
+        {
+          pos: "P3", number: "24", gridSide: "left", gridZ: 2,
+          category: "Predictive Analytics", title: "Predictive AI & Product Cost Pacing", teamName: "Petronas Digital Intelligence",
+          liveryColor: 0x00D2BE, liveryHex: "#00D2BE", compound: "Soft (Red C5)",
+          telemetryStats: [
+            { label: "Procurement Saved", val: "$10M/yr", icon: "fa-solid fa-bolt" },
+            { label: "Deployment Speed", val: "3 Months", icon: "fa-solid fa-stopwatch" },
+            { label: "New Pipeline Won", val: "$3M/yr", icon: "fa-solid fa-handshake" },
+            { label: "Core Stack", val: "Python • Power BI", icon: "fa-brands fa-python" }
+          ],
+          badge: "ROW 2 • PROPRIETARY IP DEPLOYMENT",
+          dossier: "<p class='mb-2'>Engineered the <strong>Product Cost Pacing (PCP)</strong> predictive model for $250M wirelines division to time raw material acquisitions.</p><p class='text-teal-300'>• Deployed in 90 days, saving <strong>$10M/annum</strong> and winning 3 enterprise clients.</p>",
+          tags: ["Predictive Analytics", "Product Cost Pacing", "Machine Learning", "Python"]
+        },
+        {
+          pos: "P4", number: "30", gridSide: "right", gridZ: 8,
+          category: "ESG & Sustainability", title: "Circular Sourcing & ESG Decarbonization", teamName: "Aston Racing Green ESG",
+          liveryColor: 0x00594F, liveryHex: "#00594F", compound: "Hard (White C1)",
+          telemetryStats: [
+            { label: "Sustainability Saved", val: "$2M/yr", icon: "fa-solid fa-leaf" },
+            { label: "Landfill Mission", val: "Zero by 2030", icon: "fa-solid fa-recycle" },
+            { label: "Vendor Sourcing", val: "$500K Saved", icon: "fa-solid fa-sack-dollar" },
+            { label: "Scope", val: "North America", icon: "fa-solid fa-globe" }
+          ],
+          badge: "ROW 2 • ESG OPERATIONS CHAMPION",
+          dossier: "<p class='mb-2'>Pioneered circular economy framework utilizing certified reclaimed parts over new virgin materials, saving <strong>$2M/annum</strong>.</p><p class='text-emerald-300'>• Cut CO2 emissions and waste to landfill toward 2030 sustainability targets.</p>",
+          tags: ["Circular Economy", "ESG", "Carbon Reduction", "Reclaimed Parts"]
+        },
+        {
+          pos: "P5", number: "88", gridSide: "left", gridZ: 16,
+          category: "Engineering", title: "SRM University B.Tech EEE (88%)", teamName: "Williams Electric Engineering",
+          liveryColor: 0x00A0DE, liveryHex: "#00A0DE", compound: "Medium (Yellow C3)",
+          telemetryStats: [
+            { label: "Graduation Aggregate", val: "88%", icon: "fa-solid fa-percentage" },
+            { label: "Distinction", val: "First Class", icon: "fa-solid fa-award" },
+            { label: "Discipline", val: "EEE", icon: "fa-solid fa-microchip" },
+            { label: "Leadership", val: "Fest Organizer", icon: "fa-solid fa-flag-checkered" }
+          ],
+          badge: "ROW 3 • 88% FIRST CLASS DISTINCTION",
+          dossier: "<p class='mb-2'>B.Tech in <strong>Electrical & Electronics Engineering</strong> from SRM University with an 88% aggregate.</p><p class='text-blue-300'>• Solid engineering and mathematical modeling foundation powering industrial optimization.</p>",
+          tags: ["SRMIST", "Electrical & Electronics", "88% Distinction", "Systems Engineering"]
+        },
+        {
+          pos: "P6", number: "42", gridSide: "right", gridZ: 22,
+          category: "Endurance & Athletics", title: "Strava Long-Distance Road Running", teamName: "McLaren Papaya Velocity",
+          liveryColor: 0xFF8000, liveryHex: "#FF8000", compound: "Soft (Red C5)",
+          telemetryStats: [
+            { label: "Discipline", val: "Long-Distance", icon: "fa-solid fa-person-running" },
+            { label: "Pacing Cadence", val: "High & Steady", icon: "fa-solid fa-heart-pulse" },
+            { label: "Profile", val: "Strava Athlete", icon: "fa-brands fa-strava" },
+            { label: "Mindset", val: "Endurance Grit", icon: "fa-solid fa-fire" }
+          ],
+          badge: "ROW 3 • STRAVA ENDURANCE ATHLETE",
+          dossier: "<p class='mb-2'>Long-distance road runner on <strong>Strava</strong>. Road discipline mirrors supply chain consulting: pacing, managing threshold, and executing when the final milestone approaches.</p><a href='https://strava.app.link/czwhREDvY7b' target='_blank' class='inline-block px-3 py-1 bg-[#fc4c02] text-white rounded text-xs font-bold mt-1'>View Strava Profile &rarr;</a>",
+          tags: ["Strava Athlete", "Long-Distance Running", "Cadence Control", "Mental Tenacity"]
+        },
+        {
+          pos: "P7", number: "15", gridSide: "left", gridZ: 30,
+          category: "Wanderlust & Culture", title: "Explorer Across 15+ Indian States", teamName: "Desert Saffron Expedition",
+          liveryColor: 0xD97706, liveryHex: "#D97706", compound: "Medium (Yellow C3)",
+          telemetryStats: [
+            { label: "States Traversed", val: "15+ States", icon: "fa-solid fa-map-location-dot" },
+            { label: "Terrain", val: "Himalayas to Coast", icon: "fa-solid fa-mountain" },
+            { label: "Agility", val: "High Immersion", icon: "fa-solid fa-compass" },
+            { label: "Perspectives", val: "Pan-India", icon: "fa-solid fa-route" }
+          ],
+          badge: "ROW 4 • 15+ STATES & TERRITORIES",
+          dossier: "<p class='mb-2'>Backpacked across <strong>15+ States and Union Territories in India</strong> from Himachal passes to Kerala backwaters, building adaptability and macro-perspective.</p>",
+          tags: ["Travel Explorer", "15+ States", "Cultural Agility", "Adaptability"]
+        },
+        {
+          pos: "P8", number: "320", gridSide: "right", gridZ: 36,
+          category: "Social Impact", title: "Girl-Child Education & Disaster Relief", teamName: "Alpine Humanitarian Pink",
+          liveryColor: 0xEC4899, liveryHex: "#EC4899", compound: "Hard (White C1)",
+          telemetryStats: [
+            { label: "Attendance Jump", val: "85%", icon: "fa-solid fa-chart-line" },
+            { label: "Girls Impacted", val: "320 Young Girls", icon: "fa-solid fa-child-dress" },
+            { label: "Govt School Fund", val: "$6K/yr Raised", icon: "fa-solid fa-hand-holding-dollar" },
+            { label: "Disaster Relief", val: "Goonj Partner", icon: "fa-solid fa-heart" }
+          ],
+          badge: "ROW 4 • EDUCATION & HUMANITARIAN AID",
+          dossier: "<p class='mb-2'>Raised $6K/yr to construct bathrooms for an all-girls government school, boosting attendance to <strong>85% for 320 girls</strong>. Partnered with <strong>Goonj</strong> for flood relief.</p>",
+          tags: ["Girl-Child Education", "Social Impact", "Goonj CSR", "Rural Sanitation"]
+        },
+        {
+          pos: "P9", number: "10", gridSide: "left", gridZ: 44,
+          category: "Mentorship", title: "1:1 Consulting & GMAT Mentorship", teamName: "Sauber Neon Velocity",
+          liveryColor: 0x22C55E, liveryHex: "#22C55E", compound: "Soft (Red C5)",
+          telemetryStats: [
+            { label: "Platform", val: "Topmate.io", icon: "fa-solid fa-laptop" },
+            { label: "Handle", val: "@thapase_thh", icon: "fa-solid fa-at" },
+            { label: "Sessions", val: "1:1 Mentoring", icon: "fa-solid fa-comments" },
+            { label: "Focus", val: "GMAT 760 & Case", icon: "fa-solid fa-bullseye" }
+          ],
+          badge: "ROW 5 • VERIFIED TOPMATE MENTOR",
+          dossier: "<p class='mb-2'>Mentoring aspiring consultants and MBA candidates in case interviews, supply chain navigation, and GMAT 760 strategy.</p><a href='https://topmate.io/thapase_thh' target='_blank' class='inline-block px-3 py-1 bg-green-500 text-black rounded text-xs font-bold mt-1'>Book on Topmate &rarr;</a>",
+          tags: ["Topmate Mentor", "Consulting Case Prep", "GMAT 760", "Resume Drafting"]
+        },
+        {
+          pos: "P10", number: "07", gridSide: "right", gridZ: 50,
+          category: "Tactical Sports", title: "Cricket & Badminton Reflexes", teamName: "Red Bull Racing Dynamics",
+          liveryColor: 0x1E40AF, liveryHex: "#1E40AF", compound: "Soft (Red C5)",
+          telemetryStats: [
+            { label: "Sports", val: "Cricket & Badminton", icon: "fa-solid fa-baseball-bat-ball" },
+            { label: "Reflexes", val: "Sub-Second", icon: "fa-solid fa-bolt" },
+            { label: "Synergy", val: "Court Awareness", icon: "fa-solid fa-eye" },
+            { label: "Teamwork", val: "High Precision", icon: "fa-solid fa-users" }
+          ],
+          badge: "ROW 5 • TACTICAL REFLEXES & AGILITY",
+          dossier: "<p class='mb-2'>Passionate badminton and cricket player. Court sports hone split-second anticipation, peripheral vision, and team execution under scoreboard pressure.</p>",
+          tags: ["Cricket", "Badminton", "Reflexes", "Team Tactics"]
+        }
+      ]
+    };
+
+    // 2. Three.js 3D WebGL Engine
+    let scene, camera, renderer, controls;
+    let cars3D = [];
+    let smokeParticles = [];
+    let raycaster, mouse;
+    let activeCarMesh = null;
+    let cameraMode = "orbit";
+    let gantryLights = [];
+
+    window.addEventListener("DOMContentLoaded", () => {
+      renderTimingTowerLegend();
+      init3DScene();
+      buildMarinaBayCircuit();
+      buildStartingGridCars();
+      initInteractions();
+      animate3D();
+    });
+
+    function init3DScene() {
+      const container = document.getElementById("webgl-container");
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+
+      scene = new THREE.Scene();
+      scene.background = new THREE.Color(0x06080F);
+      scene.fog = new THREE.FogExp2(0x06080F, 0.008);
+
+      camera = new THREE.PerspectiveCamera(50, width / height, 0.5, 1000);
+      camera.position.set(0, 15, 45);
+
+      renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" });
+      renderer.setSize(width, height);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      renderer.shadowMap.enabled = true;
+      renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+      container.appendChild(renderer.domElement);
+
+      if (typeof THREE.OrbitControls !== 'undefined') {
+        controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.maxPolarAngle = Math.PI / 2 - 0.04;
+        controls.minDistance = 6;
+        controls.maxDistance = 140;
+        controls.target.set(0, 0, 10);
+      }
+
+      raycaster = new THREE.Raycaster();
+      mouse = new THREE.Vector2();
+
+      // Lighting
+      const ambientLight = new THREE.AmbientLight(0x334155, 1.4);
+      scene.add(ambientLight);
+
+      const mainLight = new THREE.DirectionalLight(0xEAF0FF, 2.2);
+      mainLight.position.set(20, 50, 10);
+      mainLight.castShadow = true;
+      scene.add(mainLight);
+
+      const blueLight = new THREE.DirectionalLight(0x00D2BE, 0.9);
+      blueLight.position.set(-30, 25, -20);
+      scene.add(blueLight);
+
+      window.addEventListener("resize", () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      });
+    }
+
+    function buildMarinaBayCircuit() {
+      const trackGroup = new THREE.Group();
+
+      // Asphalt Road
+      const roadGeo = new THREE.PlaneGeometry(24, 260);
+      const roadMat = new THREE.MeshStandardMaterial({ color: 0x141820, roughness: 0.85 });
+      const road = new THREE.Mesh(roadGeo, roadMat);
+      road.rotation.x = -Math.PI / 2;
+      road.position.set(0, 0, 10);
+      road.receiveShadow = true;
+      trackGroup.add(road);
+
+      // Water Surface
+      const waterGeo = new THREE.PlaneGeometry(350, 350);
+      const waterMat = new THREE.MeshStandardMaterial({ color: 0x051329, roughness: 0.2, metalness: 0.8 });
+      const water = new THREE.Mesh(waterGeo, waterMat);
+      water.rotation.x = -Math.PI / 2;
+      water.position.set(-190, -0.2, 20);
+      trackGroup.add(water);
+
+      // Curbs (Red and White)
+      const curbGeo = new THREE.BoxGeometry(0.8, 0.15, 3);
+      const redMat = new THREE.MeshStandardMaterial({ color: 0xE10600 });
+      const whiteMat = new THREE.MeshStandardMaterial({ color: 0xF8FAFC });
+      for (let z = -120; z < 140; z += 3) {
+        const mat = Math.floor(z / 3) % 2 === 0 ? redMat : whiteMat;
+        const cL = new THREE.Mesh(curbGeo, mat);
+        cL.position.set(-12.2, 0.06, z);
+        const cR = new THREE.Mesh(curbGeo, mat);
+        cR.position.set(12.2, 0.06, z);
+        trackGroup.add(cL, cR);
+      }
+
+      // Checkered Line
+      const checkGeo = new THREE.PlaneGeometry(24, 2);
+      const canvas = document.createElement("canvas");
+      canvas.width = 128; canvas.height = 16;
+      const ctx = canvas.getContext("2d");
+      for (let x = 0; x < 128; x += 16) {
+        for (let y = 0; y < 16; y += 16) {
+          ctx.fillStyle = (x / 16) % 2 === 0 ? "#FFFFFF" : "#111111";
+          ctx.fillRect(x, y, 16, 16);
+        }
+      }
+      const checkMat = new THREE.MeshBasicMaterial({ map: new THREE.CanvasTexture(canvas) });
+      const checkMesh = new THREE.Mesh(checkGeo, checkMat);
+      checkMesh.rotation.x = -Math.PI / 2;
+      checkMesh.position.set(0, 0.02, -18);
+      trackGroup.add(checkMesh);
+
+      // Gantry Bridge
+      const gantry = new THREE.Group();
+      gantry.position.set(0, 0, -22);
+      const pMat = new THREE.MeshStandardMaterial({ color: 0x27272A });
+      const pL = new THREE.Mesh(new THREE.BoxGeometry(0.6, 9, 0.6), pMat);
+      pL.position.set(-13, 4.5, 0);
+      const pR = new THREE.Mesh(new THREE.BoxGeometry(0.6, 9, 0.6), pMat);
+      pR.position.set(13, 4.5, 0);
+      const beam = new THREE.Mesh(new THREE.BoxGeometry(26.6, 1.2, 1.2), pMat);
+      beam.position.set(0, 8.5, 0);
+      gantry.add(pL, pR, beam);
+
+      gantryLights = [];
+      const lGeo = new THREE.CircleGeometry(0.35, 16);
+      for (let i = 0; i < 5; i++) {
+        const light = new THREE.Mesh(lGeo, new THREE.MeshBasicMaterial({ color: 0x3F3F46 }));
+        light.position.set(-2.8 + i * 1.4, 7.6, 0.62);
+        gantry.add(light);
+        gantryLights.push(light);
+      }
+      trackGroup.add(gantry);
+
+      // Distant Towers
+      const bGeo = new THREE.BoxGeometry(16, 60, 16);
+      const bMat = new THREE.MeshStandardMaterial({ color: 0x0F172A });
+      [ [35, -50], [45, 10], [38, 70], [-55, -90] ].forEach(([bx, bz]) => {
+        const b = new THREE.Mesh(bGeo, bMat);
+        b.position.set(bx, 30, bz);
+        trackGroup.add(b);
+      });
+
+      scene.add(trackGroup);
+    }
+
+    function buildStartingGridCars() {
+      const cars = f1PortfolioData.gridCars;
+      cars3D = [];
+
+      cars.forEach(carData => {
+        const car = createF1CarMesh(carData);
+        const posX = carData.gridSide === "left" ? -3.8 : 3.8;
+        const posZ = carData.gridZ;
+        car.position.set(posX, 0.45, posZ);
+        car.rotation.y = Math.PI;
+
+        car.userData = {
+          carData: carData,
+          initialPos: new THREE.Vector3(posX, 0.45, posZ),
+          isLaunched: false,
+          speed: 0,
+          targetSpeed: 0,
+          wheels: car.userData.wheels
+        };
+
+        // Grid Box Marking
+        const boxGeo = new THREE.PlaneGeometry(3.6, 5.8);
+        const line = new THREE.LineSegments(new THREE.EdgesGeometry(boxGeo), new THREE.LineBasicMaterial({ color: 0xFFFFFF }));
+        line.rotation.x = -Math.PI / 2;
+        line.position.set(posX, 0.025, posZ);
+        scene.add(line);
+
+        scene.add(car);
+        cars3D.push(car);
+      });
+    }
+
+    function createF1CarMesh(carData) {
+      const car = new THREE.Group();
+      const liveryMat = new THREE.MeshStandardMaterial({ color: carData.liveryColor, roughness: 0.35, metalness: 0.6 });
+      const carbonMat = new THREE.MeshStandardMaterial({ color: 0x18181B, roughness: 0.7 });
+      const tireMat = new THREE.MeshStandardMaterial({ color: 0x09090B });
+
+      // Nosecone
+      const nose = new THREE.Mesh(new THREE.ConeGeometry(0.45, 2.2, 8), liveryMat);
+      nose.rotation.x = -Math.PI / 2;
+      nose.position.set(0, 0.25, 1.8);
+      car.add(nose);
+
+      // Chassis
+      const body = new THREE.Mesh(new THREE.BoxGeometry(0.9, 0.45, 2.6), liveryMat);
+      body.position.set(0, 0.3, 0);
+      car.add(body);
+
+      // Sidepods
+      const spL = new THREE.Mesh(new THREE.BoxGeometry(0.55, 0.38, 1.8), liveryMat);
+      spL.position.set(-0.7, 0.28, -0.1);
+      const spR = new THREE.Mesh(new THREE.BoxGeometry(0.55, 0.38, 1.8), liveryMat);
+      spR.position.set(0.7, 0.28, -0.1);
+      car.add(spL, spR);
+
+      // Cockpit & Helmet
+      const cockpit = new THREE.Mesh(new THREE.BoxGeometry(0.5, 0.2, 0.8), carbonMat);
+      cockpit.position.set(0, 0.48, 0.3);
+      const helmet = new THREE.Mesh(new THREE.SphereGeometry(0.18, 12, 12), new THREE.MeshStandardMaterial({ color: 0xF8FAFC }));
+      helmet.position.set(0, 0.6, 0.25);
+      car.add(cockpit, helmet);
+
+      // Wings
+      const fWing = new THREE.Mesh(new THREE.BoxGeometry(2.3, 0.06, 0.6), carbonMat);
+      fWing.position.set(0, 0.12, 2.7);
+      const rWing = new THREE.Mesh(new THREE.BoxGeometry(2.1, 0.5, 0.4), liveryMat);
+      rWing.position.set(0, 0.9, -1.9);
+      car.add(fWing, rWing);
+
+      // Wheels
+      const wGeo = new THREE.CylinderGeometry(0.42, 0.42, 0.38, 14);
+      const wheels = [];
+      [ [-1.2, 0.42, 1.8], [1.2, 0.42, 1.8], [-1.25, 0.44, -1.5], [1.25, 0.44, -1.5] ].forEach(([wx, wy, wz]) => {
+        const w = new THREE.Mesh(wGeo, tireMat);
+        w.rotation.z = Math.PI / 2;
+        w.position.set(wx, wy, wz);
+        car.add(w);
+        wheels.push(w);
+      });
+      car.userData.wheels = wheels;
+
+      // Position Billboard (e.g. P1)
+      const bCanvas = document.createElement("canvas");
+      bCanvas.width = 64; bCanvas.height = 64;
+      const bCtx = bCanvas.getContext("2d");
+      bCtx.fillStyle = carData.liveryHex;
+      bCtx.beginPath(); bCtx.arc(32, 32, 28, 0, Math.PI * 2); bCtx.fill();
+      bCtx.fillStyle = "#FFFFFF";
+      bCtx.font = "bold 26px sans-serif";
+      bCtx.textAlign = "center"; bCtx.textBaseline = "middle";
+      bCtx.fillText(carData.pos, 32, 34);
+      const sprite = new THREE.Sprite(new THREE.SpriteMaterial({ map: new THREE.CanvasTexture(bCanvas), depthTest: false }));
+      sprite.scale.set(1.4, 1.4, 1.4);
+      sprite.position.set(0, 2.2, 0);
+      car.add(sprite);
+
+      return car;
+    }
+
+    function renderTimingTowerLegend() {
+      const container = document.getElementById("f1-timing-tower-items");
+      if (!container) return;
+      container.innerHTML = f1PortfolioData.gridCars.map(car => `
+        <div class="timing-item flex items-center gap-2 px-3 py-1.5 rounded-lg bg-black/60 border border-white/10 hover:border-white/30 shrink-0" 
+             data-pos="${car.pos}" onclick="launchSelectedCar('${car.pos}')">
+          <span class="font-f1 font-black text-xs text-white px-1.5 py-0.5 rounded" style="background-color: ${car.liveryHex}">
+            ${car.pos}
+          </span>
+          <div class="flex items-center gap-1.5 text-xs font-mono">
+            <span class="font-bold text-slate-100">${car.category}</span>
+            <span class="text-slate-400">#${car.number}</span>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function initInteractions() {
+      window.addEventListener("mousemove", (e) => {
+        mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+        mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+        raycaster.setFromCamera(mouse, camera);
+        const hit = raycaster.intersectObjects(cars3D, true);
+        document.body.style.cursor = hit.length > 0 ? "pointer" : "default";
+      });
+
+      window.addEventListener("click", (e) => {
+        if (e.target.closest("#f1-header") || e.target.closest("#telemetry-side-hud") || e.target.closest("#superlicence-modal") || e.target.closest("button")) return;
+        raycaster.setFromCamera(mouse, camera);
+        const hit = raycaster.intersectObjects(cars3D, true);
+        if (hit.length > 0) {
+          let obj = hit[0].object;
+          while (obj.parent && !obj.userData.carData) obj = obj.parent;
+          if (obj.userData && obj.userData.carData) {
+            launchSelectedCar(obj.userData.carData.pos);
+          }
+        }
+      });
+
+      document.getElementById("btn-reset-grid").addEventListener("click", () => {
+        cars3D.forEach(c => {
+          c.position.copy(c.userData.initialPos);
+          c.userData.isLaunched = false;
+          c.userData.speed = 0;
+          c.userData.targetSpeed = 0;
+        });
+        closeSideTelemetryHUD();
+      });
+
+      document.getElementById("btn-view-grid").addEventListener("click", () => {
+        cameraMode = "orbit";
+        if (controls) controls.enabled = true;
+        camera.position.set(0, 15, 45);
+        if (controls) controls.target.set(0, 0, 10);
+      });
+
+      document.getElementById("btn-view-chase").addEventListener("click", () => {
+        if (activeCarMesh) cameraMode = cameraMode === "chase" ? "orbit" : "chase";
+      });
+
+      document.getElementById("hud-close-btn").addEventListener("click", closeSideTelemetryHUD);
+
+      document.getElementById("open-cv-btn").addEventListener("click", () => {
+        document.getElementById("superlicence-modal").classList.remove("hidden");
+        document.getElementById("superlicence-modal").classList.add("flex");
+      });
+      document.getElementById("close-cv-btn").addEventListener("click", () => {
+        document.getElementById("superlicence-modal").classList.add("hidden");
+        document.getElementById("superlicence-modal").classList.remove("flex");
+      });
+      document.getElementById("dismiss-cv-btn").addEventListener("click", () => {
+        document.getElementById("superlicence-modal").classList.add("hidden");
+        document.getElementById("superlicence-modal").classList.remove("flex");
+      });
+      document.getElementById("print-superlicence-btn").addEventListener("click", () => window.print());
+    }
+
+    function launchSelectedCar(pos) {
+      const carGroup = cars3D.find(c => c.userData.carData.pos === pos);
+      if (!carGroup) return;
+
+      const carData = carGroup.userData.carData;
+      activeCarMesh = carGroup;
+
+      // Lights sequence
+      const uiLights = document.querySelectorAll(".gantry-light");
+      let step = 0;
+      const timer = setInterval(() => {
+        if (step < 5) {
+          if (uiLights[step]) uiLights[step].className = "gantry-light lit-red";
+          if (gantryLights[step]) gantryLights[step].material.color.setHex(0xEF4444);
+          step++;
+        } else {
+          clearInterval(timer);
+          setTimeout(() => {
+            uiLights.forEach(l => (l.className = "gantry-light lit-green"));
+            gantryLights.forEach(l => l.material.color.setHex(0x22C55E));
+            setTimeout(() => {
+              uiLights.forEach(l => (l.className = "gantry-light"));
+              gantryLights.forEach(l => l.material.color.setHex(0x3F3F46));
+            }, 1000);
+
+            // Accelerate car
+            carGroup.userData.isLaunched = true;
+            carGroup.userData.targetSpeed = 0.95;
+            cameraMode = "chase";
+
+            openSideTelemetryHUD(carData);
+
+            document.querySelectorAll(".timing-item").forEach(i => i.classList.remove("active"));
+            const el = document.querySelector(`.timing-item[data-pos="${pos}"]`);
+            if (el) el.classList.add("active");
+          }, 600);
+        }
+      }, 200);
+    }
+
+    function openSideTelemetryHUD(car) {
+      const hud = document.getElementById("telemetry-side-hud");
+      if (!hud) return;
+
+      document.getElementById("hud-pos-badge").textContent = car.pos;
+      document.getElementById("hud-pos-badge").style.backgroundColor = car.liveryHex;
+      document.getElementById("hud-race-number").textContent = `#${car.number}`;
+      document.getElementById("hud-category-badge").textContent = car.category;
+      document.getElementById("hud-title").textContent = car.title;
+      document.getElementById("hud-team-name").textContent = `${car.teamName} • ${car.compound}`;
+      document.getElementById("hud-badge").textContent = car.badge;
+
+      document.getElementById("hud-telemetry-stats").innerHTML = car.telemetryStats.map(s => `
+        <div class="p-3 rounded-xl bg-black/50 border border-white/10 flex flex-col justify-between">
+          <div class="flex items-center justify-between text-slate-400 text-xs mb-1">
+            <span class="truncate">${s.label}</span>
+            <i class="${s.icon} text-teal-400"></i>
+          </div>
+          <div class="font-f1 font-black text-xl text-white">${s.val}</div>
+        </div>
+      `).join("");
+
+      document.getElementById("hud-dossier-content").innerHTML = car.dossier;
+      document.getElementById("hud-tags-container").innerHTML = car.tags.map(t => `
+        <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-white/5 border border-white/10 text-slate-300">#${t}</span>
+      `).join("");
+
+      const cars = f1PortfolioData.gridCars;
+      const idx = cars.findIndex(c => c.pos === car.pos);
+      const prev = cars[(idx - 1 + cars.length) % cars.length];
+      const next = cars[(idx + 1) % cars.length];
+
+      document.getElementById("hud-prev-btn").onclick = () => launchSelectedCar(prev.pos);
+      document.getElementById("hud-prev-btn").innerHTML = `<i class="fa-solid fa-chevron-left mr-1"></i> ${prev.pos}`;
+      document.getElementById("hud-next-btn").onclick = () => launchSelectedCar(next.pos);
+      document.getElementById("hud-next-btn").innerHTML = `${next.pos} <i class="fa-solid fa-chevron-right ml-1"></i>`;
+
+      hud.classList.remove("hidden");
+      hud.classList.add("slide-in");
+    }
+
+    function closeSideTelemetryHUD() {
+      const hud = document.getElementById("telemetry-side-hud");
+      if (hud) hud.classList.add("hidden");
+      cameraMode = "orbit";
+      if (controls) controls.enabled = true;
+    }
+
+    function animate3D() {
+      requestAnimationFrame(animate3D);
+
+      cars3D.forEach(car => {
+        if (car.userData.isLaunched) {
+          car.userData.speed += (car.userData.targetSpeed - car.userData.speed) * 0.08;
+          car.position.z -= car.userData.speed;
+          car.userData.wheels.forEach(w => { w.rotation.x += car.userData.speed * 0.8; });
+        }
+      });
+
+      if (cameraMode === "chase" && activeCarMesh) {
+        if (controls) controls.enabled = false;
+        const targetPos = activeCarMesh.position.clone();
+        const desiredPos = targetPos.clone().add(new THREE.Vector3(0, 3.8, 12));
+        camera.position.lerp(desiredPos, 0.08);
+        if (controls) controls.target.lerp(targetPos, 0.1);
+        camera.lookAt(targetPos);
+      } else if (controls) {
+        controls.update();
+      }
+
+      renderer.render(scene, camera);
+    }
+  </script>
 </body>
 </html>

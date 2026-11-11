@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en" class="dark scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>T.H.H. Thapase | Supply Chain & Operations Strategist | Endurance Athlete</title>
+  <meta name="description" content="Portfolio of T.H.H. Thapase — Supply Chain & Strategy Consultant at Genpact, IIM Sirmaur Alum (GMAT 760), Endurance Runner, and Social Impact Advocate." />
+  <meta name="keywords" content="Thapase, Supply Chain Consultant, Genpact, IIM Sirmaur, GMAT 760, Operations Research, Strava Runner, Bangalore" />
+  
+  <!-- Favicon / SVG Icon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230b0f19'/><text x='50%' y='55%' font-family='sans-serif' font-weight='bold' font-size='42' fill='%2310b981' text-anchor='middle' dominant-baseline='middle'>THH</text></svg>" />
+
+  <!-- Google Fonts & FontAwesome -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            obsidian: {
+              900: '#0b0f19',
+              800: '#111827',
+              700: '#1f2937'
+            },
+            emerald: {
+              400: '#34d399',
+              500: '#10b981',
+              600: '#059669',
+              700: '#047857'
+            },
+            strava: {
+              400: '#fb923c',
+              500: '#f97316',
+              600: '#ea580c'
+            }
+          },
+          fontFamily: {
+            sans: ['Plus Jakarta Sans', 'system-ui', 'sans-serif'],
+            heading: ['Space Grotesk', 'system-ui', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/style.css" />
+
+  <!-- Immediate Theme Initializer to prevent flicker -->
+  <script>
+    (function () {
+      const stored = localStorage.getItem('thp_theme');
+      if (stored === 'light') {
+        document.documentElement.classList.remove('dark');
+      } else {
+        document.documentElement.classList.add('dark');
+      }
+    })();
+  </script>
+</head>
+<body class="bg-slate-50 dark:bg-obsidian-900 text-slate-900 dark:text-slate-100 antialiased selection:bg-emerald-500 selection:text-white transition-colors duration-300">
+
+  <!-- ========================================================================
+       Navigation Bar
+       ======================================================================== -->
+  <header id="main-nav" class="fixed top-0 left-0 right-0 z-50 glass-nav transition-all duration-300">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+      
+      <!-- Brand Logo -->
+      <a href="#hero" class="flex items-center gap-3 group">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center font-heading font-extrabold text-white text-base shadow-md shadow-emerald-500/20 group-hover:scale-105 transition-transform">
+          THH
+        </div>
+        <div>
+          <span class="font-heading font-bold text-lg tracking-tight text-slate-900 dark:text-white">T.H.H. Thapase</span>
+          <span class="block text-[10px] font-medium text-emerald-600 dark:text-emerald-400 tracking-wider uppercase">Supply Chain • Strategy</span>
+        </div>
+      </a>
+
+      <!-- Desktop Nav Links -->
+      <nav class="hidden lg:flex items-center gap-7 text-xs font-semibold tracking-wide text-slate-600 dark:text-slate-300">
+        <a href="#about" class="hover:text-emerald-500 transition-colors">About</a>
+        <a href="#impact" class="hover:text-emerald-500 transition-colors">Consulting Impact</a>
+        <a href="#competencies" class="hover:text-emerald-500 transition-colors">Skills & Tech</a>
+        <a href="#athletics" class="hover:text-emerald-500 transition-colors">Endurance & Strava</a>
+        <a href="#journey" class="hover:text-emerald-500 transition-colors">Life Journey</a>
+        <a href="#social-impact" class="hover:text-emerald-500 transition-colors">Social Impact</a>
+        <a href="#contact" class="hover:text-emerald-500 transition-colors">Contact</a>
+      </nav>
+
+      <!-- Right Header Actions (Theme Toggle & Resume) -->
+      <div class="flex items-center gap-3">
+        <!-- Day / Dark Mode Toggle Switch -->
+        <button class="theme-toggle-btn" aria-label="Toggle Day and Dark mode" title="Toggle theme">
+          <div class="theme-toggle-ball">
+            <i class="fa-solid fa-moon"></i>
+          </div>
+        </button>
+
+        <!-- Resume Modal Trigger -->
+        <button class="open-resume-btn hidden sm:inline-flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold bg-emerald-500/10 hover:bg-emerald-500 text-emerald-600 dark:text-emerald-400 hover:text-white border border-emerald-500/30 transition-all duration-200">
+          <i class="fa-solid fa-file-pdf"></i>
+          <span>Resume</span>
+        </button>
+
+        <!-- Mobile Menu Hamburger -->
+        <button id="mobile-menu-btn" class="lg:hidden p-2 rounded-lg text-slate-600 dark:text-slate-300 hover:text-emerald-500 focus:outline-none" aria-label="Open navigation menu">
+          <i class="fa-solid fa-bars text-xl"></i>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Mobile Drawer Menu -->
+  <div id="mobile-drawer" class="fixed inset-y-0 right-0 w-72 bg-white/95 dark:bg-obsidian-800/95 backdrop-blur-xl z-50 shadow-2xl p-6 transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col justify-between border-l border-slate-200 dark:border-slate-800 lg:hidden">
+    <div>
+      <div class="flex items-center justify-between mb-8 pb-4 border-b border-slate-200 dark:border-slate-800">
+        <span class="font-heading font-bold text-lg text-slate-900 dark:text-white">Navigation</span>
+        <button class="mobile-nav-link text-slate-500 hover:text-slate-800 dark:hover:text-white text-lg">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="flex flex-col space-y-4 text-sm font-semibold">
+        <a href="#about" class="mobile-nav-link py-2 text-slate-700 dark:text-slate-300 hover:text-emerald-500 transition-colors">About</a>
+        <a href="#impact" class="mobile-nav-link py-2 text-slate-700 dark:text-slate-300 hover:text-emerald-500 transition-colors">Consulting Impact</a>
+        <a href="#competencies" class="mobile-nav-link py-2 text-slate-700 dark:text-slate-300 hover:text-emerald-500 transition-colors">Skills & Tech</a>
+        <a href="#athletics" class="mobile-nav-link py-2 text-slate-700 dark:text-slate-300 hover:text-emerald-500 transition-colors">Endurance & Strava</a>
+        <a href="#journey" class="mobile-nav-link py-2 text-slate-700 dark:text-slate-300 hover:text-emerald-500 transition-colors">Life Journey</a>
+        <a href="#social-impact" class="mobile-nav-link py-2 text-slate-700 dark:text-slate-300 hover:text-emerald-500 transition-colors">Social Impact</a>
+        <a href="#contact" class="mobile-nav-link py-2 text-slate-700 dark:text-slate-300 hover:text-emerald-500 transition-colors">Contact</a>
+      </div>
+    </div>
+    <div class="pt-6 border-t border-slate-200 dark:border-slate-800">
+      <button class="open-resume-btn w-full py-2.5 rounded-xl text-xs font-bold bg-emerald-500 text-white flex items-center justify-center gap-2 shadow-lg shadow-emerald-500/25">
+        <i class="fa-solid fa-file-arrow-down"></i>
+        <span>Download Full Resume</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       Hero Section
+       ======================================================================== -->
+  <section id="hero" class="relative min-h-screen pt-32 pb-20 flex items-center justify-center overflow-hidden">
+    <!-- Interactive Logistics Network Canvas -->
+    <canvas id="network-canvas"></canvas>
+
+    <!-- Ambient Glow Blobs -->
+    <div class="glow-blob w-96 h-96 -top-20 -left-20 bg-emerald-500"></div>
+    <div class="glow-blob w-96 h-96 top-1/2 -right-20 bg-orange-500"></div>
+
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
+      <div class="max-w-4xl mx-auto text-center">
+        
+        <!-- Live Status Pill -->
+        <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-xs font-semibold bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 border border-emerald-500/20 mb-6">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+          <span>Strategy & Supply Chain Advisory • Fortune 500 Engagements</span>
+        </div>
+
+        <!-- Main Headline -->
+        <h1 class="text-4xl sm:text-6xl lg:text-7xl font-extrabold font-heading text-slate-900 dark:text-white tracking-tight leading-[1.1] mb-6">
+          Engineering Resilient <span class="text-gradient-emerald">Supply Chains.</span><br />
+          Pushing Limits in <span class="text-gradient-amber">Strategy & Sport.</span>
+        </h1>
+
+        <!-- Executive Subtitle -->
+        <p class="text-base sm:text-xl text-slate-600 dark:text-slate-300 max-w-2xl mx-auto font-normal leading-relaxed mb-8">
+          Supply Chain & Operations Strategist at <strong>Genpact</strong> | <strong>IIM Sirmaur MBA</strong> (GMAT 760) | Endurance Athlete on <strong>Strava</strong> | Passionate Advocate for Girl-Child Education & Sustainable Operations.
+        </p>
+
+        <!-- Hero CTAs -->
+        <div class="flex flex-wrap items-center justify-center gap-4 mb-16">
+          <a href="#impact" class="px-7 py-3.5 rounded-xl font-bold text-sm bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white shadow-xl shadow-emerald-600/25 transition-all transform hover:-translate-y-0.5 flex items-center gap-2">
+            <span>Explore Consulting Impact</span>
+            <i class="fa-solid fa-arrow-down text-xs"></i>
+          </a>
+          <a href="#journey" class="px-7 py-3.5 rounded-xl font-bold text-sm bg-white dark:bg-obsidian-800 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-900 dark:text-white border border-slate-300 dark:border-slate-700 shadow-md transition-all transform hover:-translate-y-0.5 flex items-center gap-2">
+            <span>Life Journey & Milestones</span>
+            <i class="fa-solid fa-compass text-xs text-orange-500"></i>
+          </a>
+          <button class="open-resume-btn px-6 py-3.5 rounded-xl font-bold text-sm bg-slate-100 dark:bg-slate-800/80 hover:bg-emerald-500/10 text-slate-700 dark:text-slate-300 border border-slate-300 dark:border-slate-700 flex items-center gap-2 transition-all">
+            <i class="fa-solid fa-file-pdf text-emerald-500"></i>
+            <span>View Resume</span>
+          </button>
+        </div>
+
+        <!-- Dynamic Hero Metrics Grid -->
+        <div id="hero-metrics-container" class="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-5xl mx-auto">
+          <!-- Populated dynamically by main.js -->
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       Executive About & Holistic Philosophy
+       ======================================================================== -->
+  <section id="about" class="py-24 relative z-10 border-t border-slate-200/60 dark:border-slate-800/60 bg-white/50 dark:bg-obsidian-800/20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <span class="text-xs font-bold uppercase tracking-widest text-emerald-500">Executive Profile</span>
+        <h2 class="text-3xl sm:text-4xl font-extrabold font-heading text-slate-900 dark:text-white mt-1">
+          Bridging Industrial Rigor & Human Curiosity
+        </h2>
+        <div class="w-16 h-1 bg-gradient-to-r from-emerald-500 to-amber-500 mx-auto mt-4 rounded-full"></div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        
+        <!-- Left: Visual Profile Card -->
+        <div class="lg:col-span-5">
+          <div class="glass-panel p-8 rounded-3xl relative overflow-hidden border-emerald-500/20">
+            <div class="flex items-center gap-5 mb-6">
+              <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-emerald-500 via-teal-600 to-slate-900 flex items-center justify-center font-heading font-extrabold text-white text-3xl shadow-xl shadow-emerald-500/20">
+                THH
+              </div>
+              <div>
+                <h3 class="text-2xl font-bold font-heading text-slate-900 dark:text-white">T.H.H. Thapase</h3>
+                <p class="text-xs font-semibold text-emerald-600 dark:text-emerald-400">Assistant Manager • Genpact</p>
+                <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5"><i class="fa-solid fa-location-dot mr-1 text-red-500"></i> Bangalore, India</p>
+              </div>
+            </div>
+
+            <div class="space-y-3 pt-4 border-t border-slate-200 dark:border-slate-800 text-xs text-slate-600 dark:text-slate-300">
+              <div class="flex items-center justify-between">
+                <span class="text-slate-500 dark:text-slate-400">GMAT Score:</span>
+                <span class="font-bold text-amber-500">760 (Top 1% Globally)</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-slate-500 dark:text-slate-400">Business School:</span>
+                <span class="font-semibold text-slate-800 dark:text-slate-200">IIM Sirmaur (MBA)</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-slate-500 dark:text-slate-400">Engineering:</span>
+                <span class="font-semibold text-slate-800 dark:text-slate-200">SRM University (EEE - 88% Distinction)</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-slate-500 dark:text-slate-400">Certifications:</span>
+                <span class="font-semibold text-slate-800 dark:text-slate-200">Six Sigma Green Belt (KPMG)</span>
+              </div>
+              <div class="flex items-center justify-between">
+                <span class="text-slate-500 dark:text-slate-400">Key Accolades:</span>
+                <span class="font-semibold text-emerald-500">Bronze Medal • Best Team Project Q1-24</span>
+              </div>
+            </div>
+
+            <!-- Quick Social Connectivity Badges -->
+            <div class="mt-6 pt-5 border-t border-slate-200 dark:border-slate-800 flex items-center justify-around text-slate-500 dark:text-slate-400">
+              <a href="#" target="_blank" rel="noopener noreferrer" class="link-linkedin hover:text-emerald-500 transition-colors text-lg" title="LinkedIn"><i class="fa-brands fa-linkedin"></i></a>
+              <a href="#" target="_blank" rel="noopener noreferrer" class="link-twitter hover:text-emerald-500 transition-colors text-lg" title="Twitter / X"><i class="fa-brands fa-x-twitter"></i></a>
+              <a href="#" target="_blank" rel="noopener noreferrer" class="link-instagram hover:text-emerald-500 transition-colors text-lg" title="Instagram"><i class="fa-brands fa-instagram"></i></a>
+              <a href="#" target="_blank" rel="noopener noreferrer" class="link-strava hover:text-orange-500 transition-colors text-lg" title="Strava"><i class="fa-brands fa-strava"></i></a>
+              <a href="#" target="_blank" rel="noopener noreferrer" class="link-github hover:text-emerald-500 transition-colors text-lg" title="GitHub"><i class="fa-brands fa-github"></i></a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Narrative & Philosophy -->
+        <div class="lg:col-span-7 space-y-6 text-slate-600 dark:text-slate-300">
+          <p class="text-base sm:text-lg leading-relaxed font-normal">
+            I am a senior supply chain consultant at <strong>Genpact</strong>, specializing in architecting resilient, data-backed operational systems for Fortune 500 energy technology, oil & gas, and aerospace enterprises.
+          </p>
+          <p class="text-sm sm:text-base leading-relaxed">
+            Over the course of high-velocity engagements, I have spearheaded the transformation of complex global supply networks: reducing order cycle times by <strong>75%</strong> across a <strong>$600M portfolio</strong>, deploying predictive machine learning algorithms to eliminate procurement cost volatility, and championing circular economy frameworks that drive millions in savings while lowering industrial carbon emissions.
+          </p>
+          
+          <div class="p-5 rounded-2xl bg-gradient-to-r from-emerald-500/10 via-teal-500/5 to-amber-500/10 border-l-4 border-emerald-500 text-sm leading-relaxed italic text-slate-700 dark:text-slate-200">
+            "Supply chains are living, breathing networks of uncertainty. Mastering them requires the same mindset as long-distance endurance running: relentless pacing, understanding the macro terrain, and the disciplined grit to execute when pressure peaks."
+          </div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
+            <div class="p-3 rounded-xl bg-slate-100 dark:bg-obsidian-800 text-center">
+              <i class="fa-solid fa-network-wired text-emerald-500 text-base mb-1"></i>
+              <div class="text-xs font-bold text-slate-800 dark:text-slate-200">Network Design</div>
+            </div>
+            <div class="p-3 rounded-xl bg-slate-100 dark:bg-obsidian-800 text-center">
+              <i class="fa-solid fa-chart-line text-emerald-500 text-base mb-1"></i>
+              <div class="text-xs font-bold text-slate-800 dark:text-slate-200">Predictive Analytics</div>
+            </div>
+            <div class="p-3 rounded-xl bg-slate-100 dark:bg-obsidian-800 text-center">
+              <i class="fa-solid fa-leaf text-emerald-500 text-base mb-1"></i>
+              <div class="text-xs font-bold text-slate-800 dark:text-slate-200">Circular ESG</div>
+            </div>
+            <div class="p-3 rounded-xl bg-slate-100 dark:bg-obsidian-800 text-center">
+              <i class="fa-solid fa-person-running text-orange-500 text-base mb-1"></i>
+              <div class="text-xs font-bold text-slate-800 dark:text-slate-200">Endurance Mindset</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       Supply Chain Consulting & Enterprise Impact (Confidential)
+       ======================================================================== -->
+  <section id="impact" class="py-24 relative z-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-12">
+        <div>
+          <span class="text-xs font-bold uppercase tracking-widest text-emerald-500">Proven Consulting Track Record</span>
+          <h2 class="text-3xl sm:text-4xl font-extrabold font-heading text-slate-900 dark:text-white mt-1">
+            Enterprise Impact & Strategic Outcomes
+          </h2>
+          <p class="text-sm text-slate-500 dark:text-slate-400 mt-2 max-w-xl">
+            Driving multi-million-dollar bottom-line value, cycle time compression, and predictive risk mitigation for Fortune 500 leaders.
+          </p>
+        </div>
+
+        <!-- Confidentiality Disclaimer -->
+        <div class="mt-4 md:mt-0 px-3.5 py-2 rounded-xl bg-amber-500/10 border border-amber-500/20 text-amber-600 dark:text-amber-400 text-xs flex items-center gap-2 max-w-md">
+          <i class="fa-solid fa-shield-halved shrink-0 text-sm"></i>
+          <span>Client Confidentiality: Case studies are categorized by sector and scope to protect proprietary corporate data.</span>
+        </div>
+      </div>
+
+      <!-- Filter Tabs -->
+      <div class="flex flex-wrap items-center gap-2 mb-8">
+        <button class="case-filter-btn filter-btn active px-4 py-1.5 rounded-lg text-xs font-bold border border-slate-300 dark:border-slate-700 transition-all" data-category="all">
+          All Engagements
+        </button>
+        <button class="case-filter-btn filter-btn px-4 py-1.5 rounded-lg text-xs font-bold border border-slate-300 dark:border-slate-700 transition-all text-slate-600 dark:text-slate-400" data-category="cycle time">
+          Cycle Time & S&OP
+        </button>
+        <button class="case-filter-btn filter-btn px-4 py-1.5 rounded-lg text-xs font-bold border border-slate-300 dark:border-slate-700 transition-all text-slate-600 dark:text-slate-400" data-category="machine learning">
+          AI & Predictive Sourcing
+        </button>
+        <button class="case-filter-btn filter-btn px-4 py-1.5 rounded-lg text-xs font-bold border border-slate-300 dark:border-slate-700 transition-all text-slate-600 dark:text-slate-400" data-category="esg">
+          Sustainability & ESG
+        </button>
+        <button class="case-filter-btn filter-btn px-4 py-1.5 rounded-lg text-xs font-bold border border-slate-300 dark:border-slate-700 transition-all text-slate-600 dark:text-slate-400" data-category="power bi">
+          Digitalization & Power BI
+        </button>
+      </div>
+
+      <!-- Dynamic Case Studies Grid -->
+      <div id="case-studies-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Rendered dynamically by main.js -->
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       Skills, Tooling & Verified Certifications
+       ======================================================================== -->
+  <section id="competencies" class="py-24 relative z-10 border-t border-slate-200/60 dark:border-slate-800/60 bg-white/40 dark:bg-obsidian-800/30">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <span class="text-xs font-bold uppercase tracking-widest text-emerald-500">Core Capabilities</span>
+        <h2 class="text-3xl sm:text-4xl font-extrabold font-heading text-slate-900 dark:text-white mt-1">
+          Methodologies, Analytics & Certifications
+        </h2>
+        <div class="w-16 h-1 bg-gradient-to-r from-emerald-500 to-teal-500 mx-auto mt-4 rounded-full"></div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 mb-12">
+        <!-- SCM Frameworks & Strategic Planning -->
+        <div class="glass-panel p-8 rounded-3xl">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center text-lg">
+              <i class="fa-solid fa-boxes-packing"></i>
+            </div>
+            <div>
+              <h3 class="text-xl font-bold font-heading text-slate-900 dark:text-white">Supply Chain & Operations Strategy</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400">Core operational architecture and lean methodologies</p>
+            </div>
+          </div>
+          <div id="scm-competencies-container" class="space-y-3">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+        <!-- Technical Tools & Analytics -->
+        <div class="glass-panel p-8 rounded-3xl">
+          <div class="flex items-center gap-3 mb-6">
+            <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center text-lg">
+              <i class="fa-solid fa-laptop-code"></i>
+            </div>
+            <div>
+              <h3 class="text-xl font-bold font-heading text-slate-900 dark:text-white">Data Analytics & ERP Systems</h3>
+              <p class="text-xs text-slate-500 dark:text-slate-400">Quantitative modeling, enterprise databases & BI</p>
+            </div>
+          </div>
+          <div id="tools-competencies-container" class="space-y-3">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Professional Certifications Showcase -->
+      <div>
+        <div class="flex items-center gap-2 mb-6">
+          <i class="fa-solid fa-award text-amber-500 text-lg"></i>
+          <h3 class="text-xl font-bold font-heading text-slate-900 dark:text-white">Verified Honors & Certifications</h3>
+        </div>
+        <div id="certifications-container" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       The Endurance Mindset & Beyond Work (Strava, Travel & Sports)
+       ======================================================================== -->
+  <section id="athletics" class="py-24 relative z-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <span class="text-xs font-bold uppercase tracking-widest text-orange-500">Beyond The Spreadsheets</span>
+        <h2 class="text-3xl sm:text-4xl font-extrabold font-heading text-slate-900 dark:text-white mt-1">
+          Endurance, Sports & 15+ States Traversed
+        </h2>
+        <div class="w-16 h-1 bg-gradient-to-r from-orange-500 to-amber-500 mx-auto mt-4 rounded-full"></div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+        
+        <!-- Strava & Endurance Running (Col 5) -->
+        <div id="strava-section-container" class="lg:col-span-5">
+          <!-- Populated dynamically by main.js -->
+        </div>
+
+        <!-- Travel Explorer & Agility Sports (Col 7) -->
+        <div id="travel-section-container" class="lg:col-span-7">
+          <!-- Populated dynamically by main.js -->
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       Life Journey & Academic Milestones
+       ======================================================================== -->
+  <section id="journey" class="py-24 relative z-10 border-t border-slate-200/60 dark:border-slate-800/60 bg-white/40 dark:bg-obsidian-800/20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <span class="text-xs font-bold uppercase tracking-widest text-emerald-500">Trajectory</span>
+        <h2 class="text-3xl sm:text-4xl font-extrabold font-heading text-slate-900 dark:text-white mt-1">
+          Life Journey & Formative Milestones
+        </h2>
+        <div class="w-16 h-1 bg-gradient-to-r from-emerald-500 to-amber-500 mx-auto mt-4 rounded-full"></div>
+      </div>
+
+      <!-- Vertical Timeline -->
+      <div class="timeline-container max-w-4xl mx-auto">
+        <div id="timeline-items-container">
+          <!-- Populated dynamically by main.js -->
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       Social Impact & Giving Back
+       ======================================================================== -->
+  <section id="social-impact" class="py-24 relative z-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <span class="text-xs font-bold uppercase tracking-widest text-emerald-500">Stewardship & Purpose</span>
+        <h2 class="text-3xl sm:text-4xl font-extrabold font-heading text-slate-900 dark:text-white mt-1">
+          Social Impact, Education & Climate Resilience
+        </h2>
+        <p class="text-sm text-slate-500 dark:text-slate-400 mt-2 max-w-xl mx-auto">
+          Leveraging strategic planning and grassroots mobilization to create tangible opportunities for marginalized communities.
+        </p>
+        <div class="w-16 h-1 bg-gradient-to-r from-emerald-500 to-teal-500 mx-auto mt-4 rounded-full"></div>
+      </div>
+
+      <div id="social-impact-container" class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-16">
+        <!-- Populated dynamically by main.js -->
+      </div>
+
+      <!-- Mentorship Section Card -->
+      <div id="mentorship-card-container">
+        <!-- Populated dynamically by main.js -->
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       Contact & Connectivity Hub
+       ======================================================================== -->
+  <section id="contact" class="py-24 relative z-10 border-t border-slate-200/60 dark:border-slate-800/60 bg-white/40 dark:bg-obsidian-800/30">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      
+      <div class="text-center max-w-3xl mx-auto mb-16">
+        <span class="text-xs font-bold uppercase tracking-widest text-emerald-500">Initiate Collaboration</span>
+        <h2 class="text-3xl sm:text-4xl font-extrabold font-heading text-slate-900 dark:text-white mt-1">
+          Get in Touch
+        </h2>
+        <p class="text-sm text-slate-500 dark:text-slate-400 mt-2">
+          Open for strategic supply chain consulting, keynote advisory, mentorship, and athletic collaborations.
+        </p>
+        <div class="w-16 h-1 bg-gradient-to-r from-emerald-500 to-amber-500 mx-auto mt-4 rounded-full"></div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+        
+        <!-- Left: Contact Information & Direct Channels -->
+        <div class="lg:col-span-5 space-y-6">
+          <div class="glass-panel p-8 rounded-3xl">
+            <h3 class="text-xl font-bold font-heading text-slate-900 dark:text-white mb-6">Direct Channels</h3>
+            
+            <div class="space-y-5 text-sm">
+              <div class="flex items-center gap-4">
+                <div class="w-11 h-11 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center shrink-0 text-base">
+                  <i class="fa-solid fa-envelope"></i>
+                </div>
+                <div>
+                  <div class="text-xs text-slate-500 dark:text-slate-400">Direct Email</div>
+                  <a href="mailto:thapase@gmail.com" class="font-bold text-slate-900 dark:text-white hover:text-emerald-500 transition-colors">
+                    thapase@gmail.com
+                  </a>
+                </div>
+              </div>
+
+              <div class="flex items-center gap-4">
+                <div class="w-11 h-11 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center shrink-0 text-base">
+                  <i class="fa-solid fa-phone"></i>
+                </div>
+                <div>
+                  <div class="text-xs text-slate-500 dark:text-slate-400">Phone / WhatsApp</div>
+                  <a href="tel:+919566009174" class="font-bold text-slate-900 dark:text-white hover:text-emerald-500 transition-colors">
+                    +91 9566009174
+                  </a>
+                </div>
+              </div>
+
+              <div class="flex items-center gap-4">
+                <div class="w-11 h-11 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center shrink-0 text-base">
+                  <i class="fa-solid fa-location-dot"></i>
+                </div>
+                <div>
+                  <div class="text-xs text-slate-500 dark:text-slate-400">Location Base</div>
+                  <span class="font-bold text-slate-900 dark:text-white">Bangalore, Karnataka, India</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Social Links Grid -->
+            <div class="mt-8 pt-6 border-t border-slate-200 dark:border-slate-800">
+              <div class="text-xs font-semibold text-slate-500 dark:text-slate-400 mb-3">Connect Across Platforms:</div>
+              <div class="grid grid-cols-3 sm:grid-cols-6 gap-2">
+                <a href="#" target="_blank" rel="noopener noreferrer" class="link-linkedin p-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-white hover:bg-[#0077b5] text-center transition-all" title="LinkedIn">
+                  <i class="fa-brands fa-linkedin text-lg"></i>
+                </a>
+                <a href="#" target="_blank" rel="noopener noreferrer" class="link-twitter p-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-white hover:bg-black text-center transition-all" title="Twitter / X">
+                  <i class="fa-brands fa-x-twitter text-lg"></i>
+                </a>
+                <a href="#" target="_blank" rel="noopener noreferrer" class="link-instagram p-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-white hover:bg-[#e4405f] text-center transition-all" title="Instagram">
+                  <i class="fa-brands fa-instagram text-lg"></i>
+                </a>
+                <a href="#" target="_blank" rel="noopener noreferrer" class="link-strava p-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-white hover:bg-[#fc4c02] text-center transition-all" title="Strava">
+                  <i class="fa-brands fa-strava text-lg"></i>
+                </a>
+                <a href="#" target="_blank" rel="noopener noreferrer" class="link-github p-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-white hover:bg-slate-900 text-center transition-all" title="GitHub">
+                  <i class="fa-brands fa-github text-lg"></i>
+                </a>
+                <a href="#" target="_blank" rel="noopener noreferrer" class="link-topmate p-3 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-white hover:bg-emerald-600 text-center transition-all" title="Topmate">
+                  <i class="fa-solid fa-graduation-cap text-lg"></i>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Interactive Contact Form -->
+        <div class="lg:col-span-7">
+          <div class="glass-panel p-8 rounded-3xl">
+            <h3 class="text-xl font-bold font-heading text-slate-900 dark:text-white mb-2">Send a Direct Message</h3>
+            <p class="text-xs text-slate-500 dark:text-slate-400 mb-6">Leave your details and objectives; I typically reply within 24–48 hours.</p>
+
+            <form id="portfolio-contact-form" class="space-y-4">
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label for="contact-name" class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Your Name *</label>
+                  <input type="text" id="contact-name" required placeholder="Jane Doe" 
+                         class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 focus:border-emerald-500 dark:focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none text-sm transition-all text-slate-900 dark:text-white" />
+                </div>
+                <div>
+                  <label for="contact-email" class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Email Address *</label>
+                  <input type="email" id="contact-email" required placeholder="jane@example.com" 
+                         class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 focus:border-emerald-500 dark:focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none text-sm transition-all text-slate-900 dark:text-white" />
+                </div>
+              </div>
+
+              <div>
+                <label for="contact-subject" class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Subject / Engagement Type</label>
+                <input type="text" id="contact-subject" placeholder="Consulting Advisory / Mentorship / Collaboration" 
+                       class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 focus:border-emerald-500 dark:focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none text-sm transition-all text-slate-900 dark:text-white" />
+              </div>
+
+              <div>
+                <label for="contact-message" class="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1.5">Your Message *</label>
+                <textarea id="contact-message" rows="4" required placeholder="Share brief context about your project, questions, or goals..." 
+                          class="w-full px-4 py-3 rounded-xl bg-slate-50 dark:bg-slate-900/60 border border-slate-200 dark:border-slate-800 focus:border-emerald-500 dark:focus:border-emerald-500 focus:ring-1 focus:ring-emerald-500 outline-none text-sm transition-all text-slate-900 dark:text-white resize-none"></textarea>
+              </div>
+
+              <div class="flex items-center justify-between pt-2">
+                <button type="submit" class="px-8 py-3.5 rounded-xl font-bold text-sm bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-500 hover:to-teal-500 text-white shadow-lg shadow-emerald-600/25 transition-all transform hover:-translate-y-0.5 flex items-center gap-2">
+                  <span>Send Message</span>
+                  <i class="fa-solid fa-paper-plane text-xs"></i>
+                </button>
+                <a id="direct-email-link" href="mailto:thapase@gmail.com" class="text-xs font-semibold text-emerald-600 dark:text-emerald-400 hover:underline">
+                  Launch Mail Client Directly &rarr;
+                </a>
+              </div>
+            </form>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       Footer
+       ======================================================================== -->
+  <footer class="py-12 border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-obsidian-900 text-xs text-slate-500 dark:text-slate-400">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2 font-heading font-bold text-slate-700 dark:text-slate-300">
+        <span class="w-6 h-6 rounded-lg bg-emerald-500 text-white flex items-center justify-center text-[10px]">THH</span>
+        <span>T.H.H. Thapase</span>
+        <span class="text-slate-400 font-normal">© 2026. All rights reserved.</span>
+      </div>
+      <div class="flex items-center gap-6">
+        <a href="#about" class="hover:text-emerald-500 transition-colors">About</a>
+        <a href="#impact" class="hover:text-emerald-500 transition-colors">Impact</a>
+        <a href="#athletics" class="hover:text-emerald-500 transition-colors">Athletics</a>
+        <a href="#journey" class="hover:text-emerald-500 transition-colors">Journey</a>
+        <a href="#contact" class="hover:text-emerald-500 transition-colors">Contact</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ========================================================================
+       Resume Modal Viewer / Printable
+       ======================================================================== -->
+  <div id="resume-modal" class="modal-overlay fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/80 backdrop-blur-sm">
+    <div class="modal-container w-full max-w-4xl max-h-[90vh] bg-white dark:bg-obsidian-800 rounded-3xl shadow-2xl flex flex-col border border-slate-200 dark:border-slate-700 overflow-hidden">
+      
+      <!-- Modal Header -->
+      <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between bg-slate-50 dark:bg-obsidian-900">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center">
+            <i class="fa-solid fa-file-lines text-lg"></i>
+          </div>
+          <div>
+            <h3 class="font-heading font-bold text-base text-slate-900 dark:text-white">Curriculum Vitae — T.H.H. Thapase</h3>
+            <span class="text-xs text-slate-500 dark:text-slate-400">Sanitized for Client Confidentiality</span>
+          </div>
+        </div>
+        <div class="flex items-center gap-2">
+          <button id="print-resume-btn" class="px-3.5 py-1.5 rounded-lg text-xs font-bold bg-slate-200 dark:bg-slate-700 hover:bg-emerald-500 hover:text-white transition-all flex items-center gap-1.5">
+            <i class="fa-solid fa-print"></i>
+            <span>Print / PDF</span>
+          </button>
+          <button class="close-resume-btn w-8 h-8 rounded-lg text-slate-500 hover:text-slate-900 dark:hover:text-white flex items-center justify-center text-lg">
+            <i class="fa-solid fa-xmark"></i>
+          </button>
+        </div>
+      </div>
+
+      <!-- Modal Body (Printable Resume Content) -->
+      <div class="p-6 md:p-8 overflow-y-auto space-y-6 text-sm text-slate-700 dark:text-slate-300">
+        <!-- Header -->
+        <div class="border-b border-slate-200 dark:border-slate-700 pb-5">
+          <h2 class="text-2xl font-bold font-heading text-slate-900 dark:text-white">T.H.H. Thapase</h2>
+          <div class="text-xs font-medium text-slate-500 dark:text-slate-400 mt-1 flex flex-wrap gap-x-4 gap-y-1">
+            <span><i class="fa-solid fa-location-dot mr-1"></i> Bangalore, India</span>
+            <span><i class="fa-solid fa-phone mr-1"></i> +91 9566009174</span>
+            <span><i class="fa-solid fa-envelope mr-1"></i> thapase@gmail.com</span>
+            <span><i class="fa-brands fa-linkedin mr-1"></i> linkedin.com/in/t-h-h-thapase-strategy-consultant</span>
+          </div>
+        </div>
+
+        <!-- Professional Experience -->
+        <div>
+          <h3 class="text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 mb-3 border-b border-emerald-500/20 pb-1">Professional Experience</h3>
+          <div class="space-y-4">
+            <div>
+              <div class="flex justify-between items-baseline font-bold text-slate-900 dark:text-white">
+                <span>Genpact — Assistant Manager (Supply Chain Consultant)</span>
+                <span class="text-xs font-normal text-slate-500">Aug 2021 – Present | Bangalore, India</span>
+              </div>
+              <p class="text-xs text-slate-600 dark:text-slate-300 italic mt-0.5">
+                Led 5+ engagements across 3+ divisions for a $37B energy technology leader to optimize supply chain design, delivering upwards of ~$30M/annum in client savings and >$10M for Genpact over 5 years.
+              </p>
+              <ul class="list-disc list-inside mt-2 space-y-1 text-xs">
+                <li><strong>Cycle Time Optimization ($600M Portfolio):</strong> Cut processing cycle time from 12 to 3 weeks, boosted OTIF deliveries by 20–30%. Won Best Team Project (Q1-2024) and Bronze Medal for outstanding client deliverables.</li>
+                <li><strong>Predictive Product Cost Pacing (PCP Model):</strong> Built algorithm for $250M Wirelines division, saving ~$10M/annum in procurement costs within 3 months; adopted globally and unlocked ~$3M/annum in new contracts.</li>
+                <li><strong>Circular Economy & ESG Sourcing ($1.2B Division):</strong> Augmented usage of reclaimed vs. virgin parts, cutting $2M/annum in NA and driving zero landfill waste by 2030; saved ~$500K via global strategic sourcing.</li>
+                <li><strong>Digital Inventory Intelligence:</strong> Overhauled reporting across $1.2B Pump Division via Power BI to track $100M+ inventory quarterly; automated processes saving 5,000 man-hours (~$50K/yr savings).</li>
+                <li><strong>Aerospace Sourcing & Inventory Strategy:</strong> Built Supplier Predictability Model for $10B manufacturer, saving $5M p.a. and securing $500K extension.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Education -->
+        <div>
+          <h3 class="text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 mb-3 border-b border-emerald-500/20 pb-1">Education</h3>
+          <div class="space-y-3">
+            <div class="flex justify-between items-baseline">
+              <div>
+                <span class="font-bold text-slate-900 dark:text-white">Indian Institute of Management (IIM) Sirmaur</span>
+                <span class="block text-xs text-slate-500">Master of Business Administration (MBA) • GMAT: 760 (Top 1% Globally)</span>
+              </div>
+              <span class="text-xs font-medium text-slate-500">2019 – 2021</span>
+            </div>
+            <div class="flex justify-between items-baseline">
+              <div>
+                <span class="font-bold text-slate-900 dark:text-white">SRM University</span>
+                <span class="block text-xs text-slate-500">B.Tech in Electrical & Electronics Engineering (EEE) • Aggregate: 88% (First Class with Distinction)</span>
+              </div>
+              <span class="text-xs font-medium text-slate-500">2015 – 2019</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Skills & Certifications -->
+        <div>
+          <h3 class="text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 mb-2 border-b border-emerald-500/20 pb-1">Skills & Certifications</h3>
+          <p class="text-xs leading-relaxed">
+            <strong>Supply Chain:</strong> Supply Chain Planning, S&OP, Inventory Management, Cycle Time Optimization, Logistics Network Design, Sourcing Strategy.<br />
+            <strong>Analytics & Tech:</strong> Machine Learning, Python, Power BI, Advanced Excel / VBA, SAP (MM/SD), SQL.<br />
+            <strong>Certifications:</strong> Six Sigma Green Belt (KPMG), Certified Business Analysis (CBAP).
+          </p>
+        </div>
+
+        <!-- Social Impact & Activities -->
+        <div>
+          <h3 class="text-xs font-bold uppercase tracking-wider text-emerald-600 dark:text-emerald-400 mb-2 border-b border-emerald-500/20 pb-1">Activities, CSR & Interests</h3>
+          <ul class="list-disc list-inside space-y-1 text-xs">
+            <li><strong>Girl-Child Education:</strong> Raised $6K/annum for rural government school infrastructure, boosting attendance to 85% for 320 young girls.</li>
+            <li><strong>Disaster Relief:</strong> Mobilized firm-wide clothing drive with Goonj for flood-affected families.</li>
+            <li><strong>Etherisc:</strong> GTM strategy for decentralized farmer crop insurance & carbon credits, doubling smallholder farmer income.</li>
+            <li><strong>Hobbies:</strong> Endurance Running (Strava), Traveling (15+ States and UTs in India), Cricket, Badminton.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="px-6 py-4 border-t border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-obsidian-900 flex justify-end">
+        <button class="close-resume-btn px-5 py-2 rounded-xl text-xs font-bold bg-slate-200 dark:bg-slate-700 hover:bg-slate-300 dark:hover:bg-slate-600 transition-colors">
+          Close Window
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========================================================================
+       Toast Notification Component
+       ======================================================================== -->
+  <div id="toast" class="flex items-center gap-3 px-5 py-3.5 rounded-2xl bg-white dark:bg-obsidian-800 shadow-2xl border border-slate-200 dark:border-slate-700 text-sm font-medium">
+    <i id="toast-icon" class="fa-solid fa-circle-check text-emerald-500 text-lg"></i>
+    <span id="toast-message" class="text-slate-800 dark:text-slate-200">Message sent successfully!</span>
+  </div>
+
+  <!-- Floating Back to Top Button -->
+  <button id="back-to-top" class="fixed bottom-6 right-6 z-40 w-11 h-11 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white shadow-xl shadow-emerald-500/25 flex items-center justify-center transition-all duration-300 opacity-0 pointer-events-none transform hover:-translate-y-1" aria-label="Back to top">
+    <i class="fa-solid fa-arrow-up text-sm"></i>
+  </button>
+
+  <!-- Application Scripts -->
+  <script src="js/config.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

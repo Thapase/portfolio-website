@@ -1,5 +1,5 @@
 /**
- * F1 Singapore Marina Bay Grand Prix — Portfolio Telemetry Configuration
+ * F1 Singapore Marina Bay Grand Prix — 3D Telemetry Configuration
  * Driver: T.H.H. Thapase (THH) — Supply Chain & Strategy Consultant | Endurance Athlete
  * 10 Starting Grid Positions with Bespoke F1 Constructor Liveries & Telemetry Dossiers
  */
@@ -9,7 +9,7 @@ const f1PortfolioData = {
     fullName: "Thummaginjala Hima Harsha Thapase",
     displayName: "T.H.H. Thapase",
     racingName: "THAPASE [THH]",
-    number: "76", // GMAT 760 tribute
+    number: "76",
     team: "THH Strategy Racing",
     role: "Supply Chain & Operations Strategist",
     currentPost: "Assistant Manager (Supply Chain Consultant) • Genpact",
@@ -23,7 +23,7 @@ const f1PortfolioData = {
   circuit: {
     name: "Marina Bay Street Circuit",
     location: "Singapore",
-    session: "NIGHT RACE • LIVE TELEMETRY",
+    session: "NIGHT RACE • 3D GRID LAUNCH",
     length: "4.940 km",
     turns: "19 Turns",
     drsZones: "3 DRS Zones",
@@ -44,12 +44,15 @@ const f1PortfolioData = {
     {
       pos: "P1",
       number: "01",
+      gridRow: 1,
+      gridSide: "left", // Left lane, Pole Position
+      gridZ: -12,
       category: "Professional Experience",
       title: "Supply Chain Consulting & Operations Leadership",
       teamName: "Scuderia Genpact Strategy",
-      liveryColor: "#E10600", // Scuderia Crimson Red
-      secondaryColor: "#111111",
-      glowColor: "rgba(225, 6, 0, 0.45)",
+      liveryColor: 0xE10600, // Scuderia Crimson Red
+      liveryHex: "#E10600",
+      secondaryColor: 0x111111,
       compound: "Soft (Red C5)",
       telemetryStats: [
         { label: "Annual Client Savings", val: "$30M+", icon: "fa-solid fa-chart-line" },
@@ -60,8 +63,8 @@ const f1PortfolioData = {
       badge: "POLE POSITION • Q1-2024 BEST PROJECT",
       subtitle: "Fortune 500 Energy Tech & Oil & Gas Engagements ($37B Enterprise)",
       dossier: `
-        <p class="mb-3">Spearheaded 5+ high-stakes operational engagements across 3+ divisions for a <strong>$37B energy technology giant</strong>. Optimized end-to-end supply chain design, harmonizing parts planning with execution to save upwards of <strong>~$30M/annum</strong> and securing >$10M revenue extension for Genpact.</p>
-        <div class="p-3.5 rounded-xl bg-red-500/10 border border-red-500/20 text-xs mb-3">
+        <p class="mb-3 text-slate-200">Spearheaded 5+ high-stakes operational engagements across 3+ divisions for a <strong>$37B energy technology giant</strong>. Optimized end-to-end supply chain design, harmonizing parts planning with execution to save upwards of <strong>~$30M/annum</strong> and securing >$10M revenue extension for Genpact.</p>
+        <div class="p-3.5 rounded-xl bg-red-500/10 border border-red-500/20 text-xs mb-3 text-red-200">
           <strong>Key Circuit Victory (Q1-2024):</strong> Led a landmark cycle time optimization project across North America for a $600M portfolio, cutting lead times from 12 weeks to just 3 weeks. Awarded the <strong>Genpact Bronze Medal</strong> for outstanding client deliverables.
         </div>
         <ul class="space-y-1.5 text-xs text-slate-300">
@@ -74,12 +77,15 @@ const f1PortfolioData = {
     {
       pos: "P2",
       number: "76",
+      gridRow: 1,
+      gridSide: "right", // Right lane
+      gridZ: -6,
       category: "Academic Excellence",
       title: "IIM Sirmaur MBA & GMAT 760 (Top 1% Globally)",
       teamName: "IIM Sirmaur High-Performance Racing",
-      liveryColor: "#F59E0B", // High-Velocity Amber Gold
-      secondaryColor: "#0B1325",
-      glowColor: "rgba(245, 158, 11, 0.45)",
+      liveryColor: 0xF59E0B, // High-Velocity Amber Gold
+      liveryHex: "#F59E0B",
+      secondaryColor: 0x0B1325,
       compound: "Medium (Yellow C3)",
       telemetryStats: [
         { label: "GMAT Worldwide Score", val: "760", icon: "fa-solid fa-trophy" },
@@ -90,8 +96,8 @@ const f1PortfolioData = {
       badge: "FRONT ROW • TOP 1% WORLDWIDE",
       subtitle: "Indian Institute of Management (IIM) Sirmaur • 2019–2021",
       dossier: `
-        <p class="mb-3">Earned Master of Business Administration (MBA) from the prestigious <strong>Indian Institute of Management (IIM) Sirmaur</strong>. Achieved a world-class <strong>GMAT score of 760</strong>, demonstrating exceptional quantitative, critical analytical, and mathematical reasoning faculties.</p>
-        <div class="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-xs mb-3">
+        <p class="mb-3 text-slate-200">Earned Master of Business Administration (MBA) from the prestigious <strong>Indian Institute of Management (IIM) Sirmaur</strong>. Achieved a world-class <strong>GMAT score of 760</strong>, demonstrating exceptional quantitative, critical analytical, and mathematical reasoning faculties.</p>
+        <div class="p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/20 text-xs mb-3 text-amber-200">
           <strong>Academic & Strategic Impact:</strong> Formulated the go-to-market architecture for Etherisc decentralized crop insurance and organized institute-wide managerial symposiums.
         </div>
         <ul class="space-y-1.5 text-xs text-slate-300">
@@ -104,12 +110,15 @@ const f1PortfolioData = {
     {
       pos: "P3",
       number: "24",
+      gridRow: 2,
+      gridSide: "left",
+      gridZ: 2,
       category: "Predictive Analytics",
       title: "Predictive AI & Product Cost Pacing (PCP)",
       teamName: "Petronas Digital Intelligence",
-      liveryColor: "#00D2BE", // Mercedes/Petronas Electric Cyan
-      secondaryColor: "#000000",
-      glowColor: "rgba(0, 210, 190, 0.45)",
+      liveryColor: 0x00D2BE, // Mercedes/Petronas Electric Cyan
+      liveryHex: "#00D2BE",
+      secondaryColor: 0x000000,
       compound: "Soft (Red C5)",
       telemetryStats: [
         { label: "Procurement Savings", val: "$10M/yr", icon: "fa-solid fa-bolt" },
@@ -120,8 +129,8 @@ const f1PortfolioData = {
       badge: "ROW 2 • PROPRIETARY IP DEPLOYMENT",
       subtitle: "Wirelines Technology Division ($250M Business Unit)",
       dossier: `
-        <p class="mb-3">Conceived and architected a proprietary <strong>Product Cost Pacing (PCP)</strong> predictive model for a $250M wirelines division. Enabled procurement leaders to time raw material acquisitions ahead of global commodity market volatility.</p>
-        <div class="p-3.5 rounded-xl bg-teal-500/10 border border-teal-500/20 text-xs mb-3">
+        <p class="mb-3 text-slate-200">Conceived and architected a proprietary <strong>Product Cost Pacing (PCP)</strong> predictive model for a $250M wirelines division. Enabled procurement leaders to time raw material acquisitions ahead of global commodity market volatility.</p>
+        <div class="p-3.5 rounded-xl bg-teal-500/10 border border-teal-500/20 text-xs mb-3 text-teal-200">
           <strong>Global Scalability:</strong> Led a 3–5 member cross-functional taskforce to deploy the algorithm in 90 days. The model saved <strong>$10M/annum</strong>, was adopted globally, and became Genpact IP that won 3 enterprise clients.
         </div>
         <ul class="space-y-1.5 text-xs text-slate-300">
@@ -134,12 +143,15 @@ const f1PortfolioData = {
     {
       pos: "P4",
       number: "30",
+      gridRow: 2,
+      gridSide: "right",
+      gridZ: 8,
       category: "ESG & Sustainability",
       title: "Circular Sourcing & ESG Decarbonization",
       teamName: "Aston British Racing Green ESG",
-      liveryColor: "#00594F", // Aston Martin Emerald Green
-      secondaryColor: "#CEDC00",
-      glowColor: "rgba(0, 89, 79, 0.45)",
+      liveryColor: 0x00594F, // Aston Martin Emerald Green
+      liveryHex: "#00594F",
+      secondaryColor: 0xCEDC00,
       compound: "Hard (White C1)",
       telemetryStats: [
         { label: "Sustainability Savings", val: "$2M/yr", icon: "fa-solid fa-leaf" },
@@ -150,8 +162,8 @@ const f1PortfolioData = {
       badge: "ROW 2 • SUSTAINABLE OPERATIONS CHAMPION",
       subtitle: "Artificial Lift / Pump Systems Division ($1.2B Enterprise)",
       dossier: `
-        <p class="mb-3">Championed industrial sustainability by architecting a circular economy framework for high-stress oilfield equipment. Accelerated the adoption of certified reclaimed components versus new virgin materials, cutting costs by <strong>$2M/annum</strong> across North America.</p>
-        <div class="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-xs mb-3">
+        <p class="mb-3 text-slate-200">Championed industrial sustainability by architecting a circular economy framework for high-stress oilfield equipment. Accelerated the adoption of certified reclaimed components versus new virgin materials, cutting costs by <strong>$2M/annum</strong> across North America.</p>
+        <div class="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-xs mb-3 text-emerald-200">
           <strong>Environmental Stewardship:</strong> Directly propelled the enterprise mission to reduce manufacturing waste to landfill by 2030, cutting carbon intensity and energy burn across manufacturing hubs.
         </div>
         <ul class="space-y-1.5 text-xs text-slate-300">
@@ -164,12 +176,15 @@ const f1PortfolioData = {
     {
       pos: "P5",
       number: "88",
+      gridRow: 3,
+      gridSide: "left",
+      gridZ: 16,
       category: "Engineering Foundation",
       title: "SRM University B.Tech Electrical & Electronics",
       teamName: "Williams Royal Heritage Engineering",
-      liveryColor: "#00A0DE", // Williams Electric Blue
-      secondaryColor: "#041E42",
-      glowColor: "rgba(0, 160, 222, 0.45)",
+      liveryColor: 0x00A0DE, // Williams Electric Blue
+      liveryHex: "#00A0DE",
+      secondaryColor: 0x041E42,
       compound: "Medium (Yellow C3)",
       telemetryStats: [
         { label: "Graduation Aggregate", val: "88%", icon: "fa-solid fa-percentage" },
@@ -180,8 +195,8 @@ const f1PortfolioData = {
       badge: "ROW 3 • 88% FIRST CLASS WITH DISTINCTION",
       subtitle: "SRM Institute of Science and Technology (SRMIST) • 2015–2019",
       dossier: `
-        <p class="mb-3">Completed Bachelor of Technology in <strong>Electrical & Electronics Engineering (EEE)</strong> with an outstanding <strong>88% aggregate</strong>, graduating with First Class with Distinction.</p>
-        <div class="p-3.5 rounded-xl bg-blue-500/10 border border-blue-500/20 text-xs mb-3">
+        <p class="mb-3 text-slate-200">Completed Bachelor of Technology in <strong>Electrical & Electronics Engineering (EEE)</strong> with an outstanding <strong>88% aggregate</strong>, graduating with First Class with Distinction.</p>
+        <div class="p-3.5 rounded-xl bg-blue-500/10 border border-blue-500/20 text-xs mb-3 text-blue-200">
           <strong>Analytical Foundation:</strong> Built deep competencies in circuit dynamics, systems engineering, differential equations, and control systems that now power industrial supply chain optimization algorithms.
         </div>
         <ul class="space-y-1.5 text-xs text-slate-300">
@@ -194,12 +209,15 @@ const f1PortfolioData = {
     {
       pos: "P6",
       number: "42",
+      gridRow: 3,
+      gridSide: "right",
+      gridZ: 22,
       category: "Endurance & Athletics",
       title: "Strava Long-Distance Running & High Cadence",
       teamName: "McLaren Papaya Velocity Athletics",
-      liveryColor: "#FF8000", // McLaren Papaya Orange
-      secondaryColor: "#111111",
-      glowColor: "rgba(255, 128, 0, 0.5)",
+      liveryColor: 0xFF8000, // McLaren Papaya Orange
+      liveryHex: "#FF8000",
+      secondaryColor: 0x111111,
       compound: "Soft (Red C5)",
       telemetryStats: [
         { label: "Discipline", val: "Long-Distance", icon: "fa-solid fa-person-running" },
@@ -210,8 +228,8 @@ const f1PortfolioData = {
       badge: "ROW 3 • STRAVA ENDURANCE ATHLETE",
       subtitle: "Endurance Road Racing • Mental Tenacity • Cadence Management",
       dossier: `
-        <p class="mb-3">Long-distance road runner on <strong>Strava</strong>. The grueling discipline of the road mirrors the high-stakes world of enterprise supply chain consulting: understanding pacing, managing lactic threshold, respecting the course, and digging deep when the final kilometer approaches.</p>
-        <div class="p-3.5 rounded-xl bg-orange-500/10 border border-orange-500/20 text-xs mb-3">
+        <p class="mb-3 text-slate-200">Long-distance road runner on <strong>Strava</strong>. The grueling discipline of the road mirrors the high-stakes world of enterprise supply chain consulting: understanding pacing, managing lactic threshold, respecting the course, and digging deep when the final kilometer approaches.</p>
+        <div class="p-3.5 rounded-xl bg-orange-500/10 border border-orange-500/20 text-xs mb-3 text-orange-200">
           <strong>The Endurance Philosophy:</strong> "Patience on the ascent, velocity on the straightaway, and zero excuses when the rain hits the pavement."
         </div>
         <div class="mt-3">
@@ -225,12 +243,15 @@ const f1PortfolioData = {
     {
       pos: "P7",
       number: "15",
+      gridRow: 4,
+      gridSide: "left",
+      gridZ: 30,
       category: "Wanderlust & Culture",
       title: "Explorer Across 15+ Indian States & UTs",
       teamName: "Sahara Desert & Alpine Expedition",
-      liveryColor: "#D97706", // Desert Saffron / Amber
-      secondaryColor: "#451A03",
-      glowColor: "rgba(217, 119, 6, 0.45)",
+      liveryColor: 0xD97706, // Desert Saffron / Amber
+      liveryHex: "#D97706",
+      secondaryColor: 0x451A03,
       compound: "Medium (Yellow C3)",
       telemetryStats: [
         { label: "States & UTs Traversed", val: "15+", icon: "fa-solid fa-map-location-dot" },
@@ -241,8 +262,8 @@ const f1PortfolioData = {
       badge: "ROW 4 • 15+ STATES & TERRITORIES TRAVERSED",
       subtitle: "Himalayan Passes • Coastal Ghats • Desert Frontiers • Cultural Agility",
       dossier: `
-        <p class="mb-3">Avid explorer having backpacked and road-tripped across <strong>15+ States and Union Territories in India</strong>. Navigating diverse terrains from the high altitudes of Himachal and Kashmir to the coastal backwaters of Kerala and the salt plains of the West builds profound adaptability and wide-angle perspective.</p>
-        <div class="p-3.5 rounded-xl bg-amber-600/10 border border-amber-600/20 text-xs mb-3">
+        <p class="mb-3 text-slate-200">Avid explorer having backpacked and road-tripped across <strong>15+ States and Union Territories in India</strong>. Navigating diverse terrains from the high altitudes of Himachal and Kashmir to the coastal backwaters of Kerala and the salt plains of the West builds profound adaptability and wide-angle perspective.</p>
+        <div class="p-3.5 rounded-xl bg-amber-600/10 border border-amber-600/20 text-xs mb-3 text-amber-200">
           <strong>Territories Explored:</strong> Himachal Pradesh, Jammu & Kashmir, Uttarakhand, Karnataka, Tamil Nadu, Kerala, Maharashtra, Goa, Andhra Pradesh, Telangana, Rajasthan, Delhi NCR, Punjab, Haryana, and Puducherry.
         </div>
         <p class="text-xs text-slate-300">Every journey deepens situational awareness and adaptability—vital superpowers when managing volatile global supply routes.</p>
@@ -252,12 +273,15 @@ const f1PortfolioData = {
     {
       pos: "P8",
       number: "320",
+      gridRow: 4,
+      gridSide: "right",
+      gridZ: 36,
       category: "Social Impact",
       title: "Girl-Child Education & Disaster Humanitarian Relief",
       teamName: "Alpine BWT Humanitarian Pink",
-      liveryColor: "#EC4899", // Alpine Vibrant Rose Pink
-      secondaryColor: "#1E293B",
-      glowColor: "rgba(236, 72, 153, 0.45)",
+      liveryColor: 0xEC4899, // Alpine Vibrant Rose Pink
+      liveryHex: "#EC4899",
+      secondaryColor: 0x1E293B,
       compound: "Hard (White C1)",
       telemetryStats: [
         { label: "Attendance Jump", val: "85%", icon: "fa-solid fa-chart-line" },
@@ -268,8 +292,8 @@ const f1PortfolioData = {
       badge: "ROW 4 • EDUCATION & FLOOD REHABILITATION",
       subtitle: "Rural School Sanitation • Goonj CSR Drives • Athulya Vikas Foundation",
       dossier: `
-        <p class="mb-3">Spearheaded an ongoing fundraising campaign generating <strong>$6,000/year</strong> to construct bathrooms and upgrade infrastructure for an all-girls rural government school. Prevented high dropout rates, boosted attendance to <strong>85%</strong>, and transformed prospects for <strong>320 young women</strong>.</p>
-        <div class="p-3.5 rounded-xl bg-pink-500/10 border border-pink-500/20 text-xs mb-3">
+        <p class="mb-3 text-slate-200">Spearheaded an ongoing fundraising campaign generating <strong>$6,000/year</strong> to construct bathrooms and upgrade infrastructure for an all-girls rural government school. Prevented high dropout rates, boosted attendance to <strong>85%</strong>, and transformed prospects for <strong>320 young women</strong>.</p>
+        <div class="p-3.5 rounded-xl bg-pink-500/10 border border-pink-500/20 text-xs mb-3 text-pink-200">
           <strong>Humanitarian Response:</strong> Collaborated with <strong>Goonj</strong> during corporate CSR initiatives at Genpact, mobilizing critical winter warmth and flood victim relief for thousands of displaced families.
         </div>
         <ul class="space-y-1.5 text-xs text-slate-300">
@@ -282,12 +306,15 @@ const f1PortfolioData = {
     {
       pos: "P9",
       number: "10",
+      gridRow: 5,
+      gridSide: "left",
+      gridZ: 44,
       category: "Mentorship",
       title: "1:1 Strategy, Consulting & GMAT Mentorship",
       teamName: "Kick Sauber Neon Velocity",
-      liveryColor: "#22C55E", // Sauber Neon Green
-      secondaryColor: "#000000",
-      glowColor: "rgba(34, 197, 94, 0.45)",
+      liveryColor: 0x22C55E, // Sauber Neon Green
+      liveryHex: "#22C55E",
+      secondaryColor: 0x000000,
       compound: "Soft (Red C5)",
       telemetryStats: [
         { label: "Platform", val: "Topmate.io", icon: "fa-solid fa-laptop" },
@@ -298,8 +325,8 @@ const f1PortfolioData = {
       badge: "ROW 5 • VERIFIED TOPMATE MENTOR",
       subtitle: "Helping Next-Gen Leaders Break into Tier-1 Consulting & B-Schools",
       dossier: `
-        <p class="mb-3">Active 1:1 mentor on <strong>Topmate</strong> (`@thapase_thh`). Guiding engineering students, prospective MBA applicants, and career switchers into management consulting, supply chain analytics, and top-tier B-school admissions.</p>
-        <div class="p-3.5 rounded-xl bg-green-500/10 border border-green-500/20 text-xs mb-3">
+        <p class="mb-3 text-slate-200">Active 1:1 mentor on <strong>Topmate</strong> (\`@thapase_thh\`). Guiding engineering students, prospective MBA applicants, and career switchers into management consulting, supply chain analytics, and top-tier B-school admissions.</p>
+        <div class="p-3.5 rounded-xl bg-green-500/10 border border-green-500/20 text-xs mb-3 text-green-200">
           <strong>Mentorship Focus:</strong> Consulting case frameworks, market sizing, GMAT 760 quantitative/verbal pacing strategy, and resume impact quantification.
         </div>
         <div class="mt-3">
@@ -313,12 +340,15 @@ const f1PortfolioData = {
     {
       pos: "P10",
       number: "07",
+      gridRow: 5,
+      gridSide: "right",
+      gridZ: 50,
       category: "Agility & Reflexes",
       title: "Tactical Sports: Cricket & Badminton Agility",
       teamName: "Red Bull Racing Dynamics",
-      liveryColor: "#1E40AF", // Red Bull Deep Racing Navy
-      secondaryColor: "#E10600",
-      glowColor: "rgba(30, 64, 175, 0.45)",
+      liveryColor: 0x1E40AF, // Red Bull Deep Racing Navy
+      liveryHex: "#1E40AF",
+      secondaryColor: 0xE10600,
       compound: "Soft (Red C5)",
       telemetryStats: [
         { label: "Primary Sports", val: "Cricket & Badminton", icon: "fa-solid fa-baseball-bat-ball" },
@@ -329,8 +359,8 @@ const f1PortfolioData = {
       badge: "ROW 5 • TACTICAL AGILITY & TEAM PLAY",
       subtitle: "Court Coverage • Anticipation • Competitive Sportsmanship",
       dossier: `
-        <p class="mb-3">Passionate cricket and badminton player. Fast court sports cultivate split-second tactical reflexes, peripheral vision, anticipation, and seamless team communication under scoreboard pressure.</p>
-        <div class="p-3.5 rounded-xl bg-blue-600/10 border border-blue-600/20 text-xs mb-3">
+        <p class="mb-3 text-slate-200">Passionate cricket and badminton player. Fast court sports cultivate split-second tactical reflexes, peripheral vision, anticipation, and seamless team communication under scoreboard pressure.</p>
+        <div class="p-3.5 rounded-xl bg-blue-600/10 border border-blue-600/20 text-xs mb-3 text-blue-200">
           <strong>Tactical Synergies:</strong> In badminton, reading your opponent's body angle before the smash mirrors anticipating supplier bottlenecks; in cricket, managing run-chase run rates is the exact discipline of supply chain cadence.
         </div>
         <ul class="space-y-1.5 text-xs text-slate-300">

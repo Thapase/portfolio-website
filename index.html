@@ -1,109 +1,69 @@
 <!DOCTYPE html>
-<html lang="en" class="dark scroll-smooth">
+<html lang="en" class="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>T.H.H. Thapase | F1 Singapore Grand Prix Starting Grid Portfolio</title>
-  <meta name="description" content="Formula 1 Singapore Marina Bay Grid Portfolio of T.H.H. Thapase — Supply Chain & Strategy Consultant at Genpact, IIM Sirmaur Alum (GMAT 760), Endurance Athlete, and ESG Advocate." />
+  <title>T.H.H. Thapase | 3D F1 Singapore Marina Bay Grid Launch</title>
+  <meta name="description" content="Interactive 3D Formula 1 Singapore Marina Bay Starting Grid Experience for T.H.H. Thapase — Supply Chain & Strategy Consultant at Genpact, IIM Sirmaur Alum (GMAT 760), Endurance Runner, and Social Impact Advocate." />
 
   <!-- Favicon -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%2307090e'/><text x='50%' y='55%' font-family='sans-serif' font-weight='900' font-size='42' fill='%23e10600' text-anchor='middle' dominant-baseline='middle'>F1</text></svg>" />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%2305070b'/><text x='50%' y='55%' font-family='sans-serif' font-weight='900' font-size='42' fill='%23e10600' text-anchor='middle' dominant-baseline='middle'>F1</text></svg>" />
 
-  <!-- FontAwesome & Fonts -->
+  <!-- FontAwesome & Google Fonts -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
 
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            f1: {
-              red: '#E10600',
-              cyan: '#00D2BE',
-              gold: '#F59E0B',
-              tarmac: '#07090E',
-              paddock: '#0C1017'
-            }
-          },
-          fontFamily: {
-            f1: ['Chakra Petch', 'system-ui', 'sans-serif'],
-            mono: ['JetBrains Mono', 'monospace'],
-            sans: ['Plus Jakarta Sans', 'system-ui', 'sans-serif']
-          }
-        }
-      }
-    }
-  </script>
+
+  <!-- Three.js (r128) & OrbitControls CDNs -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
 
   <!-- Custom F1 Design System CSS -->
   <link rel="stylesheet" href="css/style.css" />
-
-  <!-- Prevent Theme Flicker -->
-  <script>
-    (function () {
-      const stored = localStorage.getItem('f1_race_theme');
-      if (stored === 'light') {
-        document.documentElement.classList.remove('dark');
-        document.documentElement.classList.add('light');
-      } else {
-        document.documentElement.classList.remove('light');
-        document.documentElement.classList.add('dark');
-      }
-    })();
-  </script>
 </head>
-<body class="bg-[#07090E] text-slate-100 antialiased selection:bg-red-600 selection:text-white transition-colors duration-300">
+<body class="bg-[#05070B] text-slate-100 overflow-hidden select-none">
 
   <!-- ========================================================================
-       Top Pit Wall HUD (Fixed Navigation Header)
+       Fullscreen 3D WebGL Canvas Container
        ======================================================================== -->
-  <header class="fixed top-0 left-0 right-0 z-50 bg-[#0C1017]/90 backdrop-blur-xl border-b border-white/10">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+  <div id="webgl-container"></div>
+
+  <!-- ========================================================================
+       Top Pit Wall HUD (Fixed Broadcast Header)
+       ======================================================================== -->
+  <header id="f1-header" class="fixed top-0 left-0 right-0 z-40 bg-[#0A0E16]/85 backdrop-blur-xl border-b border-white/10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 h-18 py-2.5 flex items-center justify-between">
       
       <!-- F1 Constructor Logo -->
-      <a href="#track-hero" class="flex items-center gap-3.5 group">
-        <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-red-600 via-red-700 to-black flex items-center justify-center font-f1 font-black text-white text-lg f1-slant shadow-lg shadow-red-600/30 group-hover:scale-105 transition-transform">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-red-600 via-red-700 to-black flex items-center justify-center font-f1 font-black text-white text-base f1-slant shadow-lg shadow-red-600/30">
           THH
         </div>
         <div>
           <div class="flex items-center gap-2">
-            <span class="font-f1 font-black text-xl tracking-tight text-white uppercase f1-slant">THH RACING</span>
-            <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-red-600 text-white">F1 GP</span>
+            <span class="font-f1 font-black text-lg sm:text-xl text-white uppercase f1-slant tracking-tight">THH RACING</span>
+            <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-red-600 text-white">3D GP</span>
           </div>
-          <span class="block text-[11px] font-mono text-teal-400 tracking-wider uppercase">Singapore Marina Bay • Night Session</span>
+          <span class="block text-[11px] font-mono text-teal-400 tracking-wider uppercase">Singapore Marina Bay • 3D Grid Launch</span>
         </div>
-      </a>
-
-      <!-- Middle Session Status (Desktop) -->
-      <div class="hidden lg:flex items-center gap-4 px-4 py-1.5 rounded-full bg-black/60 border border-white/10 text-xs font-mono">
-        <span class="flex items-center gap-1.5 text-emerald-400">
-          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping"></span>
-          <span>GREEN FLAG</span>
-        </span>
-        <span class="text-slate-500">|</span>
-        <span class="text-slate-300">SECTOR 1-3 CLEAR</span>
-        <span class="text-slate-500">|</span>
-        <span class="text-amber-400 font-bold">10 CARS ON GRID</span>
       </div>
 
-      <!-- Right Actions: Audio, Theme Toggle, Superlicence CV -->
+      <!-- 5 Red Starting Lights Gantry UI -->
+      <div class="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-black/80 border border-white/15">
+        <span class="text-[10px] font-mono font-bold text-slate-400 uppercase hidden sm:inline mr-1">START LIGHTS:</span>
+        <div class="flex items-center gap-1.5">
+          <div class="gantry-light"></div>
+          <div class="gantry-light"></div>
+          <div class="gantry-light"></div>
+          <div class="gantry-light"></div>
+          <div class="gantry-light"></div>
+        </div>
+      </div>
+
+      <!-- Right Actions: Superlicence CV -->
       <div class="flex items-center gap-3">
-        <!-- Radio Audio SFX Toggle -->
-        <button id="f1-radio-audio-toggle" class="p-2.5 rounded-xl f1-theme-btn text-slate-300 hover:text-teal-400 text-sm transition-colors" title="Toggle Pit Wall Audio">
-          <i class="fa-solid fa-headset"></i>
-        </button>
-
-        <!-- Day / Night Race Theme Toggle -->
-        <button id="f1-theme-toggle" class="flex items-center gap-2 px-3.5 py-2 rounded-xl f1-theme-btn text-xs font-mono font-bold text-slate-200 transition-all" title="Toggle Day Quali / Night Race">
-          <i id="f1-theme-icon" class="fa-solid fa-moon text-teal-400"></i>
-          <span id="f1-theme-label" class="hidden sm:inline">NIGHT RACE</span>
-        </button>
-
-        <!-- Driver Spec / CV Modal Trigger -->
-        <button class="open-superlicence-btn px-4 py-2 rounded-xl text-xs font-f1 font-black bg-red-600 hover:bg-red-500 text-white f1-slant shadow-lg shadow-red-600/30 transition-all transform hover:-translate-y-0.5 flex items-center gap-1.5">
+        <button class="open-superlicence-btn px-4 py-2 rounded-xl text-xs font-f1 font-black bg-red-600 hover:bg-red-500 text-white f1-slant shadow-lg shadow-red-600/30 transition-all flex items-center gap-1.5">
           <i class="fa-solid fa-id-card"></i>
           <span>DRIVER CV</span>
         </button>
@@ -111,293 +71,117 @@
 
     </div>
 
-    <!-- ========================================================================
-         F1 Timing Tower Legend (Top Broadcast Strip)
-         ======================================================================== -->
-    <div class="border-t border-white/5 bg-black/70 px-4 py-2 overflow-x-auto">
-      <div class="max-w-7xl mx-auto flex items-center gap-3">
-        <div class="flex items-center gap-1.5 text-xs font-f1 font-bold text-slate-400 uppercase tracking-widest shrink-0 pr-2 border-r border-white/10">
+    <!-- Top F1 Timing Tower Legend (P1 to P10 Horizontal Strip) -->
+    <div class="border-t border-white/5 bg-black/70 px-4 py-1.5 overflow-x-auto">
+      <div class="max-w-7xl mx-auto flex items-center gap-2.5">
+        <span class="text-xs font-f1 font-bold text-slate-400 uppercase tracking-widest shrink-0 pr-2 border-r border-white/10 flex items-center gap-1">
           <i class="fa-solid fa-flag-checkered text-red-500"></i>
-          <span>GRID LEGEND:</span>
-        </div>
-        <div id="f1-timing-tower-items" class="flex items-center gap-2 overflow-x-auto pb-1">
-          <!-- Populated dynamically by main.js (P1 to P10) -->
+          <span>GRID (P1-P10):</span>
+        </span>
+        <div id="f1-timing-tower-items" class="flex items-center gap-2 overflow-x-auto pb-0.5">
+          <!-- Populated dynamically by main.js -->
         </div>
       </div>
     </div>
   </header>
 
   <!-- ========================================================================
-       Track Briefing Hero Section
+       3D Viewport Controls & Interaction Hint (Bottom Overlay)
        ======================================================================== -->
-  <section id="track-hero" class="relative pt-36 pb-12 overflow-hidden">
-    <!-- Ambient Floodlights -->
-    <div class="floodlight-beam left-10"></div>
-    <div class="floodlight-beam right-10"></div>
+  <div class="fixed bottom-6 left-6 z-30 flex flex-wrap items-center gap-3 pointer-events-auto">
+    <button id="btn-reset-grid" class="px-3.5 py-2 rounded-xl bg-[#0A0E16]/90 hover:bg-red-600 border border-white/20 text-xs font-f1 font-bold text-white shadow-xl transition-all flex items-center gap-1.5 cursor-pointer">
+      <i class="fa-solid fa-rotate-left"></i>
+      <span>RESET GRID</span>
+    </button>
+    <button id="btn-view-grid" class="px-3.5 py-2 rounded-xl bg-[#0A0E16]/90 hover:bg-teal-600 border border-white/20 text-xs font-f1 font-bold text-white shadow-xl transition-all flex items-center gap-1.5 cursor-pointer">
+      <i class="fa-solid fa-cubes"></i>
+      <span>GRID VIEW</span>
+    </button>
+    <button id="btn-view-chase" class="px-3.5 py-2 rounded-xl bg-[#0A0E16]/90 hover:bg-amber-600 border border-white/20 text-xs font-f1 font-bold text-white shadow-xl transition-all flex items-center gap-1.5 cursor-pointer">
+      <i class="fa-solid fa-video"></i>
+      <span>CHASE CAM</span>
+    </button>
+  </div>
 
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-      
-      <!-- Track Badges -->
-      <div class="inline-flex flex-wrap items-center justify-center gap-3 px-5 py-2 rounded-full bg-black/60 border border-white/10 text-xs font-mono text-slate-300 mb-6">
-        <span class="text-teal-400 font-bold"><i class="fa-solid fa-location-dot mr-1 text-red-500"></i> MARINA BAY STREET CIRCUIT</span>
-        <span>•</span>
-        <span>4.940 KM</span>
-        <span>•</span>
-        <span>19 TURNS</span>
-        <span>•</span>
-        <span class="text-amber-400 font-bold">10 POSITIONS ALLOCATED</span>
-      </div>
-
-      <!-- Main F1 Headline -->
-      <h1 class="text-4xl sm:text-6xl lg:text-7xl font-f1 font-black text-white tracking-tight uppercase f1-slant leading-tight mb-4">
-        THE 10-CAR STARTING GRID <br />
-        <span class="text-transparent bg-clip-text bg-gradient-to-r from-red-500 via-amber-400 to-teal-400">OF T.H.H. THAPASE</span>
-      </h1>
-
-      <p class="text-base sm:text-lg text-slate-300 max-w-3xl mx-auto font-sans leading-relaxed mb-8">
-        Supply Chain & Strategy Leader at <strong>Genpact</strong> | <strong>IIM Sirmaur MBA (GMAT 760)</strong> | Endurance Road Runner | Champion of Girl-Child Education & Climate ESG.
-      </p>
-
-      <!-- Interactive Call-To-Action Banner -->
-      <div class="inline-flex items-center gap-3 px-6 py-3 rounded-2xl bg-gradient-to-r from-red-600/20 via-teal-500/20 to-amber-500/20 border border-white/20 text-xs sm:text-sm font-f1 font-bold text-white shadow-xl">
-        <span class="w-3 h-3 rounded-full bg-red-600 animate-ping"></span>
-        <span>SELECT ANY CAR ON THE GRID OR TIMING LEGEND TO LAUNCH & ACCESS TELEMETRY</span>
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ========================================================================
-       The Singapore Marina Bay Starting Grid (Main Race Track)
-       ======================================================================== -->
-  <main class="relative z-10 py-10">
-    <div class="max-w-6xl mx-auto px-4 sm:px-6 relative">
-      
-      <!-- Left & Right Track Curbs (Alternating Singapore Street Curbs) -->
-      <div class="absolute inset-y-0 left-0 w-3 md:w-5 f1-curb-left rounded-l-md pointer-events-none"></div>
-      <div class="absolute inset-y-0 right-0 w-3 md:w-5 f1-curb-right rounded-r-md pointer-events-none"></div>
-
-      <!-- Checkered Start / Finish Line -->
-      <div class="w-full h-8 checkered-line rounded-lg mb-12 shadow-2xl relative">
-        <div class="absolute -top-6 left-1/2 -translate-x-1/2 px-4 py-1 rounded bg-black border border-white/20 text-[11px] font-mono font-bold text-white uppercase tracking-widest">
-          🏁 START / FINISH LINE — MARINA BAY PIT STRAIGHT
-        </div>
-      </div>
-
-      <!-- Distance Markers -->
-      <div class="flex justify-between items-center px-6 py-2 text-xs font-mono text-slate-500 border-b border-dashed border-white/10 mb-10">
-        <span>[ DRS ZONE 1 ACTIVATED ]</span>
-        <span>GRID DISTANCE: 50M</span>
-        <span>SPEED TRAP: 318 KM/H</span>
-      </div>
-
-      <!-- The 10 Staggered Cars Grid Container -->
-      <div id="f1-starting-grid-container" class="px-2 sm:px-6">
-        <!-- Rendered dynamically by main.js -->
-      </div>
-
-      <!-- Bottom Grid Exit Checker -->
-      <div class="w-full h-8 checkered-line rounded-lg mt-12 shadow-2xl relative">
-        <div class="absolute -bottom-6 left-1/2 -translate-x-1/2 px-4 py-1 rounded bg-black border border-white/20 text-[11px] font-mono font-bold text-teal-400 uppercase tracking-widest">
-          TURN 1 APEX — SHEARES CORNER
-        </div>
-      </div>
-
-    </div>
-  </main>
-
-  <!-- ========================================================================
-       Pit-to-Car Communications Hub (Contact & Radio Section)
-       ======================================================================== -->
-  <section id="pit-radio" class="py-24 relative z-10 border-t border-white/10 bg-[#0C1017]">
-    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-      
-      <div class="text-center mb-14">
-        <span class="text-xs font-mono font-bold uppercase tracking-widest text-teal-400">Team Radio Communications</span>
-        <h2 class="text-3xl sm:text-4xl font-f1 font-black text-white uppercase f1-slant mt-1">
-          Radio Pit Wall to Driver THH
-        </h2>
-        <p class="text-sm text-slate-400 mt-2 font-mono">
-          Initiate direct transmission for consulting advisory, executive mentorship, or athletic collaboration.
-        </p>
-      </div>
-
-      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-        
-        <!-- Left: Radio Telemetry Channels -->
-        <div class="lg:col-span-5 p-8 rounded-3xl bg-black/60 border border-white/10 space-y-6">
-          <div class="flex items-center gap-3 pb-4 border-b border-white/10">
-            <div class="w-10 h-10 rounded-xl bg-teal-500/10 text-teal-400 flex items-center justify-center text-lg">
-              <i class="fa-solid fa-walkie-talkie"></i>
-            </div>
-            <div>
-              <div class="font-f1 font-bold text-base text-white uppercase">Direct Driver Frequencies</div>
-              <div class="text-xs font-mono text-slate-400">Bangalore Race Operations Base</div>
-            </div>
-          </div>
-
-          <div class="space-y-4 text-xs font-mono">
-            <div>
-              <span class="text-slate-500 block">Direct Email Telemetry:</span>
-              <a href="mailto:thapase@gmail.com" class="text-sm font-bold text-teal-400 hover:underline">thapase@gmail.com</a>
-            </div>
-            <div>
-              <span class="text-slate-500 block">Radio / WhatsApp:</span>
-              <a href="tel:+919566009174" class="text-sm font-bold text-white hover:text-teal-400">+91 9566009174</a>
-            </div>
-            <div>
-              <span class="text-slate-500 block">Current Paddock:</span>
-              <span class="text-slate-200">Bangalore, Karnataka, India</span>
-            </div>
-          </div>
-
-          <!-- Social Channels Grid -->
-          <div class="pt-4 border-t border-white/10">
-            <div class="text-xs font-mono text-slate-400 mb-3">Telemetry Social Links:</div>
-            <div class="grid grid-cols-3 gap-2">
-              <a href="https://www.linkedin.com/in/t-h-h-thapase-strategy-consultant" target="_blank" rel="noopener noreferrer" class="p-2.5 rounded-xl bg-white/5 hover:bg-[#0077b5] text-center text-slate-300 hover:text-white transition-all font-mono text-xs flex items-center justify-center gap-1.5">
-                <i class="fa-brands fa-linkedin"></i> LinkedIn
-              </a>
-              <a href="https://strava.app.link/czwhREDvY7b" target="_blank" rel="noopener noreferrer" class="p-2.5 rounded-xl bg-white/5 hover:bg-[#fc4c02] text-center text-slate-300 hover:text-white transition-all font-mono text-xs flex items-center justify-center gap-1.5">
-                <i class="fa-brands fa-strava"></i> Strava
-              </a>
-              <a href="https://topmate.io/thapase_thh" target="_blank" rel="noopener noreferrer" class="p-2.5 rounded-xl bg-white/5 hover:bg-emerald-600 text-center text-slate-300 hover:text-white transition-all font-mono text-xs flex items-center justify-center gap-1.5">
-                <i class="fa-solid fa-graduation-cap"></i> Topmate
-              </a>
-              <a href="https://x.com/THHThapase" target="_blank" rel="noopener noreferrer" class="p-2.5 rounded-xl bg-white/5 hover:bg-black text-center text-slate-300 hover:text-white transition-all font-mono text-xs flex items-center justify-center gap-1.5">
-                <i class="fa-brands fa-x-twitter"></i> X
-              </a>
-              <a href="https://www.instagram.com/thapase.thh" target="_blank" rel="noopener noreferrer" class="p-2.5 rounded-xl bg-white/5 hover:bg-[#e4405f] text-center text-slate-300 hover:text-white transition-all font-mono text-xs flex items-center justify-center gap-1.5">
-                <i class="fa-brands fa-instagram"></i> Insta
-              </a>
-              <a href="https://github.com/Thapase" target="_blank" rel="noopener noreferrer" class="p-2.5 rounded-xl bg-white/5 hover:bg-slate-700 text-center text-slate-300 hover:text-white transition-all font-mono text-xs flex items-center justify-center gap-1.5">
-                <i class="fa-brands fa-github"></i> GitHub
-              </a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Right: Pit-to-Car Transmission Form -->
-        <div class="lg:col-span-7 p-8 rounded-3xl bg-black/60 border border-white/10">
-          <h3 class="font-f1 font-bold text-xl text-white uppercase f1-slant mb-1">Transmit Message to Car #76</h3>
-          <p class="text-xs font-mono text-slate-400 mb-6">Enter encrypted radio message for immediate receipt by driver THH.</p>
-
-          <form id="pit-radio-form" class="space-y-4 font-mono text-xs">
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div>
-                <label for="radio-callsign" class="block text-slate-400 mb-1">Your Name / Callsign *</label>
-                <input type="text" id="radio-callsign" required placeholder="Toto Wolff / Pit Strategist" 
-                       class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-teal-400 outline-none text-white transition-colors" />
-              </div>
-              <div>
-                <label for="radio-frequency" class="block text-slate-400 mb-1">Radio Frequency (Email) *</label>
-                <input type="email" id="radio-frequency" required placeholder="strategist@team.com" 
-                       class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-teal-400 outline-none text-white transition-colors" />
-              </div>
-            </div>
-
-            <div>
-              <label for="radio-transmission" class="block text-slate-400 mb-1">Transmission Telemetry (Message) *</label>
-              <textarea id="radio-transmission" rows="4" required placeholder="Box, box! Sharing details about upcoming supply chain optimization engagement..." 
-                        class="w-full px-4 py-3 rounded-xl bg-white/5 border border-white/10 focus:border-teal-400 outline-none text-white transition-colors resize-none"></textarea>
-            </div>
-
-            <div class="flex items-center justify-between pt-2">
-              <button type="submit" class="px-8 py-3.5 rounded-xl font-f1 font-black text-sm bg-red-600 hover:bg-red-500 text-white f1-slant shadow-lg shadow-red-600/30 transition-all flex items-center gap-2">
-                <span>TRANSMIT RADIO</span>
-                <i class="fa-solid fa-satellite-dish text-xs"></i>
-              </button>
-              <a href="mailto:thapase@gmail.com" class="text-teal-400 hover:underline">
-                Direct Mail Client &rarr;
-              </a>
-            </div>
-          </form>
-        </div>
-
-      </div>
-
-    </div>
-  </section>
-
-  <!-- ========================================================================
-       Pit Wall Telemetry Modal (Translucent F1 HUD Popup)
-       ======================================================================== -->
-  <div id="telemetry-modal" class="telemetry-modal fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/85 backdrop-blur-md">
-    <div id="telemetry-modal-card" class="telemetry-hud-card w-full max-w-4xl max-h-[92vh] rounded-3xl overflow-hidden flex flex-col border border-white/15">
-      
-      <!-- Modal Header: Telemetry Stream -->
-      <div class="px-6 py-4 bg-black/80 border-b border-white/10 flex items-center justify-between">
-        <div class="flex items-center gap-3">
-          <span id="modal-pos-badge" class="font-f1 font-black text-2xl text-white f1-slant px-3 py-1 rounded-md">
-            P1
-          </span>
-          <div>
-            <div class="flex items-center gap-2">
-              <span id="modal-category-badge" class="text-xs font-mono font-bold uppercase tracking-widest text-teal-400">CATEGORY</span>
-              <span id="modal-race-number" class="text-xs font-mono text-slate-400">#01</span>
-            </div>
-            <h3 id="modal-title" class="font-f1 font-bold text-lg sm:text-xl text-white">Car Title</h3>
-          </div>
-        </div>
-
-        <div class="flex items-center gap-3">
-          <span id="modal-team-name" class="hidden md:inline-block text-xs font-mono text-slate-400">Team Name</span>
-          <button id="telemetry-close-btn" class="w-9 h-9 rounded-xl bg-white/10 hover:bg-red-600 text-white flex items-center justify-center text-sm transition-colors cursor-pointer" title="Close Telemetry (Esc)">
-            <i class="fa-solid fa-xmark"></i>
-          </button>
-        </div>
-      </div>
-
-      <!-- Modal Body (Telemetry Stream) -->
-      <div class="p-6 md:p-8 overflow-y-auto space-y-6">
-        
-        <!-- Badge Banner -->
-        <div class="flex items-center justify-between px-4 py-2 rounded-xl bg-white/5 border border-white/10 text-xs font-mono">
-          <span class="text-amber-400 font-bold flex items-center gap-2">
-            <i class="fa-solid fa-star text-[10px]"></i>
-            <span id="modal-badge">BADGE</span>
-          </span>
-          <span class="text-slate-400">LIVE TELEMETRY STREAM</span>
-        </div>
-
-        <!-- Telemetry Metrics Gauges -->
-        <div id="modal-telemetry-stats" class="grid grid-cols-2 sm:grid-cols-4 gap-3">
-          <!-- Dynamically populated -->
-        </div>
-
-        <!-- Detailed Dossier Narrative -->
-        <div class="p-6 rounded-2xl bg-black/40 border border-white/10 text-sm text-slate-200 leading-relaxed font-sans">
-          <div class="text-xs font-mono font-bold uppercase tracking-widest text-teal-400 mb-3 border-b border-white/10 pb-1">
-            <i class="fa-solid fa-file-waveform mr-1.5"></i> Technical Dossier & Strategic Deliverables
-          </div>
-          <div id="modal-dossier-content">
-            <!-- Dynamically populated -->
-          </div>
-        </div>
-
-        <!-- Telemetry Tags -->
-        <div id="modal-tags-container" class="flex flex-wrap gap-2 pt-2">
-          <!-- Dynamically populated -->
-        </div>
-
-      </div>
-
-      <!-- Modal Navigation Footer (Prev / Next Car) -->
-      <div class="px-6 py-4 bg-black/80 border-t border-white/10 flex items-center justify-between text-xs font-f1 font-bold">
-        <button id="modal-prev-btn" class="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white f1-slant transition-colors">
-          <i class="fa-solid fa-chevron-left mr-1"></i> PREV CAR
-        </button>
-        <span class="text-slate-400 font-mono text-[11px] hidden sm:inline">CYCLE TELEMETRY (P1 - P10)</span>
-        <button id="modal-next-btn" class="px-4 py-2 rounded-xl bg-white/10 hover:bg-white/20 text-white f1-slant transition-colors">
-          NEXT CAR <i class="fa-solid fa-chevron-right ml-1"></i>
-        </button>
-      </div>
-
-    </div>
+  <div class="fixed bottom-6 right-6 z-30 hidden sm:flex items-center gap-2 px-4 py-2 rounded-xl bg-black/60 backdrop-blur-md border border-white/10 text-xs font-mono text-slate-300 pointer-events-none">
+    <i class="fa-solid fa-computer-mouse text-teal-400"></i>
+    <span>CLICK ANY 3D CAR OR TIMING ITEM TO LAUNCH • DRAG TO ROTATE 360°</span>
   </div>
 
   <!-- ========================================================================
-       FIA Superlicence & Driver CV Modal
+       Frosted Glass Side Telemetry Pit-Wall HUD (Starts strictly HIDDEN)
+       ======================================================================== -->
+  <aside id="telemetry-side-hud" class="hidden">
+    
+    <!-- HUD Header -->
+    <div class="px-5 py-4 bg-black/80 border-b border-white/10 flex items-center justify-between shrink-0">
+      <div class="flex items-center gap-3">
+        <span id="hud-pos-badge" class="font-f1 font-black text-xl text-white f1-slant px-2.5 py-1 rounded-md bg-red-600">
+          P1
+        </span>
+        <div>
+          <div class="flex items-center gap-1.5">
+            <span id="hud-category-badge" class="text-[11px] font-mono font-bold uppercase tracking-widest text-teal-400">CATEGORY</span>
+            <span id="hud-race-number" class="text-[11px] font-mono text-slate-400">#01</span>
+          </div>
+          <h3 id="hud-title" class="font-f1 font-bold text-base text-white leading-tight">Title</h3>
+        </div>
+      </div>
+
+      <button onclick="closeSideTelemetryHUD()" class="w-8 h-8 rounded-lg bg-white/10 hover:bg-red-600 text-white flex items-center justify-center text-sm transition-colors cursor-pointer" title="Close Telemetry">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
+    </div>
+
+    <!-- Scrollable Telemetry Content -->
+    <div class="p-5 overflow-y-auto hud-scroll space-y-4">
+      
+      <!-- Sub-banner -->
+      <div class="flex items-center justify-between px-3 py-1.5 rounded-lg bg-white/5 border border-white/10 text-xs font-mono">
+        <span class="text-amber-400 font-bold flex items-center gap-1.5">
+          <i class="fa-solid fa-star text-[10px]"></i>
+          <span id="hud-badge">BADGE</span>
+        </span>
+        <span id="hud-team-name" class="text-slate-400 truncate max-w-[170px]">Team Name</span>
+      </div>
+
+      <!-- Telemetry Stats Gauges (4 Metrics) -->
+      <div id="hud-telemetry-stats" class="grid grid-cols-2 gap-2.5">
+        <!-- Populated dynamically -->
+      </div>
+
+      <!-- Technical Dossier Narrative -->
+      <div class="p-4 rounded-xl bg-black/40 border border-white/10 text-xs text-slate-200 leading-relaxed font-sans">
+        <div class="text-[10px] font-mono font-bold uppercase tracking-widest text-teal-400 mb-2 border-b border-white/10 pb-1">
+          <i class="fa-solid fa-file-waveform mr-1"></i> Technical Dossier & Strategic Deliverables
+        </div>
+        <div id="hud-dossier-content">
+          <!-- Populated dynamically -->
+        </div>
+      </div>
+
+      <!-- Telemetry Tags -->
+      <div id="hud-tags-container" class="flex flex-wrap gap-1.5 pt-1">
+        <!-- Populated dynamically -->
+      </div>
+
+    </div>
+
+    <!-- HUD Footer Navigation (Prev / Next Car) -->
+    <div class="px-5 py-3 bg-black/80 border-t border-white/10 flex items-center justify-between text-xs font-f1 font-bold shrink-0">
+      <button id="hud-prev-btn" class="px-3.5 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white f1-slant transition-colors cursor-pointer">
+        <i class="fa-solid fa-chevron-left mr-1"></i> PREV
+      </button>
+      <span class="text-slate-400 font-mono text-[10px]">P1 - P10 TELEMETRY</span>
+      <button id="hud-next-btn" class="px-3.5 py-1.5 rounded-lg bg-white/10 hover:bg-white/20 text-white f1-slant transition-colors cursor-pointer">
+        NEXT <i class="fa-solid fa-chevron-right ml-1"></i>
+      </button>
+    </div>
+
+  </aside>
+
+  <!-- ========================================================================
+       FIA Superlicence & Driver CV Modal (Starts strictly HIDDEN)
        ======================================================================== -->
   <div id="superlicence-modal" class="fixed inset-0 z-50 hidden items-center justify-center p-4 bg-black/85 backdrop-blur-md">
     <div class="w-full max-w-4xl max-h-[92vh] bg-[#0C1017] rounded-3xl border border-white/15 overflow-hidden flex flex-col shadow-2xl">
@@ -512,13 +296,7 @@
     </div>
   </div>
 
-  <!-- Toast Notification -->
-  <div id="f1-toast" class="fixed bottom-6 right-6 z-50 flex items-center gap-3 px-5 py-3.5 rounded-2xl bg-[#0C1017]/95 border border-white/20 text-xs font-mono text-white shadow-2xl transition-all duration-300 opacity-0 pointer-events-none transform translate-y-8">
-    <i id="f1-toast-icon" class="fa-solid fa-tower-broadcast text-teal-400 text-base"></i>
-    <span id="f1-toast-message">Message transmitted</span>
-  </div>
-
-  <!-- Scripts -->
+  <!-- Application Scripts -->
   <script src="js/config.js"></script>
   <script src="js/main.js"></script>
 </body>

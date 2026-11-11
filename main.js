@@ -715,6 +715,28 @@ function showToast(message, type = "success") {
 /* ==========================================================================
    6. Resume Modal & Print
    ========================================================================== */
+function openResumeModal() {
+  const modal = document.getElementById("resume-modal");
+  if (modal) {
+    modal.classList.remove("hidden");
+    modal.classList.add("flex");
+    document.body.style.overflow = "hidden";
+  }
+}
+
+function closeResumeModal() {
+  const modal = document.getElementById("resume-modal");
+  if (modal) {
+    modal.classList.remove("flex");
+    modal.classList.add("hidden");
+    document.body.style.overflow = "";
+  }
+}
+
+// Expose globally to window as well
+window.openResumeModal = openResumeModal;
+window.closeResumeModal = closeResumeModal;
+
 function initResumeModal() {
   const openBtns = document.querySelectorAll(".open-resume-btn");
   const closeBtns = document.querySelectorAll(".close-resume-btn");
@@ -724,39 +746,30 @@ function initResumeModal() {
   openBtns.forEach(btn => {
     btn.addEventListener("click", e => {
       e.preventDefault();
-      if (modal) {
-        modal.classList.add("open");
-        document.body.style.overflow = "hidden";
-      }
+      openResumeModal();
     });
   });
 
   closeBtns.forEach(btn => {
-    btn.addEventListener("click", () => {
-      closeModal();
+    btn.addEventListener("click", e => {
+      e.preventDefault();
+      closeResumeModal();
     });
   });
 
   if (modal) {
     modal.addEventListener("click", e => {
       if (e.target === modal) {
-        closeModal();
+        closeResumeModal();
       }
     });
   }
 
   document.addEventListener("keydown", e => {
-    if (e.key === "Escape" && modal && modal.classList.contains("open")) {
-      closeModal();
+    if (e.key === "Escape") {
+      closeResumeModal();
     }
   });
-
-  function closeModal() {
-    if (modal) {
-      modal.classList.remove("open");
-      document.body.style.overflow = "";
-    }
-  }
 
   if (printBtn) {
     printBtn.addEventListener("click", () => {
